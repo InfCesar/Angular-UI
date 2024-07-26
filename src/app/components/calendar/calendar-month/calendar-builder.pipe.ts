@@ -10,7 +10,7 @@ const daysInAWeek = 7;
   standalone: true,
 }) export class CalendarBuilderPipe implements PipeTransform {
 
-  transform(monthIndex: number, year: number, firstDayOfWeekIndex = 0) {
+  transform(monthIndex: number, year: number, firstDayOfWeekIndex: number) {
     return this.buildMonth(monthIndex, year, firstDayOfWeekIndex);
   }
 

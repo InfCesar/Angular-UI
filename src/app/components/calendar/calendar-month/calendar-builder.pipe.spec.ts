@@ -1,7 +1,7 @@
 import { CalendarDate } from "../calendar-date";
 import { Week } from "../calendar.model";
 import { CalendarBuilderPipe } from "./calendar-builder.pipe";
-import { february2024Sunday, january2024Sunday, june2024Sunday, march2024Sunday, may2024Sunday, october2024Sunday, september2024Monday, september2024Sunday, september2024Tuesday } from "./calendar-month.mocks";
+import { february2024Sunday, january2024Sunday, june2024Sunday, march2024Sunday, may2024Sunday, october2024Sunday, september2024Monday, september2024Sunday, september2024Tuesday } from "./calendar-builder.mocks";
 
 const year = 2024;
 
@@ -36,9 +36,10 @@ const testIDs = (week: Week, monthIndex: number, year: number) => week.forEach((
 
 describe('CalendarBuilderPipe', () => {
   const calendarPipe = new CalendarBuilderPipe();
+
   it('should produce a month with no days from the previous one', ()=>{
     const monthIndex = 8;
-    const builtMonth = calendarPipe.transform(monthIndex, year);
+    const builtMonth = calendarPipe.transform(monthIndex, year, 0);
 
     builtMonth.forEach((week, weekIndex)=>{
       testDayNumbers(week, september2024Sunday[weekIndex]);
@@ -50,7 +51,7 @@ describe('CalendarBuilderPipe', () => {
   describe('Months with days from the previous one', ()=>{
     it('should produce a month with 1 day from the previous one', () => {
       const monthIndex = 0;
-      const builtMonth = calendarPipe.transform(monthIndex, year);
+      const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
       builtMonth.forEach((week, weekIndex)=>{
         testDayNumbers(week, january2024Sunday[weekIndex]);
@@ -61,7 +62,7 @@ describe('CalendarBuilderPipe', () => {
 
     it('should produce a month with 2 days from the previous one', () => {
       const monthIndex = 9;
-      const builtMonth = calendarPipe.transform(monthIndex, year);
+      const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
       builtMonth.forEach((week, weekIndex)=>{
         testDayNumbers(week, october2024Sunday[weekIndex]);
@@ -72,7 +73,7 @@ describe('CalendarBuilderPipe', () => {
 
     it('should produce a month with 3 days from the previous one', () => {
       const monthIndex = 4;
-      const builtMonth = calendarPipe.transform(monthIndex, year);
+      const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
       builtMonth.forEach((week, weekIndex)=>{
         testDayNumbers(week, may2024Sunday[weekIndex]);
@@ -83,7 +84,7 @@ describe('CalendarBuilderPipe', () => {
 
     it('should produce a month with 4 days from the previous one', () => {
       const monthIndex = 1;
-      const builtMonth = calendarPipe.transform(monthIndex, year);
+      const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
       builtMonth.forEach((week, weekIndex)=>{
         testDayNumbers(week, february2024Sunday[weekIndex]);
@@ -94,7 +95,7 @@ describe('CalendarBuilderPipe', () => {
 
     it('should produce a month with 5 days from the previous one', () => {
       const monthIndex = 2;
-      const builtMonth = calendarPipe.transform(monthIndex, year);
+      const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
       builtMonth.forEach((week, weekIndex)=>{
         testDayNumbers(week, march2024Sunday[weekIndex]);
@@ -105,7 +106,7 @@ describe('CalendarBuilderPipe', () => {
 
     it('should produce a month with 6 days from the previous one', () => {
       const monthIndex = 5;
-      const builtMonth = calendarPipe.transform(monthIndex, year);
+      const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
       builtMonth.forEach((week, weekIndex)=>{
         testDayNumbers(week, june2024Sunday[weekIndex]);
