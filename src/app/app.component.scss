@@ -1,0 +1,17 @@
+.container {
+  padding: 8px;
+  
+  [ui-button] {
+    margin: 8px;
+  }
+
+  .success-buttons [ui-button] {
+    --ui-button-background: var(--color-green);
+    --ui-button-color: var(--color-black);
+  }
+
+  .success-buttons [ui-button] {
+    --ui-button-background: var(--color-green);
+    --ui-button-color: var(--color-black);
+  }
+}
