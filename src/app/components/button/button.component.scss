@@ -1,54 +1,53 @@
 :host {
-    --ui-button-background: var(--color-dark-blue);
-    --ui-button-border-radius: 4px;
-    --ui-button-color: var(--color-white);
-    --ui-button-disabled-opacity: 0.4;
-    --ui-button-font-size: 0.875rem;
-    --ui-button-hover-opacity: 0.8;
-    --ui-button-padding: 8px;
-    --ui-button-ripple-color: var(--color-white);
-    --ui-button-ripple-opacity: 0.4;
+  --ui-button-background: var(--color-dark-blue);
+  --ui-button-border-radius: 4px;
+  --ui-button-color: var(--color-white);
+  --ui-button-disabled-opacity: 0.4;
+  --ui-button-font-size: 0.875rem;
+  --ui-button-hover-opacity: 0.8;
+  --ui-button-padding: 8px;
+  --ui-button-ripple-color: var(--color-white);
+  --ui-button-ripple-opacity: 0.4;
 
-    background: var(--ui-button-background);
-    border-radius: var(--ui-button-border-radius);
-    border: 0;
-    color: var(--ui-button-color);
-    cursor: pointer;
-    font-size: var(--ui-button-font-size);
-    padding: var(--ui-button-padding);
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
+  background: var(--ui-button-background);
+  border-radius: var(--ui-button-border-radius);
+  border: 0;
+  color: var(--ui-button-color);
+  cursor: pointer;
+  font-size: var(--ui-button-font-size);
+  padding: var(--ui-button-padding);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
 
-    &[ui-button-large] {
-        display: block;
-        width: 100%;
-    }
+  &[ui-button-large] {
+    display: block;
+    width: 100%;
+  }
 
-    &:hover {
-        opacity: var(--ui-button-hover-opacity);
-    }
+  &:hover {
+    opacity: var(--ui-button-hover-opacity);
+  }
 
-    &[disabled],
-    &[aria-disabled] {
-        cursor: default;
-        opacity: var(--ui-button-disabled-opacity);
-    }
+  &[disabled],
+  &[aria-disabled] {
+    cursor: default;
+    opacity: var(--ui-button-disabled-opacity);
+  }
 
-    .ui-ripple {
-        position: absolute;
-        border-radius: 50%;
-        transform: scale(0);
-        animation: ripple 600ms linear;
-        background-color: var(--ui-button-ripple-color);
-        opacity: var(--ui-button-ripple-opacity);
-    }
+  .ui-ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 600ms linear;
+    background-color: var(--ui-button-ripple-color);
+    opacity: var(--ui-button-ripple-opacity);
+  }
 }
 
 @keyframes ripple {
-    to {
-      transform: scale(4);
-      opacity: 0;
-    }
+  to {
+    transform: scale(4);
+    opacity: 0;
   }
-  
+}

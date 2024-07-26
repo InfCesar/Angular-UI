@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input, booleanAttribute } from "@angular/core";
-import { UiRippleDirective } from "../ripple/ripple.directive";
+import { UiRippleDirective } from "./ripple.directive";
 
 @Component({
   selector: 'button[ui-button], a[ui-button]',
