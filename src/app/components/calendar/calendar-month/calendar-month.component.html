@@ -1,0 +1,24 @@
+<div class="month-container">
+  <table role="grid" class="month">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let weekDay of weekDaysNames | daysOfTheWeek : firstDayOfWeek"
+        >
+          {{ weekDay }}
+        </th>
+      </tr>
+    </thead>
+    <tbody class="dates">
+      <tr *ngFor="let week of monthIndex | calendarBuilder : year : firstDayOfWeek" class="month-row">
+        <td
+          *ngFor="let day of week; trackBy: trackDaysBy"
+          [class.selected]="selected?.isSame(day.date)"
+          (click)="selectedChange.emit(day.date)"
+        > 
+          {{day.dayNumber}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
