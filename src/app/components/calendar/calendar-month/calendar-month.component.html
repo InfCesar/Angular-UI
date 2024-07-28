@@ -10,7 +10,12 @@
       </tr>
     </thead>
     <tbody class="dates">
-      <tr *ngFor="let week of monthIndex | calendarBuilder : year : firstDayOfWeek" class="month-row">
+      <tr *ngFor="let week of monthIndex | calendarBuilder : year : firstDayOfWeek; let i = index" class="month-row">
+        <td
+          *ngIf="i === 0 && (7 - week.length) as daysFromPreviousMonth"
+          [attr.colspan]="daysFromPreviousMonth"
+        >
+        </td>
         <td
           *ngFor="let day of week; trackBy: trackDaysBy"
           [class.selected]="selected?.isSame(day.date)"

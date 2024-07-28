@@ -50,7 +50,7 @@ describe('UICalendarMonthComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Week names rendering', ()=>{
+  describe('Month header', ()=>{
     it('should call DaysOfTheWeekPipe\'s transform method with the initial values from the inputs', ()=>{
       expect(daysOfTheWeekTransformSpy).toHaveBeenCalledOnceWith(
         component.weekDaysNames,
@@ -77,7 +77,7 @@ describe('UICalendarMonthComponent', () => {
     })
   });
 
-  describe('Weeks / days rendering', ()=>{
+  describe('Month body', ()=>{
     it('should call CalendarBuilderPipe\'s transform method with the initial values from the inputs', ()=>{     
       expect(calendarBuilderTransformSpy).toHaveBeenCalledOnceWith(
         component.monthIndex,
@@ -101,12 +101,7 @@ describe('UICalendarMonthComponent', () => {
       );
     });
 
-    it('should render a month row for each week returned by the pipe', ()=>{
-      const rows = debugElement.queryAll(By.css('tr.month-row'));
-      expect(rows.length).toBe(calendarBuilderMock.length);
-    });
-
-    it('should render a month row for each week returned by the pipe', ()=>{
+    it('should render a row for each week returned by the pipe', ()=>{
       const rows = debugElement.queryAll(By.css('tr.month-row'));
       expect(rows.length).toBe(calendarBuilderMock.length);
     });
@@ -118,6 +113,17 @@ describe('UICalendarMonthComponent', () => {
         const dayNumbers = calendarBuilderMock[index].map((day)=>day.dayNumber.toString());
         expect(cellsInRow).toEqual(dayNumbers);
       })
-    })
+    });
+
+    it('should include an empty cell with an offset corresponding to the days from the previous month', ()=>{
+      for(let numOfDaysInFirstWeek = 1; numOfDaysInFirstWeek < 7; numOfDaysInFirstWeek ++) {
+        calendarBuilderTransformSpy.and.returnValue([[...Array(numOfDaysInFirstWeek).keys()]]);
+        fixture.componentRef.setInput('monthIndex', numOfDaysInFirstWeek); // Trigger pipe transform
+        fixture.detectChanges();
+        const offsetCell = debugElement.query(By.css('tr td'));
+        const expectedOffset = (7 - numOfDaysInFirstWeek);
+        expect(offsetCell.attributes['colspan']).toBe(expectedOffset.toString());
+      }
+    });
   })
 });

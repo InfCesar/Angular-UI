@@ -37,7 +37,7 @@ const testIDs = (week: Week, monthIndex: number, year: number) => week.forEach((
 describe('CalendarBuilderPipe', () => {
   const calendarPipe = new CalendarBuilderPipe();
 
-  it('should produce a month with no days from the previous one', ()=>{
+  it('should produce a month that has a full first week', ()=>{
     const monthIndex = 8;
     const builtMonth = calendarPipe.transform(monthIndex, year, 0);
 
@@ -49,7 +49,7 @@ describe('CalendarBuilderPipe', () => {
   });
 
   describe('Months with days from the previous one', ()=>{
-    it('should produce a month with 1 day from the previous one', () => {
+    it('should produce a month with only 6 days for the first week', () => {
       const monthIndex = 0;
       const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
@@ -60,7 +60,7 @@ describe('CalendarBuilderPipe', () => {
       })
     });
 
-    it('should produce a month with 2 days from the previous one', () => {
+    it('should produce a month with only 5 days for the first week', () => {
       const monthIndex = 9;
       const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
@@ -71,7 +71,7 @@ describe('CalendarBuilderPipe', () => {
       })
     });
 
-    it('should produce a month with 3 days from the previous one', () => {
+    it('should produce a month with only 4 days for the first week', () => {
       const monthIndex = 4;
       const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
@@ -82,7 +82,7 @@ describe('CalendarBuilderPipe', () => {
       });
     });
 
-    it('should produce a month with 4 days from the previous one', () => {
+    it('should produce a month with only 3 days for the first week', () => {
       const monthIndex = 1;
       const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
@@ -93,7 +93,7 @@ describe('CalendarBuilderPipe', () => {
       });
     });
 
-    it('should produce a month with 5 days from the previous one', () => {
+    it('should produce a month with only 2 days for the first week', () => {
       const monthIndex = 2;
       const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
@@ -104,7 +104,7 @@ describe('CalendarBuilderPipe', () => {
       });
     });
 
-    it('should produce a month with 6 days from the previous one', () => {
+    it('should produce a month with only 1 day for the first week', () => {
       const monthIndex = 5;
       const builtMonth = calendarPipe.transform(monthIndex, year, 0);
   
