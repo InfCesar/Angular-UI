@@ -6,11 +6,12 @@ import { CalendarDate } from './components/calendar/calendar-date';
 import { UICalendarMonthComponent } from './components/calendar/calendar-month/calendar-month.component';
 import { UI_CALENDAR_SELECTION_STRATEGY, UiCalendarSelectionStrategy } from './components/calendar/calendar.config';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BrocolUiComponent } from '../../projects/brocol-ui/src/public-api';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AsyncPipe, RouterOutlet, UiButtonComponent, UICalendarMonthComponent, NgFor, JsonPipe, ReactiveFormsModule],
+  imports: [AsyncPipe, RouterOutlet, UiButtonComponent, UICalendarMonthComponent, NgFor, JsonPipe, ReactiveFormsModule, BrocolUiComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [
