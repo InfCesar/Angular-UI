@@ -1,16 +1,73 @@
 
-<h1>UI Components</h1>
 <div class="container">
+  <h1>UI Components</h1>
   <h2>Buttons</h2>
-  <div class="primary-buttons">
+  <div class="buttons primary-buttons">
     <button ui-button disabled>Disabled button</button>
     <button ui-button>Enabled button</button>
     <a ui-button href="https://www.google.com">Anchor with button styles</a>
   </div>
 
-  <div class="success-buttons">
+  <div class="buttons success-buttons">
     <button ui-button disabled>Disabled button</button>
     <button ui-button>Enabled button</button>
     <a ui-button href="https://www.google.com">Anchor with button styles</a>
   </div>
+
+  <h2>Calendar</h2>
+
+  <div class="control">
+    <label>
+      Primer día de la semana:
+      <select [formControl]="firstDayOfWeek">
+        <option *ngFor="let option of options; let i = index" [ngValue]="i">
+          {{option}}
+        </option>
+      </select>
+    </label>
+  </div>
+  <div class="control">
+    <label>
+      Modo:
+      <select [formControl]="mode">
+        <option [ngValue]="1">
+          Individual
+        </option>
+        <option [ngValue]="2">
+          Rango
+        </option>
+      </select>
+    </label>
+  </div>
+
+  <div class="calendar-container">
+    <div class="controls">
+      <button (click)="monthIndex = monthIndex - 1">prev</button>
+      <button (click)="monthIndex = monthIndex + 1">next</button>
+    </div>
+    <div class="calendar">
+      <div class="months">
+        <div class="months-col">
+          Month index: {{monthIndex}}
+          <ui-calendar-month
+            [(selected)]="selectedDate"
+            [monthIndex]="monthIndex"
+            [year]="2024"
+            [firstDayOfWeek]="selectedFirstDayOfweek"
+          ></ui-calendar-month>
+        </div>
+        <div class="months-col">
+          Month index: {{monthIndex + 1}}
+          <ui-calendar-month
+            [(selected)]="selectedDate"
+            [monthIndex]="monthIndex + 1"
+            [year]="2024"
+            [firstDayOfWeek]="selectedFirstDayOfweek"
+          ></ui-calendar-month>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{selectedDates | json}}
+
 </div>

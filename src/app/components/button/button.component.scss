@@ -2,6 +2,7 @@
   --ui-button-background: var(--color-dark-blue);
   --ui-button-border-radius: 4px;
   --ui-button-color: var(--color-white);
+  --ui-button-display: inline-block;
   --ui-button-disabled-opacity: 0.4;
   --ui-button-font-size: 0.875rem;
   --ui-button-hover-opacity: 0.8;
@@ -14,6 +15,7 @@
   border: 0;
   color: var(--ui-button-color);
   cursor: pointer;
+  display: inline-block;
   font-size: var(--ui-button-font-size);
   padding: var(--ui-button-padding);
   position: relative;

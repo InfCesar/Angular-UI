@@ -2,8 +2,8 @@ import { Directive, ElementRef, HostListener, inject, Renderer2 } from "@angular
 
 
 @Directive({
-    selector: 'ui-ripple',
-    standalone: true
+  selector: '[uiRipple]',
+  standalone: true
 }) export class UiRippleDirective {
   private _rippleEl?: HTMLElement;
   private renderer = inject(Renderer2);

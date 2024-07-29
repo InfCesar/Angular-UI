@@ -1,17 +1,36 @@
 .container {
   padding: 8px;
   
-  [ui-button] {
+  [ui-button], .calendar {
     margin: 8px;
   }
 
-  .success-buttons [ui-button] {
-    --ui-button-background: var(--color-green);
-    --ui-button-color: var(--color-black);
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .success-buttons [ui-button] {
     --ui-button-background: var(--color-green);
     --ui-button-color: var(--color-black);
+  }
+
+  .calendar, .months, .months-col {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .calendar-container {
+    margin-top: 16px;
+  }
+
+  .months-col {
+    flex-direction: column;
   }
 }
