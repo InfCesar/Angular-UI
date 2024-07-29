@@ -6,11 +6,17 @@ import { DaysOfTheWeekPipe } from "./days-of-week.pipe";
 import { createMockPipe } from "../../../../mocks/mock.pipe";
 import { september2024Sunday } from "./calendar-builder.mocks";
 import { By } from "@angular/platform-browser";
+import { CalendarDate } from "../calendar-date";
+import { UI_CALENDAR_SELECTION_STRATEGY } from "../calendar.config";
 
+const year = 2020;
+const monthIndex = 1;
 const weekDaysMondayMock = ['M', 'T', 'W', 'T', 'F', 'S','S'];
 const weekDaysTuesdayMock = ['T', 'W', 'T', 'F', 'S','S', 'M'];
+const dayToCalendarDate = (day: number) => new CalendarDate(year, monthIndex, day)
 const calendarBuilderMock = september2024Sunday.map((week)=>week.map((day)=>({
-  dayNumber: day
+  dayNumber: day,
+  date: dayToCalendarDate(day)
 })));
 
 describe('UICalendarMonthComponent', () => {
@@ -43,6 +49,8 @@ describe('UICalendarMonthComponent', () => {
 
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
+    fixture.componentRef.setInput('monthIndex', monthIndex);
+    fixture.componentRef.setInput('year', year);
     fixture.detectChanges();
   });
 
@@ -89,8 +97,6 @@ describe('UICalendarMonthComponent', () => {
     it('should call CalendarBuilderPipe\'s transform method with new values from the inputs', ()=>{
       calendarBuilderTransformSpy.calls.reset();
   
-      fixture.componentRef.setInput('monthIndex', 1);
-      fixture.componentRef.setInput('year', 2020);
       fixture.componentRef.setInput('firstDayOfWeek', 2);
       fixture.detectChanges();
   
@@ -118,12 +124,40 @@ describe('UICalendarMonthComponent', () => {
     it('should include an empty cell with an offset corresponding to the days from the previous month', ()=>{
       for(let numOfDaysInFirstWeek = 1; numOfDaysInFirstWeek < 7; numOfDaysInFirstWeek ++) {
         calendarBuilderTransformSpy.and.returnValue([[...Array(numOfDaysInFirstWeek).keys()]]);
-        fixture.componentRef.setInput('monthIndex', numOfDaysInFirstWeek); // Trigger pipe transform
+        fixture.componentRef.setInput('monthIndex', numOfDaysInFirstWeek+1000); // Trigger pipe transform
         fixture.detectChanges();
         const offsetCell = debugElement.query(By.css('tr td'));
         const expectedOffset = (7 - numOfDaysInFirstWeek);
         expect(offsetCell.attributes['colspan']).toBe(expectedOffset.toString());
       }
     });
-  })
+  });
+
+  describe('Days selection', () => {
+    it('days should not be selected by default', ()=>{
+      const selectedDays = debugElement.queryAll(By.css('td button.selected'));
+      expect(selectedDays.length).toBe(0);
+    });
+
+    it('should mark a day as selected on click by default', ()=> {
+      const renderedDays = debugElement.queryAll(By.css('td button'));
+      renderedDays[0].triggerEventHandler('click');
+      fixture.detectChanges();
+      expect(renderedDays[0].classes['selected']).toBeTrue();
+    });
+
+    it('should use the provided selection strategy to determine the new selection', ()=>{
+      const injectedStrategy = TestBed.inject(UI_CALENDAR_SELECTION_STRATEGY);
+      const onSelectSpy = spyOn(injectedStrategy,'onSelect');
+      const newSelectionDay = 4;
+      const renderedDays = debugElement.queryAll(By.css('td button'));
+
+      onSelectSpy.and.returnValue([dayToCalendarDate(newSelectionDay)])
+      renderedDays[0].triggerEventHandler('click');
+      fixture.detectChanges();
+  
+      expect(onSelectSpy).toHaveBeenCalledTimes(1);
+      expect(renderedDays[newSelectionDay - 1].classes['selected']).toBeTrue();
+    })
+  });
 });

@@ -1,5 +1,5 @@
 <div class="month-container">
-  <table role="grid" class="month">
+  <table role="grid" class="month" cellspacing="0" cellpadding="0">
     <thead>
       <tr>
         <th
@@ -18,10 +18,10 @@
         </td>
         <td
           *ngFor="let day of week; trackBy: trackDaysBy"
-          [class.selected]="selected?.isSame(day.date)"
-          (click)="selectedChange.emit(day.date)"
-        > 
-          {{day.dayNumber}}
+        >
+          <button ui-button (click)="selectDay(day)" [ngClass]="day | dayStatus: selected">
+            {{day.dayNumber}}
+          </button>
         </td>
       </tr>
     </tbody>
