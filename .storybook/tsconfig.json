@@ -1,0 +1,14 @@
+{
+  "extends": "../projects/brocol-ui/tsconfig.lib.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "brocol-ui": ["projects/brocol-ui/src/public-api"]
+    }
+  },
+  "exclude": ["../src/test.ts", "../src/**/*.spec.ts"],
+  "include": ["../src/**/*.stories.*", "./preview.ts"],
+  "files": ["./typings.d.ts"]
+}
