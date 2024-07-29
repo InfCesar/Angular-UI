@@ -13,15 +13,15 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "lib",
+            "prefix": "ui",
             "style": "camelCase"
           }
         ],
         "@angular-eslint/component-selector": [
           "error",
           {
-            "type": "element",
-            "prefix": "lib",
+            "type": "[element, attribute]",
+            "prefix": "ui",
             "style": "kebab-case"
           }
         ]
