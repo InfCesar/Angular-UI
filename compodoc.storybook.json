@@ -1,0 +1,7 @@
+{
+	"exportFormat": "json",
+	"tsconfig": "tsconfig.doc.json",
+	"output": "./dist/docs",
+	"disablePrivate": true,
+	"disableProtected": true
+}

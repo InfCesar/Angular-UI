@@ -1,7 +1,8 @@
 {
   "root": true,
   "ignorePatterns": [
-    "projects/**/*"
+    "projects/**/*",
+    "src/stories/**/*"
   ],
   "overrides": [
     {
@@ -19,7 +20,10 @@
           "error",
           {
             "type": "attribute",
-            "prefix": ["app", "ui"],
+            "prefix": [
+              "app",
+              "ui"
+            ],
             "style": "camelCase"
           }
         ],
@@ -27,7 +31,10 @@
           "error",
           {
             "type": "[element, attribute]",
-            "prefix": ["app", "ui"],
+            "prefix": [
+              "app",
+              "ui"
+            ],
             "style": "kebab-case"
           }
         ]
@@ -43,5 +50,8 @@
       ],
       "rules": {}
     }
+  ],
+  "extends": [
+    "plugin:storybook/recommended"
   ]
 }

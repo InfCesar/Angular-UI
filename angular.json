@@ -103,6 +103,80 @@
               "src/**/*.html"
             ]
           }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "angular-ui:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              ".",
+              "--config compodoc.storybook.json"
+            ],
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "angular-ui:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              ".",
+              "--config compodoc.storybook.json"
+            ],
+            "outputDir": "dist/storybook/angular-ui"
+          }
+        }
+      }
+    },
+    "brocol-ui": {
+      "projectType": "library",
+      "root": "projects/brocol-ui",
+      "sourceRoot": "projects/brocol-ui/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/brocol-ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/brocol-ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/brocol-ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/brocol-ui/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/brocol-ui/**/*.ts",
+              "projects/brocol-ui/**/*.html"
+            ]
+          }
         }
       }
     }

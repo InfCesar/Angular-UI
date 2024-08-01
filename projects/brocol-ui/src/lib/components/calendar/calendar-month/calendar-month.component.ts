@@ -22,7 +22,7 @@ import { DayStatusPipe } from './calendar-status.pipe';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UICalendarMonthComponent {
+export class UiCalendarMonthComponent {
   @Input() monthIndex = new Date().getMonth(); 
   @Input() year = new Date().getFullYear();
   @Input() firstDayOfWeek = 0; // 0 => Sunday
