@@ -114,7 +114,8 @@
               "-e",
               "json",
               "-d",
-              "."
+              ".",
+              "--config compodoc.storybook.json"
             ],
             "port": 6006
           }
@@ -129,7 +130,8 @@
               "-e",
               "json",
               "-d",
-              "."
+              ".",
+              "--config compodoc.storybook.json"
             ],
             "outputDir": "dist/storybook/angular-ui"
           }

@@ -5,7 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "paths": {
-      "brocol-ui": ["projects/brocol-ui/src/public-api"]
+      "brocol-ui": ["../projects/brocol-ui/src/public-api"]
     }
   },
   "exclude": ["../src/test.ts", "../src/**/*.spec.ts"],
