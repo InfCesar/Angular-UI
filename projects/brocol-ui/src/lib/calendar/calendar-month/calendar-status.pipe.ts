@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { Day } from "../calendar.model";
 import { CalendarDate } from "../calendar-date";
+import { Day } from "../day.type";
 
 @Pipe({
   name: 'dayStatus',

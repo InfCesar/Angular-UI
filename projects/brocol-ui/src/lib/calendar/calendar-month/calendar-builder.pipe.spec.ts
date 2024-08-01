@@ -1,7 +1,7 @@
 import { CalendarDate } from "../calendar-date";
-import { Week } from "../calendar.model";
 import { CalendarBuilderPipe } from "./calendar-builder.pipe";
 import { february2024Sunday, january2024Sunday, june2024Sunday, march2024Sunday, may2024Sunday, october2024Sunday, september2024Monday, september2024Sunday, september2024Tuesday } from "./calendar-builder.mocks";
+import { Week } from "../week.type";
 
 const year = 2024;
 

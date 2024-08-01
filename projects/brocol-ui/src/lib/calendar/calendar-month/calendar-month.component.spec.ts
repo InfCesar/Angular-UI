@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { UICalendarMonthComponent } from "./calendar-month.component";
 import { DebugElement } from "@angular/core";
 import { CalendarBuilderPipe } from "./calendar-builder.pipe";
 import { DaysOfTheWeekPipe } from "./days-of-week.pipe";
-import { createMockPipe } from "../../../../mocks/mock.pipe";
 import { september2024Sunday } from "./calendar-builder.mocks";
 import { By } from "@angular/platform-browser";
 import { CalendarDate } from "../calendar-date";
-import { UI_CALENDAR_SELECTION_STRATEGY } from "../calendar.config";
+import { UI_CALENDAR_SELECTION_STRATEGY } from "../selection-strategy";
+import { UiCalendarMonthComponent } from "./calendar-month.component";
+import { createMockPipe } from "../../../../../../src/mocks/mock.pipe";
 
 const year = 2020;
 const monthIndex = 1;
@@ -19,9 +19,9 @@ const calendarBuilderMock = september2024Sunday.map((week)=>week.map((day)=>({
   date: dayToCalendarDate(day)
 })));
 
-describe('UICalendarMonthComponent', () => {
-  let component: UICalendarMonthComponent;
-  let fixture: ComponentFixture<UICalendarMonthComponent>;
+describe('UiCalendarMonthComponent', () => {
+  let component: UiCalendarMonthComponent;
+  let fixture: ComponentFixture<UiCalendarMonthComponent>;
   let debugElement: DebugElement;
   let calendarBuilderTransformSpy: jasmine.Spy;
   let daysOfTheWeekTransformSpy: jasmine.Spy;
@@ -31,10 +31,10 @@ describe('UICalendarMonthComponent', () => {
     daysOfTheWeekTransformSpy = jasmine.createSpy().and.returnValue(weekDaysMondayMock);
 
     await TestBed.configureTestingModule({
-      imports: [UICalendarMonthComponent],
+      imports: [UiCalendarMonthComponent],
     }).compileComponents();
 
-    TestBed.overrideComponent(UICalendarMonthComponent, {
+    TestBed.overrideComponent(UiCalendarMonthComponent, {
       remove: {
         imports: [DaysOfTheWeekPipe, CalendarBuilderPipe]
       },
@@ -45,7 +45,7 @@ describe('UICalendarMonthComponent', () => {
       }
     })
   
-    fixture = TestBed.createComponent(UICalendarMonthComponent);
+    fixture = TestBed.createComponent(UiCalendarMonthComponent);
 
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;

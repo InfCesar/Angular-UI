@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { CalendarDate } from "../calendar-date";
-import { Week } from "../calendar.model";
+import { Week } from "../week.type";
 
 @Pipe({
   name: 'calendarBuilder',

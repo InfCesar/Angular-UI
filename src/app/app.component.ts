@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AsyncPipe, JsonPipe, NgFor } from '@angular/common';
-import { UiButtonComponent } from '../../projects/brocol-ui/src/lib/components/button/button.component';
+import { UiButtonComponent } from '../../projects/brocol-ui/src/lib/button/button.component';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CalendarDate, UI_CALENDAR_SELECTION_STRATEGY, UiCalendarMonthComponent, UiCalendarSelectionStrategy } from '../../projects/brocol-ui/src/public-api';
 

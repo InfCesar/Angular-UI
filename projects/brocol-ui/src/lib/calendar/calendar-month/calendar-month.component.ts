@@ -8,11 +8,12 @@ import {
   Output,
 } from '@angular/core';
 import { CalendarDate } from '../calendar-date';
-import { Day, DaysOfTheWeek } from '../calendar.model';
 import { CalendarBuilderPipe } from './calendar-builder.pipe';
 import { DaysOfTheWeekPipe } from './days-of-week.pipe';
-import { UI_CALENDAR_SELECTION_STRATEGY } from '../calendar.config';
+import { UI_CALENDAR_SELECTION_STRATEGY } from '../selection-strategy';
 import { DayStatusPipe } from './calendar-status.pipe';
+import { DaysOfTheWeek } from '../names.type';
+import { Day } from '../day.type';
 
 @Component({
   selector: 'ui-calendar-month',
