@@ -6,42 +6,37 @@ export class CalendarDate {
     this._date = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
   }
 
-  static parseDateAsLocalTime(date: Date): CalendarDate {
+  static fromUTCToLocal(date: CalendarDate): Date {
+    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+  }
+
+  static fromLocalToUTC(date: Date): CalendarDate {
     return new CalendarDate(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
-  static parseDateAsUTC(date: Date): CalendarDate {
-    return new CalendarDate(date.getUTCDate(), date.getUTCMonth(), date.getUTCDate());
-  }
-
-  addDays(days: number): CalendarDate {
-    this._date.setUTCDate(this.getDate() + days);
-    return this;
-  }
-
   clone(): CalendarDate {
-    return new CalendarDate(this.getYear(), this.getMonth(), this.getDate());
+    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate());
   }
 
-  setDate(date: number): CalendarDate {
-    this._date.setUTCDate(date);
+  addUTCDays(days: number): CalendarDate {
+    this._date.setUTCDate(this.getUTCDate() + days);
     return this;
   }
 
   // Getters
-  getDayOfWeek(): number {
+  getUTCDay(): number {
     return this._date.getUTCDay();
   }
 
-  getYear() {
+  getUTCFullYear() {
     return this._date.getUTCFullYear();
   }
 
-  getMonth() {
+  getUTCMonth() {
     return this._date.getUTCMonth();
   }
 
-  getDate() {
+  getUTCDate() {
     return this._date.getUTCDate();
   }
 
@@ -50,7 +45,7 @@ export class CalendarDate {
   }
 
   getDaysInMonth(): number {
-    return new CalendarDate(this.getYear(), this.getMonth()+1, 0).getDate();
+    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth()+1, 0).getUTCDate();
   }
 
   // Comparers
