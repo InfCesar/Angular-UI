@@ -1,4 +1,4 @@
-import { DaysOfTheWeek } from "../calendar.model";
+import { DaysOfTheWeek } from "../names.type";
 import { DaysOfTheWeekPipe } from "./days-of-week.pipe";
 
 const daysMock: DaysOfTheWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];

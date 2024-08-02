@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { DaysOfTheWeek} from "../calendar.model";
+import { DaysOfTheWeek } from "../names.type";
 
 @Pipe({
   name: 'daysOfTheWeek',
