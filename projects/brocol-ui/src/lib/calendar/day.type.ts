@@ -5,3 +5,9 @@ export type Day = {
   date: CalendarDate;
   dayNumber: number;
 }
+
+export enum DayState {
+  none = '',
+  selected = 'ui-day-state-selected',
+  interval = 'ui-day-state-interval',
+}
