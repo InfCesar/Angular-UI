@@ -1,7 +1,7 @@
 export class CalendarDate {
   private _date: Date;
 
-  // All dates in UTC to avoid issues with timezone changes on months rebuilding
+  // All dates in UTC to avoid issues with timezone changes
   constructor(year: number, month: number, day: number) {
     this._date = new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
   }
