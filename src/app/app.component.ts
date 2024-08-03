@@ -45,8 +45,8 @@ export class AppComponent implements UiCalendarSelectionStrategy {
   }
 
   title = 'angular-forms';
-  selectedDate = [CalendarDate.parseDateAsLocalTime(new Date())];
-  monthIndex = this.selectedDate[0].getMonth();
+  selectedDate = [CalendarDate.fromLocalToUTC(new Date())];
+  monthIndex = this.selectedDate[0].getUTCMonth();
   firstDayOfWeek = new FormControl(1, Validators.required);
   mode = new FormControl(1, Validators.required);
 
