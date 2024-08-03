@@ -8,6 +8,7 @@ import { CalendarDate } from "../calendar-date";
 import { UI_CALENDAR_SELECTION_STRATEGY } from "../selection-strategy";
 import { UiCalendarMonthComponent } from "./calendar-month.component";
 import { createMockPipe } from "../../../../../../src/mocks/mock.pipe";
+import { DayState } from "../day.type";
 
 const year = 2020;
 const monthIndex = 1;
@@ -179,7 +180,7 @@ describe('UiCalendarMonthComponent', () => {
 
   describe('Days selection', () => {
     it('days should not be selected by default', ()=>{
-      const selectedDays = debugElement.queryAll(By.css('td button.selected'));
+      const selectedDays = debugElement.queryAll(By.css('td button' + DayState.selected));
       expect(selectedDays.length).toBe(0);
     });
 
@@ -187,7 +188,7 @@ describe('UiCalendarMonthComponent', () => {
       const renderedDays = debugElement.queryAll(By.css('td button'));
       renderedDays[0].triggerEventHandler('click');
       fixture.detectChanges();
-      expect(renderedDays[0].classes['selected']).toBeTrue();
+      expect(renderedDays[0].classes[DayState.selected]).toBeTrue();
     });
 
     it('should use the provided selection strategy to determine the new selection', ()=>{
@@ -199,9 +200,9 @@ describe('UiCalendarMonthComponent', () => {
       onSelectSpy.and.returnValue([dayToCalendarDate(newSelectionDay)])
       renderedDays[0].triggerEventHandler('click');
       fixture.detectChanges();
-  
+
       expect(onSelectSpy).toHaveBeenCalledTimes(1);
-      expect(renderedDays[newSelectionDay - 1].classes['selected']).toBeTrue();
+      expect(renderedDays[newSelectionDay - 1].classes[DayState.selected]).toBeTrue();
     })
   });
 });

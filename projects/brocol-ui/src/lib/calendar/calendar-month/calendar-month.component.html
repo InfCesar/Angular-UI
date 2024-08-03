@@ -20,7 +20,11 @@
       <td
         *ngFor="let day of week; trackBy: trackDaysBy"
       >
-        <button ui-button (click)="selectDay(day)" [ngClass]="day | dayStatus: selected" gridElement>
+        <button
+          ui-button
+          (click)="selectDay(day)"
+          [ngClass]="day | dayState: selected"
+        >
           {{day.dayNumber}}
         </button>
       </td>

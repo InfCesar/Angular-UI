@@ -11,7 +11,7 @@ import { CalendarDate } from '../calendar-date';
 import { CalendarBuilderPipe } from './calendar-builder.pipe';
 import { DaysOfTheWeekPipe } from './days-of-week.pipe';
 import { UI_CALENDAR_SELECTION_STRATEGY } from '../selection-strategy';
-import { DayStatusPipe } from './calendar-status.pipe';
+import { DayStatePipe } from './day-state.pipe';
 import { DaysOfTheWeek, NamesOfTheMonth } from '../names.type';
 import { Day } from '../day.type';
 
@@ -19,7 +19,7 @@ import { Day } from '../day.type';
   selector: 'ui-calendar-month',
   templateUrl: './calendar-month.component.html',
   styleUrls: ['./calendar-month.component.scss'],
-  imports: [NgFor, CalendarBuilderPipe, DaysOfTheWeekPipe, DayStatusPipe, NgIf, NgClass],
+  imports: [NgFor, CalendarBuilderPipe, DaysOfTheWeekPipe, DayStatePipe, NgIf, NgClass],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
