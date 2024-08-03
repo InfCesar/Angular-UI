@@ -3,7 +3,7 @@ import { UiButtonComponent } from 'brocol-ui';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<UiButtonComponent> = {
-  title: 'Example/Button',
+  title: 'Brocol-UI/Button',
   component: UiButtonComponent,
   tags: ['autodocs'],
   argTypes: {},

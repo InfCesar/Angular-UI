@@ -20,7 +20,6 @@ import { CalendarDate, UI_CALENDAR_SELECTION_STRATEGY, UiCalendarMonthComponent,
 })
 export class AppComponent implements UiCalendarSelectionStrategy {
   onSelect(newSelection: CalendarDate, selectedDays: CalendarDate[] = []): CalendarDate[] {
-    console.info('this.mode.value', this.mode.value);
     if(this.mode.value === 1 || selectedDays.length >= 2) {
       return [newSelection];
     }
