@@ -13,6 +13,7 @@ const year = 2020;
 const monthIndex = 1;
 const weekDaysMondayMock = ['M', 'T', 'W', 'T', 'F', 'S','S'];
 const weekDaysTuesdayMock = ['T', 'W', 'T', 'F', 'S','S', 'M'];
+const monthNamesMock = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const dayToCalendarDate = (day: number) => new CalendarDate(year, monthIndex, day)
 const calendarBuilderMock = september2024Sunday.map((week)=>week.map((day)=>({
   dayNumber: day,
@@ -56,6 +57,49 @@ describe('UiCalendarMonthComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Caption', ()=>{
+    const getCaptionText = ()=>debugElement.query(By.css('caption')).nativeElement.innerText;
+
+    it('should render the current name of the month with default translations', ()=>{
+      const defaultMonthsTranslations = component.monthsNames;
+      defaultMonthsTranslations.forEach((monthName, index)=>{
+        fixture.componentRef.setInput('monthIndex', index);
+        fixture.detectChanges();
+        expect(getCaptionText()).toContain(monthName);
+      })
+    });
+
+    it('should render the current name of the month with custom translations', ()=>{
+      fixture.componentRef.setInput('monthsNames', monthNamesMock);
+      monthNamesMock.forEach((monthName, index)=>{
+        fixture.componentRef.setInput('monthIndex', index);
+        fixture.detectChanges();
+        expect(getCaptionText()).toContain(monthName);
+      })
+    });
+
+    it('should render the current year', () => {
+      fixture.componentRef.setInput('year', 2020);
+      fixture.componentRef.setInput('monthIndex', 3);
+      fixture.detectChanges();
+      expect(getCaptionText()).toContain(2020);
+    });
+
+    it('should render the previous year', ()=> {
+      fixture.componentRef.setInput('year', 2020);
+      fixture.componentRef.setInput('monthIndex', -1);
+      fixture.detectChanges();
+      expect(getCaptionText()).toContain(2019);
+    });
+
+    it('should render the next year', ()=> {
+      fixture.componentRef.setInput('year', 2020);
+      fixture.componentRef.setInput('monthIndex', 12);
+      fixture.detectChanges();
+      expect(getCaptionText()).toContain(2021);
+    });
   });
 
   describe('Month header', ()=>{

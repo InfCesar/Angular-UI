@@ -1,29 +1,29 @@
-<div class="month-container">
-  <table role="grid" class="month" cellspacing="0" cellpadding="0">
-    <thead>
-      <tr>
-        <th
-          *ngFor="let weekDay of weekDaysNames | daysOfTheWeek : firstDayOfWeek"
-        >
-          {{ weekDay }}
-        </th>
-      </tr>
-    </thead>
-    <tbody class="dates">
-      <tr *ngFor="let week of monthIndex | calendarBuilder : year : firstDayOfWeek; let i = index" class="month-row">
-        <td
-          *ngIf="i === 0 && (7 - week.length) as daysFromPreviousMonth"
-          [attr.colspan]="daysFromPreviousMonth"
-        >
-        </td>
-        <td
-          *ngFor="let day of week; trackBy: trackDaysBy"
-        >
-          <button ui-button (click)="selectDay(day)" [ngClass]="day | dayStatus: selected">
-            {{day.dayNumber}}
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+
+<table role="grid" class="month" cellspacing="0" cellpadding="0">
+  <caption>{{monthsNames[currentMonth]}} {{currentYear}}</caption>
+  <thead>
+    <tr>
+      <th
+        *ngFor="let weekDay of weekDaysNames | daysOfTheWeek : firstDayOfWeek"
+      >
+        {{ weekDay }}
+      </th>
+    </tr>
+  </thead>
+  <tbody class="dates">
+    <tr *ngFor="let week of monthIndex | calendarBuilder : year : firstDayOfWeek; let i = index" class="month-row">
+      <td
+        *ngIf="i === 0 && (7 - week.length) as daysFromPreviousMonth"
+        [attr.colspan]="daysFromPreviousMonth"
+      >
+      </td>
+      <td
+        *ngFor="let day of week; trackBy: trackDaysBy"
+      >
+        <button ui-button (click)="selectDay(day)" [ngClass]="day | dayStatus: selected" gridElement>
+          {{day.dayNumber}}
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
