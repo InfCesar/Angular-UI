@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { CalendarDate } from "../calendar-date";
-import { Day, DayState } from "../day.type";
+import { CalendarDate } from "../../calendar-date";
+import { Day, DayState } from "../../day.type";
+
 
 @Pipe({
   name: 'dayState',
   standalone: true,
-}) export class DayStatePipe implements PipeTransform {
+}) export class UiDayStatePipe implements PipeTransform {
 
   transform({date}: Day, selected: CalendarDate[] = []): DayState {
     if (selected.length > 1) {

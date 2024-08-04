@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { CalendarDate } from "../calendar-date";
-import { Week } from "../week.type";
+import { CalendarDate } from "../../calendar-date";
+import { Week } from "../../week.type";
 
 @Pipe({
-  name: 'calendarBuilder',
+  name: 'monthBody',
   pure: true,
   standalone: true,
-}) export class CalendarBuilderPipe implements PipeTransform {
+}) export class UiMonthBodyPipe implements PipeTransform {
 
   transform(monthIndex: number, year: number, firstDayOfWeekIndex: number) {
     return this.buildMonth(monthIndex, year, firstDayOfWeekIndex);

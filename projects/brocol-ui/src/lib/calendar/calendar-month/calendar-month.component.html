@@ -4,14 +4,14 @@
   <thead>
     <tr>
       <th
-        *ngFor="let weekDay of weekDaysNames | daysOfTheWeek : firstDayOfWeek"
+        *ngFor="let weekDay of weekDaysNames | monthHeader : firstDayOfWeek"
       >
         {{ weekDay }}
       </th>
     </tr>
   </thead>
   <tbody class="dates">
-    <tr *ngFor="let week of monthIndex | calendarBuilder : year : firstDayOfWeek; let i = index" class="month-row">
+    <tr *ngFor="let week of monthIndex | monthBody : year : firstDayOfWeek; let i = index" class="month-row">
       <td
         *ngIf="i === 0 && (7 - week.length) as daysFromPreviousMonth"
         [attr.colspan]="daysFromPreviousMonth"
