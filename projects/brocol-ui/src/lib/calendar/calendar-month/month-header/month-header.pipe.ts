@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { DaysOfTheWeek } from "../names.type";
+import { DaysOfTheWeek } from "../../names.type";
 
 @Pipe({
-  name: 'daysOfTheWeek',
+  name: 'monthHeader',
   pure: true,
   standalone: true,
-}) export class DaysOfTheWeekPipe implements PipeTransform {
+}) export class UiMonthHeaderPipe implements PipeTransform {
 
   transform(daysOfTheWeek: DaysOfTheWeek, firstDayOfWeekIndex: number) {
     const days = [...daysOfTheWeek];

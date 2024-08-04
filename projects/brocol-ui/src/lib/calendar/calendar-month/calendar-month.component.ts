@@ -8,18 +8,18 @@ import {
   Output,
 } from '@angular/core';
 import { CalendarDate } from '../calendar-date';
-import { CalendarBuilderPipe } from './calendar-builder.pipe';
-import { DaysOfTheWeekPipe } from './days-of-week.pipe';
 import { UI_CALENDAR_SELECTION_STRATEGY } from '../selection-strategy';
-import { DayStatePipe } from './day-state.pipe';
 import { DaysOfTheWeek, NamesOfTheMonth } from '../names.type';
 import { Day } from '../day.type';
+import { UiMonthBodyPipe } from './month-body/month-body.pipe';
+import { UiMonthHeaderPipe } from './month-header/month-header.pipe';
+import { UiDayStatePipe } from './day-state/day-state.pipe';
 
 @Component({
   selector: 'ui-calendar-month',
   templateUrl: './calendar-month.component.html',
   styleUrls: ['./calendar-month.component.scss'],
-  imports: [NgFor, CalendarBuilderPipe, DaysOfTheWeekPipe, DayStatePipe, NgIf, NgClass],
+  imports: [NgFor, UiMonthBodyPipe, UiMonthHeaderPipe, UiDayStatePipe, NgIf, NgClass],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

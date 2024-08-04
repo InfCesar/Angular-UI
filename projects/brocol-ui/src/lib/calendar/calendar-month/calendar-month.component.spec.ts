@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { DebugElement } from "@angular/core";
-import { CalendarBuilderPipe } from "./calendar-builder.pipe";
-import { DaysOfTheWeekPipe } from "./days-of-week.pipe";
-import { september2024Sunday } from "./calendar-builder.mocks";
+import { september2024Sunday } from "./month-body/month-body.mocks";
 import { By } from "@angular/platform-browser";
 import { CalendarDate } from "../calendar-date";
 import { UI_CALENDAR_SELECTION_STRATEGY } from "../selection-strategy";
 import { UiCalendarMonthComponent } from "./calendar-month.component";
 import { createMockPipe } from "../../../../../../src/mocks/mock.pipe";
 import { DayState } from "../day.type";
+import { UiMonthBodyPipe } from "./month-body/month-body.pipe";
+import { UiMonthHeaderPipe } from "./month-header/month-header.pipe";
 
 const year = 2020;
 const monthIndex = 1;
@@ -16,7 +16,7 @@ const weekDaysMondayMock = ['M', 'T', 'W', 'T', 'F', 'S','S'];
 const weekDaysTuesdayMock = ['T', 'W', 'T', 'F', 'S','S', 'M'];
 const monthNamesMock = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const dayToCalendarDate = (day: number) => new CalendarDate(year, monthIndex, day)
-const calendarBuilderMock = september2024Sunday.map((week)=>week.map((day)=>({
+const monthBodyMock = september2024Sunday.map((week)=>week.map((day)=>({
   dayNumber: day,
   date: dayToCalendarDate(day)
 })));
@@ -25,12 +25,12 @@ describe('UiCalendarMonthComponent', () => {
   let component: UiCalendarMonthComponent;
   let fixture: ComponentFixture<UiCalendarMonthComponent>;
   let debugElement: DebugElement;
-  let calendarBuilderTransformSpy: jasmine.Spy;
-  let daysOfTheWeekTransformSpy: jasmine.Spy;
+  let monthBodyTransformSpy: jasmine.Spy;
+  let monthHeaderTransformSpy: jasmine.Spy;
 
   beforeEach(async () => {
-    calendarBuilderTransformSpy = jasmine.createSpy().and.returnValue(calendarBuilderMock);
-    daysOfTheWeekTransformSpy = jasmine.createSpy().and.returnValue(weekDaysMondayMock);
+    monthBodyTransformSpy = jasmine.createSpy().and.returnValue(monthBodyMock);
+    monthHeaderTransformSpy = jasmine.createSpy().and.returnValue(weekDaysMondayMock);
 
     await TestBed.configureTestingModule({
       imports: [UiCalendarMonthComponent],
@@ -38,12 +38,12 @@ describe('UiCalendarMonthComponent', () => {
 
     TestBed.overrideComponent(UiCalendarMonthComponent, {
       remove: {
-        imports: [DaysOfTheWeekPipe, CalendarBuilderPipe]
+        imports: [UiMonthBodyPipe, UiMonthHeaderPipe]
       },
       add: {
         imports: [
-          createMockPipe('daysOfTheWeek', daysOfTheWeekTransformSpy),
-          createMockPipe('calendarBuilder', calendarBuilderTransformSpy)]
+          createMockPipe('monthBody', monthBodyTransformSpy),
+          createMockPipe('monthHeader', monthHeaderTransformSpy)]
       }
     })
   
@@ -104,21 +104,21 @@ describe('UiCalendarMonthComponent', () => {
   });
 
   describe('Month header', ()=>{
-    it('should call DaysOfTheWeekPipe\'s transform method with the initial values from the inputs', ()=>{
-      expect(daysOfTheWeekTransformSpy).toHaveBeenCalledOnceWith(
+    it('should call UiMonthHeaderPipe\'s transform method with the initial values from the inputs', ()=>{
+      expect(monthHeaderTransformSpy).toHaveBeenCalledOnceWith(
         component.weekDaysNames,
         component.firstDayOfWeek
       );
     });
 
-    it('should call DaysOfTheWeekPipe\'s transform method with new values from the inputs', ()=>{
-      daysOfTheWeekTransformSpy.calls.reset();
+    it('should call UiMonthHeaderPipe\'s transform method with new values from the inputs', ()=>{
+      monthHeaderTransformSpy.calls.reset();
   
       fixture.componentRef.setInput('weekDaysNames', weekDaysTuesdayMock);
       fixture.componentRef.setInput('firstDayOfWeek', 2);
       fixture.detectChanges();
   
-      expect(daysOfTheWeekTransformSpy).toHaveBeenCalledOnceWith(
+      expect(monthHeaderTransformSpy).toHaveBeenCalledOnceWith(
         weekDaysTuesdayMock,
         2
       );
@@ -131,21 +131,21 @@ describe('UiCalendarMonthComponent', () => {
   });
 
   describe('Month body', ()=>{
-    it('should call CalendarBuilderPipe\'s transform method with the initial values from the inputs', ()=>{     
-      expect(calendarBuilderTransformSpy).toHaveBeenCalledOnceWith(
+    it('should call UiMonthBodyPipe\'s transform method with the initial values from the inputs', ()=>{     
+      expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
         component.monthIndex,
         component.year,
         component.firstDayOfWeek
       );
     });
   
-    it('should call CalendarBuilderPipe\'s transform method with new values from the inputs', ()=>{
-      calendarBuilderTransformSpy.calls.reset();
+    it('should call UiMonthBodyPipe\'s transform method with new values from the inputs', ()=>{
+      monthBodyTransformSpy.calls.reset();
   
       fixture.componentRef.setInput('firstDayOfWeek', 2);
       fixture.detectChanges();
   
-      expect(calendarBuilderTransformSpy).toHaveBeenCalledOnceWith(
+      expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
         1,
         2020,
         2
@@ -154,21 +154,21 @@ describe('UiCalendarMonthComponent', () => {
 
     it('should render a row for each week returned by the pipe', ()=>{
       const rows = debugElement.queryAll(By.css('tr.month-row'));
-      expect(rows.length).toBe(calendarBuilderMock.length);
+      expect(rows.length).toBe(monthBodyMock.length);
     });
 
     it('should render the returned days for each week', ()=>{
       const rows = debugElement.queryAll(By.css('tr.month-row'));
       rows.forEach((row, index)=>{
         const cellsInRow = row.queryAll(By.css('td')).map((el)=>el.nativeElement.innerText);
-        const dayNumbers = calendarBuilderMock[index].map((day)=>day.dayNumber.toString());
+        const dayNumbers = monthBodyMock[index].map((day)=>day.dayNumber.toString());
         expect(cellsInRow).toEqual(dayNumbers);
       })
     });
 
     it('should include an empty cell with an offset corresponding to the days from the previous month', ()=>{
       for(let numOfDaysInFirstWeek = 1; numOfDaysInFirstWeek < 7; numOfDaysInFirstWeek ++) {
-        calendarBuilderTransformSpy.and.returnValue([[...Array(numOfDaysInFirstWeek).keys()]]);
+        monthBodyTransformSpy.and.returnValue([[...Array(numOfDaysInFirstWeek).keys()]]);
         fixture.componentRef.setInput('monthIndex', numOfDaysInFirstWeek+1000); // Trigger pipe transform
         fixture.detectChanges();
         const offsetCell = debugElement.query(By.css('tr td'));
@@ -203,6 +203,13 @@ describe('UiCalendarMonthComponent', () => {
 
       expect(onSelectSpy).toHaveBeenCalledTimes(1);
       expect(renderedDays[newSelectionDay - 1].classes[DayState.selected]).toBeTrue();
-    })
+    });
+
+    it('should emit selectedChange to allow for two-way binding', ()=>{
+      const selectedChangeSpy = spyOn(component.selectedChange, 'emit');
+      const renderedDays = debugElement.queryAll(By.css('td button'));
+      renderedDays[0].triggerEventHandler('click');
+      expect(selectedChangeSpy).toHaveBeenCalledOnceWith([dayToCalendarDate(1)]);
+    });
   });
 });

@@ -1,7 +1,7 @@
-import { CalendarDate } from "../calendar-date";
-import { CalendarBuilderPipe } from "./calendar-builder.pipe";
-import { february2024Sunday, january2024Sunday, june2024Sunday, march2024Sunday, may2024Sunday, october2024Sunday, september2024Monday, september2024Sunday, september2024Tuesday } from "./calendar-builder.mocks";
-import { Week } from "../week.type";
+import { CalendarDate } from "../../calendar-date";
+import { february2024Sunday, january2024Sunday, june2024Sunday, march2024Sunday, may2024Sunday, october2024Sunday, september2024Monday, september2024Sunday, september2024Tuesday } from "./month-body.mocks";
+import { Week } from "../../week.type";
+import { UiMonthBodyPipe } from "./month-body.pipe";
 
 const year = 2024;
 
@@ -22,8 +22,8 @@ const testIDs = (week: Week, monthIndex: number, year: number) => week.forEach((
   expect(day.id).toBe(idMock);
 });
 
-describe('CalendarBuilderPipe', () => {
-  const calendarPipe = new CalendarBuilderPipe();
+describe('UiMonthBodyPipe', () => {
+  const calendarPipe = new UiMonthBodyPipe();
 
   it('should produce a month that has a full first week', ()=>{
     const monthIndex = 8;
