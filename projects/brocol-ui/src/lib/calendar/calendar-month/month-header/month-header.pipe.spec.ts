@@ -1,7 +1,7 @@
-import { DaysOfTheWeek } from "../../names.type";
+import { DaysOfTheWeekNames } from "../../names.type";
 import { UiMonthHeaderPipe } from "./month-header.pipe";
 
-const daysMock: DaysOfTheWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const daysMock: DaysOfTheWeekNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 describe('UiMonthHeaderPipe', () => {
   const monthHeaderPipe = new UiMonthHeaderPipe();
