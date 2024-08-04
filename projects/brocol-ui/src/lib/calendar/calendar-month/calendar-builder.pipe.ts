@@ -20,16 +20,16 @@ import { Week } from "../week.type";
     for (
       let date = firstDayOfMonth;
       date.isSameOrBefore(lastDayOfMonth);
-      date = date.clone().addDays(1)
+      date = date.clone().addUTCDays(1)
     ) {
       let currentWeek = month[month.length - 1];
-      if (!currentWeek || (date.getDayOfWeek() === firstDayOfWeekIndex)) {
+      if (!currentWeek || (date.getUTCDay() === firstDayOfWeekIndex)) {
         currentWeek = [];
         month.push(currentWeek);
       }
       currentWeek.push({
         date,
-        dayNumber: date.getDate(),
+        dayNumber: date.getUTCDate(),
         id: date.getTime().toString()
       });
     }

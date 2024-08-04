@@ -8,11 +8,13 @@ import { CalendarDate } from "../calendar-date";
 import { UI_CALENDAR_SELECTION_STRATEGY } from "../selection-strategy";
 import { UiCalendarMonthComponent } from "./calendar-month.component";
 import { createMockPipe } from "../../../../../../src/mocks/mock.pipe";
+import { DayState } from "../day.type";
 
 const year = 2020;
 const monthIndex = 1;
 const weekDaysMondayMock = ['M', 'T', 'W', 'T', 'F', 'S','S'];
 const weekDaysTuesdayMock = ['T', 'W', 'T', 'F', 'S','S', 'M'];
+const monthNamesMock = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const dayToCalendarDate = (day: number) => new CalendarDate(year, monthIndex, day)
 const calendarBuilderMock = september2024Sunday.map((week)=>week.map((day)=>({
   dayNumber: day,
@@ -56,6 +58,49 @@ describe('UiCalendarMonthComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Caption', ()=>{
+    const getCaptionText = ()=>debugElement.query(By.css('caption')).nativeElement.innerText;
+
+    it('should render the current name of the month with default translations', ()=>{
+      const defaultMonthsTranslations = component.monthsNames;
+      defaultMonthsTranslations.forEach((monthName, index)=>{
+        fixture.componentRef.setInput('monthIndex', index);
+        fixture.detectChanges();
+        expect(getCaptionText()).toContain(monthName);
+      })
+    });
+
+    it('should render the current name of the month with custom translations', ()=>{
+      fixture.componentRef.setInput('monthsNames', monthNamesMock);
+      monthNamesMock.forEach((monthName, index)=>{
+        fixture.componentRef.setInput('monthIndex', index);
+        fixture.detectChanges();
+        expect(getCaptionText()).toContain(monthName);
+      })
+    });
+
+    it('should render the current year', () => {
+      fixture.componentRef.setInput('year', 2020);
+      fixture.componentRef.setInput('monthIndex', 3);
+      fixture.detectChanges();
+      expect(getCaptionText()).toContain(2020);
+    });
+
+    it('should render the previous year', ()=> {
+      fixture.componentRef.setInput('year', 2020);
+      fixture.componentRef.setInput('monthIndex', -1);
+      fixture.detectChanges();
+      expect(getCaptionText()).toContain(2019);
+    });
+
+    it('should render the next year', ()=> {
+      fixture.componentRef.setInput('year', 2020);
+      fixture.componentRef.setInput('monthIndex', 12);
+      fixture.detectChanges();
+      expect(getCaptionText()).toContain(2021);
+    });
   });
 
   describe('Month header', ()=>{
@@ -135,7 +180,7 @@ describe('UiCalendarMonthComponent', () => {
 
   describe('Days selection', () => {
     it('days should not be selected by default', ()=>{
-      const selectedDays = debugElement.queryAll(By.css('td button.selected'));
+      const selectedDays = debugElement.queryAll(By.css('td button' + DayState.selected));
       expect(selectedDays.length).toBe(0);
     });
 
@@ -143,7 +188,7 @@ describe('UiCalendarMonthComponent', () => {
       const renderedDays = debugElement.queryAll(By.css('td button'));
       renderedDays[0].triggerEventHandler('click');
       fixture.detectChanges();
-      expect(renderedDays[0].classes['selected']).toBeTrue();
+      expect(renderedDays[0].classes[DayState.selected]).toBeTrue();
     });
 
     it('should use the provided selection strategy to determine the new selection', ()=>{
@@ -155,9 +200,9 @@ describe('UiCalendarMonthComponent', () => {
       onSelectSpy.and.returnValue([dayToCalendarDate(newSelectionDay)])
       renderedDays[0].triggerEventHandler('click');
       fixture.detectChanges();
-  
+
       expect(onSelectSpy).toHaveBeenCalledTimes(1);
-      expect(renderedDays[newSelectionDay - 1].classes['selected']).toBeTrue();
+      expect(renderedDays[newSelectionDay - 1].classes[DayState.selected]).toBeTrue();
     })
   });
 });

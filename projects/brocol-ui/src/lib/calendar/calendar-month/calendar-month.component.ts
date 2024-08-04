@@ -11,29 +11,39 @@ import { CalendarDate } from '../calendar-date';
 import { CalendarBuilderPipe } from './calendar-builder.pipe';
 import { DaysOfTheWeekPipe } from './days-of-week.pipe';
 import { UI_CALENDAR_SELECTION_STRATEGY } from '../selection-strategy';
-import { DayStatusPipe } from './calendar-status.pipe';
-import { DaysOfTheWeek } from '../names.type';
+import { DayStatePipe } from './day-state.pipe';
+import { DaysOfTheWeek, NamesOfTheMonth } from '../names.type';
 import { Day } from '../day.type';
 
 @Component({
   selector: 'ui-calendar-month',
   templateUrl: './calendar-month.component.html',
   styleUrls: ['./calendar-month.component.scss'],
-  imports: [NgFor, CalendarBuilderPipe, DaysOfTheWeekPipe, DayStatusPipe, NgIf, NgClass],
+  imports: [NgFor, CalendarBuilderPipe, DaysOfTheWeekPipe, DayStatePipe, NgIf, NgClass],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UiCalendarMonthComponent {
-  @Input() monthIndex = new Date().getMonth(); 
-  @Input() year = new Date().getFullYear();
-  @Input() firstDayOfWeek = 0; // 0 => Sunday
+  @Input() monthIndex: number = new Date().getMonth(); 
+  @Input() year: number = new Date().getFullYear();
+  @Input() firstDayOfWeek = 0; // 0 => Sunday // TODO: añadir transform y caso a storybook
+  @Input() monthsNames: NamesOfTheMonth = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   @Input() weekDaysNames: DaysOfTheWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   @Input() selected?: CalendarDate[];
   @Output() selectedChange = new EventEmitter<CalendarDate[]>();
 
   private selectionStrategy = inject(UI_CALENDAR_SELECTION_STRATEGY);
 
-  trackDaysBy(_: number, day: Day) {
+  protected get currentMonth() {
+    const {length} = this.monthsNames;
+    return (length - ((length - this.monthIndex) % length)) % length;
+  }
+
+  protected get currentYear() {
+    return this.year + Math.floor(this.monthIndex / this.monthsNames.length);
+  }
+
+  protected trackDaysBy(_: number, day: Day) {
     return day.id;
   }
 

@@ -13,25 +13,13 @@ const testDayNumbers = (week: Week, dayNumbers: number[]) => {
 }
 
 const testDates = (week: Week, monthIndex: number, year: number) => week.forEach((day)=> {
-  const dayIsFromPreviousMonth = day.date.getMonth() !== monthIndex;
-  if(dayIsFromPreviousMonth) {
-    const dateMock = new CalendarDate(year, monthIndex - 1, day.dayNumber);
-    expect(day.date.toISOString()).toBe(dateMock.toISOString());
-  } else {
-    const dateMock = new CalendarDate(year, monthIndex, day.dayNumber);
-    expect(day.date.toISOString()).toBe(dateMock.toISOString());
-  }
+  const dateMock = new CalendarDate(year, monthIndex, day.dayNumber);
+  expect(day.date.toISOString()).toBe(dateMock.toISOString());
 });
 
 const testIDs = (week: Week, monthIndex: number, year: number) => week.forEach((day)=> {
-  const dayIsFromPreviousMonth = day.date.getMonth() !== monthIndex;
-  if(dayIsFromPreviousMonth) {
-    const idMock = new CalendarDate(year, monthIndex - 1, day.dayNumber).getTime().toString();
-    expect(day.id).toBe(idMock);
-  } else {
-    const idMock = new CalendarDate(year, monthIndex, day.dayNumber).getTime().toString();
-    expect(day.id).toBe(idMock);
-  }
+  const idMock = new CalendarDate(year, monthIndex, day.dayNumber).getTime().toString();
+  expect(day.id).toBe(idMock);
 });
 
 describe('CalendarBuilderPipe', () => {
