@@ -16,6 +16,7 @@ import { UiMonthHeaderPipe } from './month-header/month-header.pipe';
 import { UiDayStatePipe } from './day-state/day-state.pipe';
 
 const monthsInAYear = 12;
+
 @Component({
   selector: 'ui-calendar-month',
   templateUrl: './calendar-month.component.html',
@@ -27,7 +28,7 @@ const monthsInAYear = 12;
 export class UiCalendarMonthComponent {
   @Input() monthIndex: number = new Date().getMonth(); 
   @Input() year: number = new Date().getFullYear();
-  @Input() firstDayOfWeek = 0; // 0 => Sunday // TODO: añadir transform y caso a storybook
+  @Input({transform: weekDayIndex}) firstDayOfWeek = 0; // 0 => Sunday
   @Input() monthsNames: MonthsNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   @Input() weekDaysNames: DaysOfTheWeekNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   @Input() selected?: CalendarDate[];
@@ -51,4 +52,8 @@ export class UiCalendarMonthComponent {
     this.selected = this.selectionStrategy.onSelect(date, this.selected);
     this.selectedChange.emit(this.selected);
   }
+}
+
+function weekDayIndex(firstDayOfWeek: number) {
+  return (firstDayOfWeek < 0 || firstDayOfWeek > 6) ? 0 : firstDayOfWeek;
 }
