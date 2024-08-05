@@ -212,4 +212,22 @@ describe('UiCalendarMonthComponent', () => {
       expect(selectedChangeSpy).toHaveBeenCalledOnceWith([dayToCalendarDate(1)]);
     });
   });
+
+  describe('firstDayOfWeek edge cases', ()=> {
+    it('should not allow an index lower than 0', ()=>{
+      fixture.componentRef.setInput('firstDayOfWeek', -1);
+      fixture.detectChanges();
+      expect(component.firstDayOfWeek).toBe(0);
+    });
+    it('should not allow an index higher than 6', ()=>{
+      fixture.componentRef.setInput('firstDayOfWeek', 7);
+      fixture.detectChanges();
+      expect(component.firstDayOfWeek).toBe(0);
+    });
+    it('should allow a valid index', ()=>{
+      fixture.componentRef.setInput('firstDayOfWeek', 6);
+      fixture.detectChanges();
+      expect(component.firstDayOfWeek).toBe(6);
+    })
+  })
 });
