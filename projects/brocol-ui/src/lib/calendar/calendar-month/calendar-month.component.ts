@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf, WeekDay } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,7 +28,7 @@ const monthsInAYear = 12;
 export class UiCalendarMonthComponent {
   @Input() monthIndex: number = new Date().getMonth(); 
   @Input() year: number = new Date().getFullYear();
-  @Input({transform: weekDayIndex}) firstDayOfWeek = 0; // 0 => Sunday
+  @Input() firstDayOfWeek = WeekDay.Sunday;
   @Input() monthsNames: MonthsNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   @Input() weekDaysNames: DaysOfTheWeekNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   @Input() selected?: CalendarDate[];
@@ -52,8 +52,4 @@ export class UiCalendarMonthComponent {
     this.selected = this.selectionStrategy.onSelect(date, this.selected);
     this.selectedChange.emit(this.selected);
   }
-}
-
-function weekDayIndex(firstDayOfWeek: number) {
-  return (firstDayOfWeek < 0 || firstDayOfWeek > 6) ? 0 : firstDayOfWeek;
 }

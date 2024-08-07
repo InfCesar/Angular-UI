@@ -9,6 +9,7 @@ import { createMockPipe } from "../../../../../../src/mocks/mock.pipe";
 import { DayState } from "../day.type";
 import { UiMonthBodyPipe } from "./month-body/month-body.pipe";
 import { UiMonthHeaderPipe } from "./month-header/month-header.pipe";
+import { WeekDay } from "@angular/common";
 
 const year = 2020;
 const monthIndex = 1;
@@ -115,7 +116,7 @@ describe('UiCalendarMonthComponent', () => {
       monthHeaderTransformSpy.calls.reset();
   
       fixture.componentRef.setInput('weekDaysNames', weekDaysTuesdayMock);
-      fixture.componentRef.setInput('firstDayOfWeek', 2);
+      fixture.componentRef.setInput('firstDayOfWeek', WeekDay.Tuesday);
       fixture.detectChanges();
   
       expect(monthHeaderTransformSpy).toHaveBeenCalledOnceWith(
@@ -142,7 +143,7 @@ describe('UiCalendarMonthComponent', () => {
     it('should call UiMonthBodyPipe\'s transform method with new values from the inputs', ()=>{
       monthBodyTransformSpy.calls.reset();
   
-      fixture.componentRef.setInput('firstDayOfWeek', 2);
+      fixture.componentRef.setInput('firstDayOfWeek', WeekDay.Tuesday);
       fixture.detectChanges();
   
       expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
@@ -212,22 +213,4 @@ describe('UiCalendarMonthComponent', () => {
       expect(selectedChangeSpy).toHaveBeenCalledOnceWith([dayToCalendarDate(1)]);
     });
   });
-
-  describe('firstDayOfWeek edge cases', ()=> {
-    it('should not allow an index lower than 0', ()=>{
-      fixture.componentRef.setInput('firstDayOfWeek', -1);
-      fixture.detectChanges();
-      expect(component.firstDayOfWeek).toBe(0);
-    });
-    it('should not allow an index higher than 6', ()=>{
-      fixture.componentRef.setInput('firstDayOfWeek', 7);
-      fixture.detectChanges();
-      expect(component.firstDayOfWeek).toBe(0);
-    });
-    it('should allow a valid index', ()=>{
-      fixture.componentRef.setInput('firstDayOfWeek', 6);
-      fixture.detectChanges();
-      expect(component.firstDayOfWeek).toBe(6);
-    })
-  })
 });
