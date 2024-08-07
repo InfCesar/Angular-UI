@@ -2,4 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npm run test
-npm run test:lib
+npm run test-storybook
