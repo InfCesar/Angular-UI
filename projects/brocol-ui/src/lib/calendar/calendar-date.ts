@@ -14,13 +14,12 @@ export class CalendarDate {
     return new CalendarDate(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
-  clone(): CalendarDate {
-    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate());
+  addUTCDays(days: number): CalendarDate {
+    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate() + days);
   }
 
-  addUTCDays(days: number): CalendarDate {
-    this._date.setUTCDate(this.getUTCDate() + days);
-    return this;
+  addUTCMonths(months: number): CalendarDate {
+    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth() + months, this.getUTCDate());
   }
 
   // Getters
@@ -44,8 +43,12 @@ export class CalendarDate {
     return this._date.getTime();
   }
 
-  getDaysInMonth(): number {
-    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth()+1, 0).getUTCDate();
+  getFirstDayOfMonth(): CalendarDate {
+    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth(), 1);
+  }
+
+  getLastDayOfMonth(): CalendarDate {
+    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth()+1, 0);
   }
 
   // Comparers

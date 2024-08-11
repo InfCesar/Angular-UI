@@ -48,10 +48,26 @@ export class AppComponent implements UiCalendarSelectionStrategy {
   monthIndex = this.selectedDate[0].getUTCMonth();
   firstDayOfWeek = new FormControl(1, Validators.required);
   mode = new FormControl(1, Validators.required);
+  activeMonth = CalendarDate.fromLocalToUTC(new Date()).getFirstDayOfMonth();
+  numOfMonthsShown = 2;
 
   options = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
 
+  
+  get months() {
+    const firstMonth = this.activeMonth;
+    return Array.from({length: this.numOfMonthsShown}, (_, index) => firstMonth.getFirstDayOfMonth().addUTCMonths(index));
+  }
+
   get selectedDates() {
     return this.selectedDate.map((date)=>date.toISOString());
+  }
+
+  protected prevActiveMonth() {
+    this.activeMonth = this.activeMonth.addUTCMonths(-1);
+  }
+
+  protected nextActiveMonth() {
+    this.activeMonth = this.activeMonth.addUTCMonths(1);
   }
 }

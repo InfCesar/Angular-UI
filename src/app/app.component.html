@@ -42,24 +42,15 @@
 
   <div class="calendar-container">
     <div class="controls">
-      <button (click)="monthIndex = monthIndex - 1">prev</button>
-      <button (click)="monthIndex = monthIndex + 1">next</button>
+      <button (click)="prevActiveMonth()">prev</button>
+      <button (click)="nextActiveMonth()">next</button>
     </div>
     <div class="calendar">
       <div class="months">
-        <div class="months-col">
+        <div class="months-col" *ngFor="let month of months">
           <ui-calendar-month
+            [month]="month"
             [(selected)]="selectedDate"
-            [monthIndex]="monthIndex"
-            [year]="2024"
-            [firstDayOfWeek]="selectedFirstDayOfweek"
-          ></ui-calendar-month>
-        </div>
-        <div class="months-col">
-          <ui-calendar-month
-            [(selected)]="selectedDate"
-            [monthIndex]="monthIndex + 1"
-            [year]="2024"
             [firstDayOfWeek]="selectedFirstDayOfweek"
           ></ui-calendar-month>
         </div>

@@ -21,7 +21,7 @@ import { WeekDay } from "@angular/common";
     for (
       let date = firstDayOfMonth;
       date.isSameOrBefore(lastDayOfMonth);
-      date = date.clone().addUTCDays(1)
+      date = date.addUTCDays(1)
     ) {
       let currentWeek = month[month.length - 1];
       if (!currentWeek || (date.getUTCDay() === firstDayOfWeek)) {
