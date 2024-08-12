@@ -24,8 +24,8 @@ import { UiDayStatePipe } from './day-state/day-state.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UiCalendarMonthComponent {
-  @Input() month = CalendarDate.fromLocalToUTC(new Date());
-  @Input() firstDayOfWeek = WeekDay.Sunday;
+  @Input() month: CalendarDate = CalendarDate.fromLocalToUTC(new Date());
+  @Input() firstDayOfWeek: WeekDay = WeekDay.Sunday;
   @Input() monthsNames: MonthsNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   @Input() weekDaysNames: DaysOfTheWeekNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   @Input() selected?: CalendarDate[];

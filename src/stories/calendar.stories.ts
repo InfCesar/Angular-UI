@@ -3,8 +3,9 @@ import { CalendarDate, UiCalendarMonthComponent } from 'brocol-ui';
 import { useArgs } from '@storybook/preview-api';
 import { UI_CALENDAR_SELECTION_STRATEGY } from '../../projects/brocol-ui/src/public-api';
 import { action } from '@storybook/addon-actions';
+import { WeekDay } from '@angular/common';
 
-type UiCalendarMonthPropsAndCustomArgs = UiCalendarMonthComponent & { selected?: number, rangeStart: number, rangeEnd: number };
+type UiCalendarMonthPropsAndCustomArgs = UiCalendarMonthComponent & { selected?: number, month?: number, rangeStart: number, rangeEnd: number };
 
 class SampleRangeSelectionStrategy {
   onSelect(newSelection: CalendarDate, selectedDays: CalendarDate[] = []): CalendarDate[] {
@@ -29,17 +30,30 @@ const meta: Meta<UiCalendarMonthPropsAndCustomArgs> = {
   component: UiCalendarMonthComponent,
   tags: ['autodocs'],
   argTypes: {
+    month: {
+      control: 'date'
+    },
     selected: {
       control: 'date'
-    }
+    },
+    firstDayOfWeek: {
+      options: Object.values(WeekDay).filter((option)=> typeof option === 'number'),
+      control: {
+        type: 'select',
+        labels: Object.values(WeekDay).filter((option)=> typeof option !== 'number'),
+      },
+    },
+
   },
-  render: ({selected, ...args})=>{
+  render: ({selected, month, ...args})=>{
     const [_, updateArgs] = useArgs();
     const selectedDate = selected ? [CalendarDate.fromLocalToUTC(new Date(selected))] : [];
+    const shownMonth = month ? CalendarDate.fromLocalToUTC(new Date(month)) : CalendarDate.fromLocalToUTC(new Date());
 
     return {
       props: {
         selectedDate,
+        shownMonth,
         ...args,
         selectedChange: (dates: CalendarDate[]) => {
           const datesInLocalTimezone = dates.map((d)=>CalendarDate.fromUTCToLocal(d).getTime());
@@ -47,7 +61,7 @@ const meta: Meta<UiCalendarMonthPropsAndCustomArgs> = {
           action('selectedChange')(dates);
         },
       },
-      template: `<ui-calendar-month [selected]="selectedDate" ${argsToTemplate(args)}></ui-calendar-month>`,
+      template: `<ui-calendar-month [selected]="selectedDate" [month]="shownMonth" ${argsToTemplate(args)}></ui-calendar-month>`,
     }
   }
 };
