@@ -64,8 +64,7 @@ export const june2024Sunday = [
     [30]
 ];
 
-// For other first days of the week
-
+// Beginning with a different day of the week
 export const september2024Monday = [
     ...june2024Sunday
 ];

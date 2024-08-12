@@ -11,12 +11,12 @@ import { UiMonthBodyPipe } from "./month-body/month-body.pipe";
 import { UiMonthHeaderPipe } from "./month-header/month-header.pipe";
 import { WeekDay } from "@angular/common";
 import { Month } from "../month.type";
+import { monthNames } from "./calendar-month.data";
 
 const yearMock = 2020;
 const monthMock = Month.February;
 const weekDaysMondayMock = ['M', 'T', 'W', 'T', 'F', 'S','S'];
 const weekDaysTuesdayMock = ['T', 'W', 'T', 'F', 'S','S', 'M'];
-const monthNamesMock = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const dayToCalendarDate = (day: number) => new CalendarDate(yearMock, monthMock, day)
 const monthBodyMock = september2024Sunday.map((week)=>week.map((day)=>({
   dayNumber: day,
@@ -74,8 +74,8 @@ describe('UiCalendarMonthComponent', () => {
     });
 
     it('should render the current name of the month with custom translations', ()=>{
-      fixture.componentRef.setInput('monthsNames', monthNamesMock);
-      monthNamesMock.forEach((monthName, index)=>{
+      fixture.componentRef.setInput('monthsNames', monthNames);
+      monthNames.forEach((monthName, index)=>{
         fixture.componentRef.setInput('month', new CalendarDate(yearMock, index, 1));
         fixture.detectChanges();
         expect(getCaptionText()).toContain(monthName);

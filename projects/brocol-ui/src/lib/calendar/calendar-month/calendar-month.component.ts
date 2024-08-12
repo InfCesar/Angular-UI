@@ -9,11 +9,12 @@ import {
 } from '@angular/core';
 import { CalendarDate } from '../calendar-date';
 import { UI_CALENDAR_SELECTION_STRATEGY } from '../selection-strategy';
-import { DaysOfTheWeekNames, MonthsNames } from '../names.type';
+import { WeekNames, MonthsNames } from '../names.type';
 import { Day } from '../day.type';
 import { UiMonthBodyPipe } from './month-body/month-body.pipe';
 import { UiMonthHeaderPipe } from './month-header/month-header.pipe';
 import { UiDayStatePipe } from './day-state/day-state.pipe';
+import { monthNames, weekNames } from './calendar-month.data';
 
 @Component({
   selector: 'ui-calendar-month',
@@ -26,8 +27,8 @@ import { UiDayStatePipe } from './day-state/day-state.pipe';
 export class UiCalendarMonthComponent {
   @Input() month: CalendarDate = CalendarDate.fromLocalToUTC(new Date());
   @Input() firstDayOfWeek: WeekDay = WeekDay.Sunday;
-  @Input() monthsNames: MonthsNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  @Input() weekDaysNames: DaysOfTheWeekNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  @Input() monthsNames: MonthsNames = monthNames;
+  @Input() weekDaysNames: WeekNames = weekNames;
   @Input() selected?: CalendarDate[];
   @Output() selectedChange = new EventEmitter<CalendarDate[]>();
 

@@ -1,4 +1,4 @@
-import { argsToTemplate, moduleMetadata, StoryFn, type Meta, type StoryObj } from '@storybook/angular';
+import { argsToTemplate, moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
 import { CalendarDate, UiCalendarMonthComponent } from 'brocol-ui';
 import { useArgs } from '@storybook/preview-api';
 import { UI_CALENDAR_SELECTION_STRATEGY } from '../../projects/brocol-ui/src/public-api';

@@ -1,8 +1,9 @@
 import { WeekDay } from "@angular/common";
-import { DaysOfTheWeekNames } from "../../names.type";
+import { WeekNames } from "../../names.type";
 import { UiMonthHeaderPipe } from "./month-header.pipe";
+import { weekNames } from "../calendar-month.data";
 
-const daysMock: DaysOfTheWeekNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const daysMock: WeekNames = weekNames;
 
 describe('UiMonthHeaderPipe', () => {
   const monthHeaderPipe = new UiMonthHeaderPipe();
