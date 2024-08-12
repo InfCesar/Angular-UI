@@ -10,13 +10,14 @@ import { DayState } from "../day.type";
 import { UiMonthBodyPipe } from "./month-body/month-body.pipe";
 import { UiMonthHeaderPipe } from "./month-header/month-header.pipe";
 import { WeekDay } from "@angular/common";
+import { Month } from "../month.type";
 
-const year = 2020;
-const monthIndex = 1;
+const yearMock = 2020;
+const monthMock = Month.February;
 const weekDaysMondayMock = ['M', 'T', 'W', 'T', 'F', 'S','S'];
 const weekDaysTuesdayMock = ['T', 'W', 'T', 'F', 'S','S', 'M'];
 const monthNamesMock = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-const dayToCalendarDate = (day: number) => new CalendarDate(year, monthIndex, day)
+const dayToCalendarDate = (day: number) => new CalendarDate(yearMock, monthMock, day)
 const monthBodyMock = september2024Sunday.map((week)=>week.map((day)=>({
   dayNumber: day,
   date: dayToCalendarDate(day)
@@ -52,8 +53,7 @@ describe('UiCalendarMonthComponent', () => {
 
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
-    fixture.componentRef.setInput('monthIndex', monthIndex);
-    fixture.componentRef.setInput('year', year);
+    fixture.componentRef.setInput('month', new CalendarDate(yearMock, monthMock, 1));
     fixture.detectChanges();
   });
 
@@ -67,7 +67,7 @@ describe('UiCalendarMonthComponent', () => {
     it('should render the current name of the month with default translations', ()=>{
       const defaultMonthsTranslations = component.monthsNames;
       defaultMonthsTranslations.forEach((monthName, index)=>{
-        fixture.componentRef.setInput('monthIndex', index);
+        fixture.componentRef.setInput('month', new CalendarDate(yearMock, index, 1));
         fixture.detectChanges();
         expect(getCaptionText()).toContain(monthName);
       })
@@ -76,31 +76,16 @@ describe('UiCalendarMonthComponent', () => {
     it('should render the current name of the month with custom translations', ()=>{
       fixture.componentRef.setInput('monthsNames', monthNamesMock);
       monthNamesMock.forEach((monthName, index)=>{
-        fixture.componentRef.setInput('monthIndex', index);
+        fixture.componentRef.setInput('month', new CalendarDate(yearMock, index, 1));
         fixture.detectChanges();
         expect(getCaptionText()).toContain(monthName);
       })
     });
 
     it('should render the current year', () => {
-      fixture.componentRef.setInput('year', 2020);
-      fixture.componentRef.setInput('monthIndex', 3);
+      fixture.componentRef.setInput('month', new CalendarDate(yearMock, monthMock, 1));
       fixture.detectChanges();
-      expect(getCaptionText()).toContain(2020);
-    });
-
-    it('should render the previous year', ()=> {
-      fixture.componentRef.setInput('year', 2020);
-      fixture.componentRef.setInput('monthIndex', -1);
-      fixture.detectChanges();
-      expect(getCaptionText()).toContain(2019);
-    });
-
-    it('should render the next year', ()=> {
-      fixture.componentRef.setInput('year', 2020);
-      fixture.componentRef.setInput('monthIndex', 12);
-      fixture.detectChanges();
-      expect(getCaptionText()).toContain(2021);
+      expect(getCaptionText()).toContain(yearMock);
     });
   });
 
@@ -121,7 +106,7 @@ describe('UiCalendarMonthComponent', () => {
   
       expect(monthHeaderTransformSpy).toHaveBeenCalledOnceWith(
         weekDaysTuesdayMock,
-        2
+        WeekDay.Tuesday
       );
     });
 
@@ -134,8 +119,7 @@ describe('UiCalendarMonthComponent', () => {
   describe('Month body', ()=>{
     it('should call UiMonthBodyPipe\'s transform method with the initial values from the inputs', ()=>{     
       expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
-        component.monthIndex,
-        component.year,
+        component.month,
         component.firstDayOfWeek
       );
     });
@@ -147,9 +131,8 @@ describe('UiCalendarMonthComponent', () => {
       fixture.detectChanges();
   
       expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
-        1,
-        2020,
-        2
+        new CalendarDate(yearMock, monthMock, 1),
+        WeekDay.Tuesday
       );
     });
 
@@ -170,12 +153,22 @@ describe('UiCalendarMonthComponent', () => {
     it('should include an empty cell with an offset corresponding to the days from the previous month', ()=>{
       for(let numOfDaysInFirstWeek = 1; numOfDaysInFirstWeek < 7; numOfDaysInFirstWeek ++) {
         monthBodyTransformSpy.and.returnValue([[...Array(numOfDaysInFirstWeek).keys()]]);
-        fixture.componentRef.setInput('monthIndex', numOfDaysInFirstWeek+1000); // Trigger pipe transform
+        fixture.componentRef.setInput('firstDayOfWeek', numOfDaysInFirstWeek);
         fixture.detectChanges();
+
         const offsetCell = debugElement.query(By.css('tr td'));
         const expectedOffset = (7 - numOfDaysInFirstWeek);
         expect(offsetCell.attributes['colspan']).toBe(expectedOffset.toString());
       }
+    });
+
+    it('should not include an empty cell with an offset if no days are from the previous month', ()=>{
+      monthBodyTransformSpy.and.returnValue([[...Array(7).keys()]]);
+      fixture.componentRef.setInput('firstDayOfWeek', 0);
+      fixture.detectChanges();
+
+      const offsetCell = debugElement.query(By.css('tr td'));
+      expect(offsetCell.attributes['colspan']).toBeFalsy();
     });
   });
 

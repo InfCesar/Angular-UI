@@ -15,8 +15,6 @@ import { UiMonthBodyPipe } from './month-body/month-body.pipe';
 import { UiMonthHeaderPipe } from './month-header/month-header.pipe';
 import { UiDayStatePipe } from './day-state/day-state.pipe';
 
-const monthsInAYear = 12;
-
 @Component({
   selector: 'ui-calendar-month',
   templateUrl: './calendar-month.component.html',
@@ -26,8 +24,7 @@ const monthsInAYear = 12;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UiCalendarMonthComponent {
-  @Input() monthIndex: number = new Date().getMonth(); 
-  @Input() year: number = new Date().getFullYear();
+  @Input() month = CalendarDate.fromLocalToUTC(new Date());
   @Input() firstDayOfWeek = WeekDay.Sunday;
   @Input() monthsNames: MonthsNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   @Input() weekDaysNames: DaysOfTheWeekNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -36,14 +33,6 @@ export class UiCalendarMonthComponent {
 
   private selectionStrategy = inject(UI_CALENDAR_SELECTION_STRATEGY);
 
-  protected get currentMonth() {
-    return (monthsInAYear - ((monthsInAYear - this.monthIndex) % monthsInAYear)) % monthsInAYear;
-  }
-
-  protected get currentYear() {
-    return this.year + Math.floor(this.monthIndex / monthsInAYear);
-  }
-
   protected trackDaysBy(_: number, day: Day) {
     return day.id;
   }
@@ -51,5 +40,14 @@ export class UiCalendarMonthComponent {
   protected selectDay({date}: Day) {
     this.selected = this.selectionStrategy.onSelect(date, this.selected);
     this.selectedChange.emit(this.selected);
+  }
+
+  protected get monthName(){
+    const monthIndex = this.month.getUTCMonth();
+    return this.monthsNames[monthIndex];
+  }
+
+  protected get year() {
+    return this.month.getUTCFullYear();
   }
 }
