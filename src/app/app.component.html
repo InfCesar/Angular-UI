@@ -50,7 +50,8 @@
         <div class="months-col" *ngFor="let month of months">
           <ui-calendar-month
             [month]="month"
-            [(selected)]="selectedDate"
+            [selected]="selectedDate"
+            (selectedChange)="onSelect($event)"
             [firstDayOfWeek]="selectedFirstDayOfweek"
           ></ui-calendar-month>
         </div>

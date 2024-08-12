@@ -3,24 +3,25 @@ import { DebugElement } from "@angular/core";
 import { september2024Sunday } from "./month-body/month-body.mocks";
 import { By } from "@angular/platform-browser";
 import { CalendarDate } from "../calendar-date";
-import { UI_CALENDAR_SELECTION_STRATEGY } from "../selection-strategy";
 import { UiCalendarMonthComponent } from "./calendar-month.component";
 import { createMockPipe } from "../../../../../../src/mocks/mock.pipe";
-import { DayState } from "../day.type";
 import { UiMonthBodyPipe } from "./month-body/month-body.pipe";
 import { UiMonthHeaderPipe } from "./month-header/month-header.pipe";
 import { WeekDay } from "@angular/common";
 import { Month } from "../month.type";
 import { monthNames } from "./calendar-month.data";
+import { UiDayStatePipe } from "./day-state/day-state.pipe";
 
-const yearMock = 2020;
-const monthMock = Month.February;
 const weekDaysMondayMock = ['M', 'T', 'W', 'T', 'F', 'S','S'];
 const weekDaysTuesdayMock = ['T', 'W', 'T', 'F', 'S','S', 'M'];
-const dayToCalendarDate = (day: number) => new CalendarDate(yearMock, monthMock, day)
+
+const yearMock = 2024;
+const monthMock = Month.September;
+const dayToCalendarDate = (day: number) => new CalendarDate(yearMock, monthMock, day);
 const monthBodyMock = september2024Sunday.map((week)=>week.map((day)=>({
   dayNumber: day,
-  date: dayToCalendarDate(day)
+  date: dayToCalendarDate(day),
+  id: dayToCalendarDate(day).getTime()
 })));
 
 describe('UiCalendarMonthComponent', () => {
@@ -29,8 +30,10 @@ describe('UiCalendarMonthComponent', () => {
   let debugElement: DebugElement;
   let monthBodyTransformSpy: jasmine.Spy;
   let monthHeaderTransformSpy: jasmine.Spy;
+  let dayStateTransformSpy: jasmine.Spy;
 
   beforeEach(async () => {
+    dayStateTransformSpy = jasmine.createSpy().and.callFake(({date})=>`day-${date?.getUTCDate()}`);
     monthBodyTransformSpy = jasmine.createSpy().and.returnValue(monthBodyMock);
     monthHeaderTransformSpy = jasmine.createSpy().and.returnValue(weekDaysMondayMock);
 
@@ -40,12 +43,14 @@ describe('UiCalendarMonthComponent', () => {
 
     TestBed.overrideComponent(UiCalendarMonthComponent, {
       remove: {
-        imports: [UiMonthBodyPipe, UiMonthHeaderPipe]
+        imports: [UiMonthBodyPipe, UiMonthHeaderPipe, UiDayStatePipe]
       },
       add: {
         imports: [
           createMockPipe('monthBody', monthBodyTransformSpy),
-          createMockPipe('monthHeader', monthHeaderTransformSpy)]
+          createMockPipe('monthHeader', monthHeaderTransformSpy),
+          createMockPipe('dayState', dayStateTransformSpy)
+        ]
       }
     })
   
@@ -64,7 +69,7 @@ describe('UiCalendarMonthComponent', () => {
   describe('Caption', ()=>{
     const getCaptionText = ()=>debugElement.query(By.css('caption')).nativeElement.innerText;
 
-    it('should render the current name of the month with default translations', ()=>{
+    it('should render the name of the specified month with default translations', ()=>{
       const defaultMonthsTranslations = component.monthsNames;
       defaultMonthsTranslations.forEach((monthName, index)=>{
         fixture.componentRef.setInput('month', new CalendarDate(yearMock, index, 1));
@@ -73,7 +78,7 @@ describe('UiCalendarMonthComponent', () => {
       })
     });
 
-    it('should render the current name of the month with custom translations', ()=>{
+    it('should render the name of the specified month with custom translations', ()=>{
       fixture.componentRef.setInput('monthsNames', monthNames);
       monthNames.forEach((monthName, index)=>{
         fixture.componentRef.setInput('month', new CalendarDate(yearMock, index, 1));
@@ -83,8 +88,6 @@ describe('UiCalendarMonthComponent', () => {
     });
 
     it('should render the current year', () => {
-      fixture.componentRef.setInput('month', new CalendarDate(yearMock, monthMock, 1));
-      fixture.detectChanges();
       expect(getCaptionText()).toContain(yearMock);
     });
   });
@@ -131,7 +134,7 @@ describe('UiCalendarMonthComponent', () => {
       fixture.detectChanges();
   
       expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
-        new CalendarDate(yearMock, monthMock, 1),
+        component.month,
         WeekDay.Tuesday
       );
     });
@@ -150,7 +153,7 @@ describe('UiCalendarMonthComponent', () => {
       })
     });
 
-    it('should include an empty cell with an offset corresponding to the days from the previous month', ()=>{
+    it('should include an offset cell corresponding to the days from the previous month', ()=>{
       for(let numOfDaysInFirstWeek = 1; numOfDaysInFirstWeek < 7; numOfDaysInFirstWeek ++) {
         monthBodyTransformSpy.and.returnValue([[...Array(numOfDaysInFirstWeek).keys()]]);
         fixture.componentRef.setInput('firstDayOfWeek', numOfDaysInFirstWeek);
@@ -162,7 +165,7 @@ describe('UiCalendarMonthComponent', () => {
       }
     });
 
-    it('should not include an empty cell with an offset if no days are from the previous month', ()=>{
+    it('should not include an offset cell if no days are from the previous month', ()=>{
       monthBodyTransformSpy.and.returnValue([[...Array(7).keys()]]);
       fixture.componentRef.setInput('firstDayOfWeek', 0);
       fixture.detectChanges();
@@ -172,37 +175,32 @@ describe('UiCalendarMonthComponent', () => {
     });
   });
 
-  describe('Days selection', () => {
-    it('days should not be selected by default', ()=>{
-      const selectedDays = debugElement.queryAll(By.css('td button' + DayState.selected));
-      expect(selectedDays.length).toBe(0);
-    });
+  describe('Days state', () => {
+    const getRenderedDays = ()=>debugElement.queryAll(By.css('td button'));
 
-    it('should mark a day as selected on click by default', ()=> {
-      const renderedDays = debugElement.queryAll(By.css('td button'));
-      renderedDays[0].triggerEventHandler('click');
-      fixture.detectChanges();
-      expect(renderedDays[0].classes[DayState.selected]).toBeTrue();
-    });
+    it('should pass each day and the selected dates to UiDayStatePipe', ()=>{
+      const selected = [dayToCalendarDate(20)];
+      dayStateTransformSpy.calls.reset();
 
-    it('should use the provided selection strategy to determine the new selection', ()=>{
-      const injectedStrategy = TestBed.inject(UI_CALENDAR_SELECTION_STRATEGY);
-      const onSelectSpy = spyOn(injectedStrategy,'onSelect');
-      const newSelectionDay = 4;
-      const renderedDays = debugElement.queryAll(By.css('td button'));
-
-      onSelectSpy.and.returnValue([dayToCalendarDate(newSelectionDay)])
-      renderedDays[0].triggerEventHandler('click');
+      fixture.componentRef.setInput('selected', selected);
       fixture.detectChanges();
 
-      expect(onSelectSpy).toHaveBeenCalledTimes(1);
-      expect(renderedDays[newSelectionDay - 1].classes[DayState.selected]).toBeTrue();
+      monthBodyMock.forEach((week)=>{
+        week.forEach((day)=>{
+          expect(dayStateTransformSpy).toHaveBeenCalledWith(day, selected);
+        })
+      });
+    });
+
+    it('should bind the class returned by UiDayStatePipe for each day', ()=> {
+      getRenderedDays().forEach((day, index) => {
+        expect(day.classes[`day-${index+1}`]).toBeTrue();
+      });
     });
 
     it('should emit selectedChange to allow for two-way binding', ()=>{
       const selectedChangeSpy = spyOn(component.selectedChange, 'emit');
-      const renderedDays = debugElement.queryAll(By.css('td button'));
-      renderedDays[0].triggerEventHandler('click');
+      getRenderedDays()[0].triggerEventHandler('click');
       expect(selectedChangeSpy).toHaveBeenCalledOnceWith([dayToCalendarDate(1)]);
     });
   });

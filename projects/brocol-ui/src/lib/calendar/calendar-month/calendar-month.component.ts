@@ -3,12 +3,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  inject,
   Input,
   Output,
 } from '@angular/core';
 import { CalendarDate } from '../calendar-date';
-import { UI_CALENDAR_SELECTION_STRATEGY } from '../selection-strategy';
 import { WeekNames, MonthsNames } from '../names.type';
 import { Day } from '../day.type';
 import { UiMonthBodyPipe } from './month-body/month-body.pipe';
@@ -29,18 +27,15 @@ export class UiCalendarMonthComponent {
   @Input() firstDayOfWeek: WeekDay = WeekDay.Sunday;
   @Input() monthsNames: MonthsNames = monthNames;
   @Input() weekDaysNames: WeekNames = weekNames;
-  @Input() selected?: CalendarDate[];
+  @Input() selected?: CalendarDate[] = [];
   @Output() selectedChange = new EventEmitter<CalendarDate[]>();
-
-  private selectionStrategy = inject(UI_CALENDAR_SELECTION_STRATEGY);
 
   protected trackDaysBy(_: number, day: Day) {
     return day.id;
   }
 
   protected selectDay({date}: Day) {
-    this.selected = this.selectionStrategy.onSelect(date, this.selected);
-    this.selectedChange.emit(this.selected);
+    this.selectedChange.emit([date]);
   }
 
   protected get monthName(){
