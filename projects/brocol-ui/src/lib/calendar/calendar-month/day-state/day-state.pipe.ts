@@ -10,7 +10,11 @@ import { Day, DayState } from "../../day.type";
 
   transform({date}: Day, selected: CalendarDate[] = []): DayState {
     if (selected.length > 1) {
-      const inRange = selected.some((_, index)=> date.isAfter(selected[index]) && date.isBefore(selected[index + 1]))
+      const inRange = selected.some((current, index)=> {
+        const next = selected[index + 1];
+        return date.isAfter(current) && next && date.isBefore(next);
+      })
+
       if(inRange) {
         return DayState.interval;
       }
