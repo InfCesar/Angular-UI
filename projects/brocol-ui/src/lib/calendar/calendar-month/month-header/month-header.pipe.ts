@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { WeekNames } from "../../names.type";
 import { WeekDay } from "@angular/common";
 
 @Pipe({
@@ -8,8 +7,8 @@ import { WeekDay } from "@angular/common";
   standalone: true,
 }) export class UiMonthHeaderPipe implements PipeTransform {
 
-  transform(daysOfTheWeek: WeekNames, firstDayOfWeek = WeekDay.Sunday) {
-    const days = [...daysOfTheWeek];
+  transform(firstDayOfWeek = WeekDay.Sunday) {
+    const days = [...Array(7).keys()];
     return days.concat(days.splice(0, firstDayOfWeek))
   }
 }
