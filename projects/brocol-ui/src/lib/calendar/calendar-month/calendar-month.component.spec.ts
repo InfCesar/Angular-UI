@@ -9,11 +9,10 @@ import { UiMonthBodyPipe } from "./month-body/month-body.pipe";
 import { UiMonthHeaderPipe } from "./month-header/month-header.pipe";
 import { WeekDay } from "@angular/common";
 import { Month } from "../month.type";
-import { monthNames } from "./calendar-month.data";
+import { monthNames, weekNames } from "./calendar-month.data";
 import { UiDayStatePipe } from "./day-state/day-state.pipe";
 
-const weekDaysMondayMock = ['M', 'T', 'W', 'T', 'F', 'S','S'];
-const weekDaysTuesdayMock = ['T', 'W', 'T', 'F', 'S','S', 'M'];
+const weekDaysMondayMock = [1, 2, 3, 4, 5, 6, 0];
 
 const yearMock = 2024;
 const monthMock = Month.September;
@@ -59,6 +58,7 @@ describe('UiCalendarMonthComponent', () => {
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
     fixture.componentRef.setInput('month', new CalendarDate(yearMock, monthMock, 1));
+    fixture.componentRef.setInput('weekDaysNames', weekNames);
     fixture.detectChanges();
   });
 
@@ -95,28 +95,32 @@ describe('UiCalendarMonthComponent', () => {
   describe('Month header', ()=>{
     it('should call UiMonthHeaderPipe\'s transform method with the initial values from the inputs', ()=>{
       expect(monthHeaderTransformSpy).toHaveBeenCalledOnceWith(
-        component.weekDaysNames,
         component.firstDayOfWeek
       );
     });
 
-    it('should call UiMonthHeaderPipe\'s transform method with new values from the inputs', ()=>{
+    it('should call UiMonthHeaderPipe\'s transform method when the firstDayOfWeek changes', ()=>{
       monthHeaderTransformSpy.calls.reset();
   
-      fixture.componentRef.setInput('weekDaysNames', weekDaysTuesdayMock);
       fixture.componentRef.setInput('firstDayOfWeek', WeekDay.Tuesday);
       fixture.detectChanges();
   
       expect(monthHeaderTransformSpy).toHaveBeenCalledOnceWith(
-        weekDaysTuesdayMock,
         WeekDay.Tuesday
       );
     });
 
-    it('should render a th for each value returned by the pipe', ()=>{
-      const tableHeaders = debugElement.queryAll(By.css('tr th')).map((th)=>th.nativeElement.innerText);
-      expect(tableHeaders).toEqual(weekDaysMondayMock);
-    })
+    it('should include a visually hidden long description', ()=>{
+      const tableHeadersLong = debugElement.queryAll(By.css('tr th .ui-visually-hidden')).map((el)=>el.nativeElement.innerText.trim());
+      const expectedLongdDescriptions = weekDaysMondayMock.map((index)=>weekNames[index].long);
+      expect(tableHeadersLong).toEqual(expectedLongdDescriptions);
+    });
+  
+    it('should include a visible abbreviation with aria-hidden set to true', ()=>{
+      const tableHeadersShort = debugElement.queryAll(By.css('tr th [aria-hidden=true]:not(.ui-visually-hidden)')).map((el)=>el.nativeElement.innerText.trim());
+      const expectedShortDescriptions = weekDaysMondayMock.map((index)=>weekNames[index].short);
+      expect(tableHeadersShort).toEqual(expectedShortDescriptions);
+    });
   });
 
   describe('Month body', ()=>{

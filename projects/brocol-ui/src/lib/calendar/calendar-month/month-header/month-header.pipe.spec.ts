@@ -1,38 +1,34 @@
 import { WeekDay } from "@angular/common";
-import { WeekNames } from "../../names.type";
 import { UiMonthHeaderPipe } from "./month-header.pipe";
-import { weekNames } from "../calendar-month.data";
-
-const daysMock: WeekNames = weekNames;
 
 describe('UiMonthHeaderPipe', () => {
   const monthHeaderPipe = new UiMonthHeaderPipe();
 
   it('should return the original array for firstDayOfWeek = Sunday', ()=>{
-    expect(monthHeaderPipe.transform(daysMock, WeekDay.Sunday)).toEqual(daysMock);
+    expect(monthHeaderPipe.transform(WeekDay.Sunday)).toEqual([0, 1, 2, 3, 4, 5, 6]);
   });
 
   it('should return the corresponding array for firstDayOfWeek = Monday', ()=>{
-    expect(monthHeaderPipe.transform(daysMock, WeekDay.Monday)).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
+    expect(monthHeaderPipe.transform(WeekDay.Monday)).toEqual([1, 2, 3, 4, 5, 6, 0]);
   });
 
   it('should return the corresponding array for firstDayOfWeek = Tuesday', ()=>{
-    expect(monthHeaderPipe.transform(daysMock, WeekDay.Tuesday)).toEqual(['T', 'W', 'T', 'F', 'S', 'S', 'M']);
+    expect(monthHeaderPipe.transform(WeekDay.Tuesday)).toEqual([2, 3, 4, 5, 6, 0, 1]);
   });
 
   it('should return the corresponding array for firstDayOfWeek = Wednesday', ()=>{
-    expect(monthHeaderPipe.transform(daysMock, WeekDay.Wednesday)).toEqual(['W', 'T', 'F', 'S', 'S', 'M', 'T']);
+    expect(monthHeaderPipe.transform(WeekDay.Wednesday)).toEqual([3, 4, 5, 6, 0, 1, 2]);
   });
 
   it('should return the corresponding array for firstDayOfWeek = Thursday', ()=>{
-    expect(monthHeaderPipe.transform(daysMock, WeekDay.Thursday)).toEqual(['T', 'F', 'S', 'S', 'M', 'T', 'W']);
+    expect(monthHeaderPipe.transform(WeekDay.Thursday)).toEqual([4, 5, 6, 0, 1, 2, 3]);
   });
 
   it('should return the corresponding array for firstDayOfWeek = Friday', ()=>{
-    expect(monthHeaderPipe.transform(daysMock, WeekDay.Friday)).toEqual(['F', 'S', 'S', 'M', 'T', 'W', 'T']);
+    expect(monthHeaderPipe.transform(WeekDay.Friday)).toEqual([5, 6, 0, 1, 2, 3, 4]);
   });
 
   it('should return the corresponding array for firstDayOfWeek = Saturday', ()=>{
-    expect(monthHeaderPipe.transform(daysMock, WeekDay.Saturday)).toEqual(['S', 'S', 'M', 'T', 'W', 'T', 'F']);
+    expect(monthHeaderPipe.transform(WeekDay.Saturday)).toEqual([6, 0, 1, 2, 3, 4, 5]);
   });
 });

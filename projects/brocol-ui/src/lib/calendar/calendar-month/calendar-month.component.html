@@ -4,9 +4,13 @@
   <thead>
     <tr>
       <th
-        *ngFor="let weekDay of weekDaysNames | monthHeader : firstDayOfWeek"
+        *ngFor="let weekDay of firstDayOfWeek | monthHeader"
+        scope="col"
       >
-        {{ weekDay }}
+        <span class="ui-visually-hidden">{{weekDaysNames[weekDay].long}}</span>
+        <span aria-hidden="true">
+          {{weekDaysNames[weekDay].short}}
+        </span>
       </th>
     </tr>
   </thead>

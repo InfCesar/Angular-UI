@@ -1,18 +1,6 @@
 
 <div class="container">
   <h1>UI Components</h1>
-  <h2>Buttons</h2>
-  <div class="buttons primary-buttons">
-    <button ui-button disabled>Disabled button</button>
-    <button ui-button>Enabled button</button>
-    <a ui-button href="https://www.google.com">Anchor with button styles</a>
-  </div>
-
-  <div class="buttons success-buttons">
-    <button ui-button disabled>Disabled button</button>
-    <button ui-button>Enabled button</button>
-    <a ui-button href="https://www.google.com">Anchor with button styles</a>
-  </div>
 
   <h2>Calendar</h2>
 
@@ -42,8 +30,8 @@
 
   <div class="calendar-container">
     <div class="controls">
-      <button (click)="prevActiveMonth()">prev</button>
-      <button (click)="nextActiveMonth()">next</button>
+      <button type="button" (click)="prevActiveMonth()">prev</button>
+      <button type="button" (click)="nextActiveMonth()">next</button>
     </div>
     <div class="calendar">
       <div class="months">
