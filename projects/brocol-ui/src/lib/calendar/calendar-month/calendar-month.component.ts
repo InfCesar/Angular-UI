@@ -1,21 +1,18 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf, WeekDay } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  inject,
   Input,
   Output,
 } from '@angular/core';
 import { CalendarDate } from '../calendar-date';
-import { UI_CALENDAR_SELECTION_STRATEGY } from '../selection-strategy';
-import { DaysOfTheWeekNames, MonthsNames } from '../names.type';
+import { WeekNames, MonthsNames } from '../names.type';
 import { Day } from '../day.type';
 import { UiMonthBodyPipe } from './month-body/month-body.pipe';
 import { UiMonthHeaderPipe } from './month-header/month-header.pipe';
 import { UiDayStatePipe } from './day-state/day-state.pipe';
-
-const monthsInAYear = 12;
+import { monthNames, weekNames } from './calendar-month.data';
 
 @Component({
   selector: 'ui-calendar-month',
@@ -26,34 +23,27 @@ const monthsInAYear = 12;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UiCalendarMonthComponent {
-  @Input() monthIndex: number = new Date().getMonth(); 
-  @Input() year: number = new Date().getFullYear();
-  @Input({transform: weekDayIndex}) firstDayOfWeek = 0; // 0 => Sunday
-  @Input() monthsNames: MonthsNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  @Input() weekDaysNames: DaysOfTheWeekNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  @Input() selected?: CalendarDate[];
+  @Input() month: CalendarDate = CalendarDate.fromLocalToUTC(new Date());
+  @Input() firstDayOfWeek: WeekDay = WeekDay.Sunday;
+  @Input() monthsNames: MonthsNames = monthNames;
+  @Input() weekDaysNames: WeekNames = weekNames;
+  @Input() selected?: CalendarDate[] = [];
   @Output() selectedChange = new EventEmitter<CalendarDate[]>();
-
-  private selectionStrategy = inject(UI_CALENDAR_SELECTION_STRATEGY);
-
-  protected get currentMonth() {
-    return (monthsInAYear - ((monthsInAYear - this.monthIndex) % monthsInAYear)) % monthsInAYear;
-  }
-
-  protected get currentYear() {
-    return this.year + Math.floor(this.monthIndex / monthsInAYear);
-  }
 
   protected trackDaysBy(_: number, day: Day) {
     return day.id;
   }
 
   protected selectDay({date}: Day) {
-    this.selected = this.selectionStrategy.onSelect(date, this.selected);
-    this.selectedChange.emit(this.selected);
+    this.selectedChange.emit([date]);
   }
-}
 
-function weekDayIndex(firstDayOfWeek: number) {
-  return (firstDayOfWeek < 0 || firstDayOfWeek > 6) ? 0 : firstDayOfWeek;
+  protected get monthName(){
+    const monthIndex = this.month.getUTCMonth();
+    return this.monthsNames[monthIndex];
+  }
+
+  protected get year() {
+    return this.month.getUTCFullYear();
+  }
 }

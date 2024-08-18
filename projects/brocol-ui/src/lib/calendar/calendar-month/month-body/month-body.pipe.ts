@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { CalendarDate } from "../../calendar-date";
 import { Week } from "../../week.type";
+import { WeekDay } from "@angular/common";
 
 @Pipe({
   name: 'monthBody',
@@ -8,24 +9,24 @@ import { Week } from "../../week.type";
   standalone: true,
 }) export class UiMonthBodyPipe implements PipeTransform {
 
-  transform(monthIndex: number, year: number, firstDayOfWeekIndex: number) {
-    return this.buildMonth(monthIndex, year, firstDayOfWeekIndex);
+  transform(month: CalendarDate, firstDayOfWeek = WeekDay.Sunday) {
+    return this.buildMonth(month, firstDayOfWeek);
   }
 
-  private buildMonth(monthIndex: number, year: number, firstDayOfWeekIndex: number): Week[] {
-    const firstDayOfMonth = new CalendarDate(year, monthIndex, 1);
-    const lastDayOfMonth = new CalendarDate(year, monthIndex, firstDayOfMonth.getDaysInMonth());
-    const month: Week[] = [];
+  private buildMonth(month: CalendarDate, firstDayOfWeek: WeekDay): Week[] {
+    const firstDayOfMonth = month.getFirstDayOfMonth();
+    const lastDayOfMonth = month.getLastDayOfMonth();
+    const weeks: Week[] = [];
 
     for (
       let date = firstDayOfMonth;
       date.isSameOrBefore(lastDayOfMonth);
-      date = date.clone().addUTCDays(1)
+      date = date.addUTCDays(1)
     ) {
-      let currentWeek = month[month.length - 1];
-      if (!currentWeek || (date.getUTCDay() === firstDayOfWeekIndex)) {
+      let currentWeek = weeks[weeks.length - 1];
+      if (!currentWeek || (date.getUTCDay() === firstDayOfWeek)) {
         currentWeek = [];
-        month.push(currentWeek);
+        weeks.push(currentWeek);
       }
       currentWeek.push({
         date,
@@ -33,6 +34,6 @@ import { Week } from "../../week.type";
         id: date.getTime().toString()
       });
     }
-    return month;
+    return weeks;
   }
 }
