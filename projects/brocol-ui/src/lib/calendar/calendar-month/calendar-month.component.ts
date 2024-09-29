@@ -13,6 +13,7 @@ import { UiMonthBodyPipe } from './month-body/month-body.pipe';
 import { UiMonthHeaderPipe } from './month-header/month-header.pipe';
 import { UiDayStatePipe } from './day-state/day-state.pipe';
 import { monthNames, weekNames } from './calendar-month.data';
+import { Week } from '../week.type';
 
 @Component({
   selector: 'ui-calendar-month',
@@ -32,6 +33,10 @@ export class UiCalendarMonthComponent {
 
   protected trackDaysBy(_: number, day: Day) {
     return day.id;
+  }
+
+  protected trackWeeksBy(_: number, week: Week) {
+    return week[0].id;
   }
 
   protected selectDay({date}: Day) {
