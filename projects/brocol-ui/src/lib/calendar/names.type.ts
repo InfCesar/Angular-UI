@@ -1,4 +1,4 @@
-import { Tuple } from "../shared/tuple.type";
+import { Tuple } from "../types/tuple.type";
 
 type WeekName = {
     short: string;
