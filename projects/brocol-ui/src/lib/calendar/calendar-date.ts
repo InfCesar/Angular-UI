@@ -72,6 +72,11 @@ export class CalendarDate {
     return this._date.getTime() == date.getTime();
   }
 
+  isInRange(dates: CalendarDate[]) {
+    return dates.find((date)=>this.isSameOrAfter(date.getFirstDayOfMonth()) && this.isSameOrBefore(date.getLastDayOfMonth()));
+  }
+
+  // Formatters
   toISOString() {
     return this._date.toISOString();
   }
