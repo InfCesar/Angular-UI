@@ -1,7 +1,7 @@
 import { argsToTemplate, type Meta, type StoryObj } from '@storybook/angular';
 import { CalendarDate, UiCalendarMonthComponent } from 'brocol-ui';
-import { useArgs } from '@storybook/preview-api';
-import { action } from '@storybook/addon-actions';
+import { useArgs } from 'storybook/preview-api';
+import { action } from 'storybook/actions';
 import { WeekDay } from '@angular/common';
 
 type UiCalendarMonthPropsAndCustomArgs = UiCalendarMonthComponent & { selected?: number, month?: number, rangeStart: number, rangeEnd: number };
