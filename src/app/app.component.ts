@@ -1,16 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { AsyncPipe, JsonPipe, NgFor } from '@angular/common';
-import { UiButtonComponent } from '../../projects/brocol-ui/src/lib/button/button.component';
+import { JsonPipe, NgFor } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CalendarDate, UiCalendarMonthComponent } from '../../projects/brocol-ui/src/public-api';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [AsyncPipe, RouterOutlet, UiButtonComponent, UiCalendarMonthComponent, NgFor, JsonPipe, ReactiveFormsModule],
+  imports: [UiCalendarMonthComponent, NgFor, JsonPipe, ReactiveFormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
 
