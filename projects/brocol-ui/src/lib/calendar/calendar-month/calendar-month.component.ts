@@ -20,7 +20,6 @@ import { Week } from '../week.type';
   templateUrl: './calendar-month.component.html',
   styleUrls: ['./calendar-month.component.scss'],
   imports: [NgFor, UiMonthBodyPipe, UiMonthHeaderPipe, UiDayStatePipe, NgIf, NgClass],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UiCalendarMonthComponent {
