@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { CalendarDate } from "../../calendar-date";
-import { Day, DayState } from "../../day.type";
+import { Day } from "../../../types/day.type";
 
 
 @Pipe({

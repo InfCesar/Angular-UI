@@ -7,13 +7,13 @@ import {
   Output,
 } from '@angular/core';
 import { CalendarDate } from '../calendar-date';
-import { WeekNames, MonthsNames } from '../names.type';
-import { Day } from '../day.type';
 import { UiMonthBodyPipe } from './month-body/month-body.pipe';
 import { UiMonthHeaderPipe } from './month-header/month-header.pipe';
 import { UiDayStatePipe } from './day-state/day-state.pipe';
 import { monthNames, weekNames } from './calendar-month.data';
-import { Week } from '../week.type';
+import { MonthsNames, WeekNames } from '../../types/names.type';
+import { CellStateField, Day } from '../../types/day.type';
+import { Week } from '../../types/week.type';
 
 @Component({
   selector: 'ui-calendar-month',
@@ -29,6 +29,7 @@ export class UiCalendarMonthComponent {
   @Input() weekDaysNames: WeekNames = weekNames;
   @Input() selected?: CalendarDate[] = [];
   @Output() selectedChange = new EventEmitter<CalendarDate[]>();
+  protected DayStateField = CellStateField;
 
   protected trackDaysBy(_: number, day: Day) {
     return day.id;

@@ -8,9 +8,9 @@ import { createMockPipe } from "../../../../../../src/mocks/mock.pipe";
 import { UiMonthBodyPipe } from "./month-body/month-body.pipe";
 import { UiMonthHeaderPipe } from "./month-header/month-header.pipe";
 import { WeekDay } from "@angular/common";
-import { Month } from "../month.type";
 import { monthNames, weekNames } from "./calendar-month.data";
 import { UiDayStatePipe } from "./day-state/day-state.pipe";
+import { Month } from "../../types/month.type";
 
 const weekDaysMondayMock = [1, 2, 3, 4, 5, 6, 0];
 
