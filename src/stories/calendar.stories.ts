@@ -4,7 +4,7 @@ import { useArgs } from 'storybook/preview-api';
 import { action } from 'storybook/actions';
 import { WeekDay } from '@angular/common';
 
-type UiCalendarMonthPropsAndCustomArgs = UiCalendarMonthComponent & { selected?: number, month?: number, rangeStart: number, rangeEnd: number };
+type StoryControls = { selected?: number, month?: number, rangeStart: number, rangeEnd: number, firstDayOfWeek: string[] };
 
 
 const onSelect = ([newSelection]: CalendarDate[], selectedDays: CalendarDate[] = []) => {
@@ -23,7 +23,7 @@ const onSelect = ([newSelection]: CalendarDate[], selectedDays: CalendarDate[] =
   return [selectedDays[0], newSelection];
 }
 
-const meta: Meta<UiCalendarMonthPropsAndCustomArgs> = {
+const meta: Meta<StoryControls> = {
   title: 'Brocol-UI/Calendar',
   component: UiCalendarMonthComponent,
   tags: ['autodocs'],
@@ -41,7 +41,11 @@ const meta: Meta<UiCalendarMonthPropsAndCustomArgs> = {
         labels: Object.values(WeekDay).filter((option)=> typeof option !== 'number'),
       },
     },
-
+  },
+  parameters:{
+    controls:{
+      exclude: ["activeDate"]
+    }
   },
   render: ({selected, month, ...args})=>{
     const [_, updateArgs] = useArgs();
@@ -65,7 +69,7 @@ const meta: Meta<UiCalendarMonthPropsAndCustomArgs> = {
 };
 
 export default meta;
-type Story = StoryObj<UiCalendarMonthPropsAndCustomArgs>;
+type Story = StoryObj<StoryControls>;
 
 export const DefaultSingleSelection: Story = {
   name: "Single Selection (Default)"
@@ -83,10 +87,10 @@ export const RangeSelection: Story = {
   },
   parameters:{
     controls:{
-      exclude: ["selected"]
+      exclude: ["selected", "activeDate"]
     }
   },
-  render: ({rangeStart, rangeEnd, month, ...args}: {rangeStart: number, rangeEnd: number, month?: number})=>{
+  render: ({rangeStart, rangeEnd, month, ...args})=>{
     const shownMonth = month ? CalendarDate.fromLocalToUTC(new Date(month)) : CalendarDate.fromLocalToUTC(new Date());
     const [_, updateArgs] = useArgs();
     const rangeSelection: CalendarDate[] = [];

@@ -29,6 +29,8 @@ export class UiCalendarMonthComponent {
   @Input() weekDaysNames: WeekNames = weekNames;
   @Input() selected?: CalendarDate[] = [];
   @Output() selectedChange = new EventEmitter<CalendarDate[]>();
+  @Input() activeDate?: CalendarDate;
+
   protected DayStateField = CellStateField;
 
   protected trackDaysBy(_: number, day: Day) {
