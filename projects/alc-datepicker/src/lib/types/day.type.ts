@@ -7,11 +7,11 @@ export type Day = {
 };
 
 export enum CellStateField {
-  active = 'ui-day-state-active',
-  selected = 'ui-day-state-selected',
-  interval = 'ui-day-state-interval',
-  intervalStart = 'ui-day-state-interval-start',
-  intervalEnd = 'ui-day-state-interval-end',
+  active = 'alc-day-state-active',
+  selected = 'alc-day-state-selected',
+  interval = 'alc-day-state-interval',
+  intervalStart = 'alc-day-state-interval-start',
+  intervalEnd = 'alc-day-state-interval-end',
 }
 
 export type CellState = {

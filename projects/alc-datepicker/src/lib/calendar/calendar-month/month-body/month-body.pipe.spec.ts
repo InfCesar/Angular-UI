@@ -12,7 +12,7 @@ import {
   september2024Sunday,
   september2024Tuesday,
 } from './month-body.mocks';
-import { UiMonthBodyPipe } from './month-body.pipe';
+import { AlcMonthBodyPipe } from './month-body.pipe';
 import { WeekDay } from '@angular/common';
 
 const testBuiltMonth = (
@@ -57,7 +57,7 @@ const testIDs = (week: Week, month: CalendarDate) =>
   });
 
 describe('UiMonthBodyPipe', () => {
-  const calendarPipe = new UiMonthBodyPipe();
+  const calendarPipe = new AlcMonthBodyPipe();
 
   it('should produce a month that has a full first week', () => {
     const month = new CalendarDate(2024, Month.September, 1);

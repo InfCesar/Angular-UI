@@ -1,7 +1,7 @@
 .container {
   padding: 8px;
 
-  [ui-button],
+  [alc-button],
   .calendar {
     margin: 8px;
   }
@@ -11,8 +11,8 @@
     flex-wrap: wrap;
   }
 
-  .success-buttons [ui-button] {
-    --ui-button-background: var(--color-green);
-    --ui-button-color: var(--color-black);
+  .success-buttons [alc-button] {
+    --alc-button-background: var(--color-green);
+    --alc-button-color: var(--color-black);
   }
 }

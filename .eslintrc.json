@@ -24,8 +24,20 @@
           "error",
           {
             "type": ["element", "attribute"],
-            "prefix": ["app", "ui"],
+            "prefix": "alc",
             "style": "kebab-case"
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "class",
+            "filter": {
+              "regex": "^(?!App|Mock).*(Component|Directive|Pipe)$",
+              "match": true
+            },
+            "prefix": ["Alc"],
+            "format": ["PascalCase"]
           }
         ]
       }
@@ -38,6 +50,12 @@
         "prettier"
       ],
       "rules": {}
+    },
+    {
+      "files": ["src/app/app.component.ts"],
+      "rules": {
+        "@angular-eslint/component-selector": "off"
+      }
     },
     {
       "files": ["*.stories.ts"],

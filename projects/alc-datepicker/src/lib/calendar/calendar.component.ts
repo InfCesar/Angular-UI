@@ -2,17 +2,20 @@ import { Component, effect, OnInit } from '@angular/core';
 import { CalendarDate } from './calendar-date';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
-import { UiCalendarMonthComponent } from './calendar-month/calendar-month.component';
-import { ActiveDateDirective } from './active-date.directive';
+import { AlcCalendarMonthComponent } from './calendar-month/calendar-month.component';
+import { AlcActiveDateDirective } from './active-date.directive';
 
 @Component({
-  selector: 'ui-calendar',
+  selector: 'alc-calendar',
   standalone: true,
   templateUrl: './calendar.component.html',
-  imports: [JsonPipe, UiCalendarMonthComponent, ReactiveFormsModule],
+  imports: [JsonPipe, AlcCalendarMonthComponent, ReactiveFormsModule],
   styleUrls: ['./calendar.component.scss'],
 })
-export class UiCalendarComponent extends ActiveDateDirective implements OnInit {
+export class AlcCalendarComponent
+  extends AlcActiveDateDirective
+  implements OnInit
+{
   selectedDate: CalendarDate[] = [];
   options = [
     'Domingo',

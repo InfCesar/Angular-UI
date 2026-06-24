@@ -16,8 +16,8 @@
         "@angular-eslint/component-selector": [
           "error",
           {
-            "type": "[element, attribute]",
-            "prefix": "ui",
+            "type": ["element", "attribute"],
+            "prefix": "alc",
             "style": "kebab-case"
           }
         ]

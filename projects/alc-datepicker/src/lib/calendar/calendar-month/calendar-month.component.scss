@@ -47,23 +47,23 @@ table {
       height: 100%;
     }
 
-    &.ui-day-state-selected .day-content {
+    &.alc-day-state-selected .day-content {
       background: var(--day-selected-background);
       color: var(--day-selected-color);
     }
 
-    &.ui-day-state-interval .day-content {
+    &.alc-day-state-interval .day-content {
       border-radius: 0;
       background: var(--day-interval-background);
       color: var(--day-interval-color);
       opacity: var(--day-interval-opacity);
     }
 
-    &.ui-day-state-interval-start .day-content {
+    &.alc-day-state-interval-start .day-content {
       border-radius: var(--day-border-radius) 0 0 var(--day-border-radius);
     }
 
-    &.ui-day-state-interval-end .day-content {
+    &.alc-day-state-interval-end .day-content {
       border-radius: 0 var(--day-border-radius) var(--day-border-radius) 0;
     }
   }

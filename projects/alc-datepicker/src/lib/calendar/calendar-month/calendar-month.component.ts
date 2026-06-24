@@ -7,22 +7,22 @@ import {
   Output,
 } from '@angular/core';
 import { CalendarDate } from '../calendar-date';
-import { UiMonthBodyPipe } from './month-body/month-body.pipe';
-import { UiMonthHeaderPipe } from './month-header/month-header.pipe';
-import { UiDayStatePipe } from './day-state/day-state.pipe';
+import { AlcMonthBodyPipe } from './month-body/month-body.pipe';
+import { AlcMonthHeaderPipe } from './month-header/month-header.pipe';
+import { AlcDayStatePipe } from './day-state/day-state.pipe';
 import { monthNames, weekNames } from './calendar-month.data';
 import { MonthsNames, WeekNames } from '../../types/names.type';
 import { CellStateField, Day } from '../../types/day.type';
 import { Week } from '../../types/week.type';
 
 @Component({
-  selector: 'ui-calendar-month',
+  selector: 'alc-calendar-month',
   templateUrl: './calendar-month.component.html',
   styleUrls: ['./calendar-month.component.scss'],
-  imports: [UiMonthBodyPipe, UiMonthHeaderPipe, UiDayStatePipe, NgClass],
+  imports: [AlcMonthBodyPipe, AlcMonthHeaderPipe, AlcDayStatePipe, NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UiCalendarMonthComponent {
+export class AlcCalendarMonthComponent {
   @Input() month: CalendarDate = CalendarDate.fromLocalToUTC(new Date());
   @Input() firstDayOfWeek: WeekDay = WeekDay.Sunday;
   @Input() monthsNames: MonthsNames = monthNames;

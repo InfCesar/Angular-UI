@@ -81,7 +81,7 @@ const meta: Meta<StoryControls> = {
           action('selectedChange')(dates);
         },
       },
-      template: `<ui-calendar-month [selected]="selectedDate" [month]="shownMonth" ${argsToTemplate(args)}></ui-calendar-month>`,
+      template: `<alc-calendar-month [selected]="selectedDate" [month]="shownMonth" ${argsToTemplate(args)}></alc-calendar-month>`,
     };
   },
 };
@@ -140,7 +140,7 @@ export const RangeSelection: Story = {
           action('selectedChange')(dates);
         },
       },
-      template: `<ui-calendar-month [selected]="rangeSelection" [month]="shownMonth" ${argsToTemplate(args)}></ui-calendar-month>`,
+      template: `<alc-calendar-month [selected]="rangeSelection" [month]="shownMonth" ${argsToTemplate(args)}></alc-calendar-month>`,
     };
   },
 };

@@ -7,7 +7,7 @@ import { CellState, CellStateField } from '../../../types/day.type';
   name: 'dayState',
   standalone: true,
 })
-export class UiDayStatePipe implements PipeTransform {
+export class AlcDayStatePipe implements PipeTransform {
   transform(
     { date }: Day,
     selected: CalendarDate[] = [],

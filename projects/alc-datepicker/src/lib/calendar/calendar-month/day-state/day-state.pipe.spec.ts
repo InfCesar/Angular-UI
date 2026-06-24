@@ -1,9 +1,9 @@
 import { CellStateField } from '../../../types/day.type';
 import { CalendarDate } from '../../calendar-date';
-import { UiDayStatePipe } from './day-state.pipe';
+import { AlcDayStatePipe } from './day-state.pipe';
 
 describe('UiDayStatePipe', () => {
-  const dayStatePipe = new UiDayStatePipe();
+  const dayStatePipe = new AlcDayStatePipe();
   const createDayFromCalendarDate = (date: CalendarDate) => ({
     date,
     dayNumber: date.getUTCDate(),

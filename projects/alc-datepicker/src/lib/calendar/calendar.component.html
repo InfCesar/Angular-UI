@@ -30,13 +30,13 @@
     <div class="months">
       @for (month of months; track trackByMonth($index, month)) {
         <div class="months-col">
-          <ui-calendar-month
+          <alc-calendar-month
             [activeDate]="activeDate()"
             [month]="month"
             [selected]="selectedDate"
             (selectedChange)="onSelect($event)"
             [firstDayOfWeek]="selectedFirstDayOfweek"
-          ></ui-calendar-month>
+          ></alc-calendar-month>
         </div>
       }
     </div>

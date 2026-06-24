@@ -1,8 +1,8 @@
 import { WeekDay } from '@angular/common';
-import { UiMonthHeaderPipe } from './month-header.pipe';
+import { AlcMonthHeaderPipe } from './month-header.pipe';
 
 describe('UiMonthHeaderPipe', () => {
-  const monthHeaderPipe = new UiMonthHeaderPipe();
+  const monthHeaderPipe = new AlcMonthHeaderPipe();
 
   it('should return the original array for firstDayOfWeek = Sunday', () => {
     expect(monthHeaderPipe.transform(WeekDay.Sunday)).toEqual([

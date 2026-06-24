@@ -6,7 +6,7 @@ import { WeekDay } from '@angular/common';
   pure: true,
   standalone: true,
 })
-export class UiMonthHeaderPipe implements PipeTransform {
+export class AlcMonthHeaderPipe implements PipeTransform {
   transform(firstDayOfWeek = WeekDay.Sunday) {
     const days = [...Array(7).keys()];
     return days.concat(days.splice(0, firstDayOfWeek));

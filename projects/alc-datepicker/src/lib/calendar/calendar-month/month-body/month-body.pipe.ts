@@ -8,7 +8,7 @@ import { Week } from '../../../types/week.type';
   pure: true,
   standalone: true,
 })
-export class UiMonthBodyPipe implements PipeTransform {
+export class AlcMonthBodyPipe implements PipeTransform {
   transform(month: CalendarDate, firstDayOfWeek = WeekDay.Sunday) {
     return this.buildMonth(month, firstDayOfWeek);
   }

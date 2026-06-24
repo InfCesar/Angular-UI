@@ -19,7 +19,7 @@ type CursorKeysActions = {
   standalone: true,
   selector: '[uiActiveDate]',
 })
-export class ActiveDateDirective {
+export class AlcActiveDateDirective {
   keyboardActions = input<CursorKeysActions>({
     ArrowLeft: (date: CalendarDate) => date.addUTCDays(-1),
     ArrowRight: (date: CalendarDate) => date.addUTCDays(+1),

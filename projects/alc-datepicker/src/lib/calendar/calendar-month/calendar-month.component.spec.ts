@@ -3,13 +3,13 @@ import { DebugElement } from '@angular/core';
 import { september2024Sunday } from './month-body/month-body.mocks';
 import { By } from '@angular/platform-browser';
 import { CalendarDate } from '../calendar-date';
-import { UiCalendarMonthComponent } from './calendar-month.component';
+import { AlcCalendarMonthComponent } from './calendar-month.component';
 import { createMockPipe } from '../../../../../../src/mocks/mock.pipe';
-import { UiMonthBodyPipe } from './month-body/month-body.pipe';
-import { UiMonthHeaderPipe } from './month-header/month-header.pipe';
+import { AlcMonthBodyPipe } from './month-body/month-body.pipe';
+import { AlcMonthHeaderPipe } from './month-header/month-header.pipe';
 import { WeekDay } from '@angular/common';
 import { monthNames, weekNames } from './calendar-month.data';
-import { UiDayStatePipe } from './day-state/day-state.pipe';
+import { AlcDayStatePipe } from './day-state/day-state.pipe';
 import { Month } from '../../types/month.type';
 
 const weekDaysMondayMock = [1, 2, 3, 4, 5, 6, 0];
@@ -27,8 +27,8 @@ const monthBodyMock = september2024Sunday.map((week) =>
 );
 
 describe('UiCalendarMonthComponent', () => {
-  let component: UiCalendarMonthComponent;
-  let fixture: ComponentFixture<UiCalendarMonthComponent>;
+  let component: AlcCalendarMonthComponent;
+  let fixture: ComponentFixture<AlcCalendarMonthComponent>;
   let debugElement: DebugElement;
   let monthBodyTransformSpy: jasmine.Spy;
   let monthHeaderTransformSpy: jasmine.Spy;
@@ -44,12 +44,12 @@ describe('UiCalendarMonthComponent', () => {
       .and.returnValue(weekDaysMondayMock);
 
     await TestBed.configureTestingModule({
-      imports: [UiCalendarMonthComponent],
+      imports: [AlcCalendarMonthComponent],
     }).compileComponents();
 
-    TestBed.overrideComponent(UiCalendarMonthComponent, {
+    TestBed.overrideComponent(AlcCalendarMonthComponent, {
       remove: {
-        imports: [UiMonthBodyPipe, UiMonthHeaderPipe, UiDayStatePipe],
+        imports: [AlcMonthBodyPipe, AlcMonthHeaderPipe, AlcDayStatePipe],
       },
       add: {
         imports: [
@@ -60,7 +60,7 @@ describe('UiCalendarMonthComponent', () => {
       },
     });
 
-    fixture = TestBed.createComponent(UiCalendarMonthComponent);
+    fixture = TestBed.createComponent(AlcCalendarMonthComponent);
 
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
@@ -127,7 +127,7 @@ describe('UiCalendarMonthComponent', () => {
 
     it('should include a visually hidden long description', () => {
       const tableHeadersLong = debugElement
-        .queryAll(By.css('tr th .ui-visually-hidden'))
+        .queryAll(By.css('tr th .alc-visually-hidden'))
         .map((el) => el.nativeElement.innerText.trim());
       const expectedLongdDescriptions = weekDaysMondayMock.map(
         (index) => weekNames[index].long
@@ -137,7 +137,7 @@ describe('UiCalendarMonthComponent', () => {
 
     it('should include a visible abbreviation with aria-hidden set to true', () => {
       const tableHeadersShort = debugElement
-        .queryAll(By.css('tr th [aria-hidden=true]:not(.ui-visually-hidden)'))
+        .queryAll(By.css('tr th [aria-hidden=true]:not(.alc-visually-hidden)'))
         .map((el) => el.nativeElement.innerText.trim());
       const expectedShortDescriptions = weekDaysMondayMock.map(
         (index) => weekNames[index].short
