@@ -4,24 +4,32 @@ import { useArgs } from 'storybook/preview-api';
 import { action } from 'storybook/actions';
 import { WeekDay } from '@angular/common';
 
-type StoryControls = { selected?: number, month?: number, rangeStart: number, rangeEnd: number, firstDayOfWeek: string[] };
+type StoryControls = {
+  selected?: number;
+  month?: number;
+  rangeStart: number;
+  rangeEnd: number;
+  firstDayOfWeek: string[];
+};
 
-
-const onSelect = ([newSelection]: CalendarDate[], selectedDays: CalendarDate[] = []) => {
-  if(!selectedDays[0] || selectedDays.length >= 2) {
+const onSelect = (
+  [newSelection]: CalendarDate[],
+  selectedDays: CalendarDate[] = []
+) => {
+  if (!selectedDays[0] || selectedDays.length >= 2) {
     return [newSelection];
   }
 
-  if(selectedDays[0].isSame(newSelection)) {
+  if (selectedDays[0].isSame(newSelection)) {
     return [newSelection, newSelection];
   }
 
-  if(newSelection.isBefore(selectedDays[0])) {
+  if (newSelection.isBefore(selectedDays[0])) {
     return [newSelection, selectedDays[0]];
   }
 
   return [selectedDays[0], newSelection];
-}
+};
 
 const meta: Meta<StoryControls> = {
   title: 'Alc-Datepicker/Calendar',
@@ -29,28 +37,36 @@ const meta: Meta<StoryControls> = {
   tags: ['autodocs'],
   argTypes: {
     month: {
-      control: 'date'
+      control: 'date',
     },
     selected: {
-      control: 'date'
+      control: 'date',
     },
     firstDayOfWeek: {
-      options: Object.values(WeekDay).filter((option)=> typeof option === 'number'),
+      options: Object.values(WeekDay).filter(
+        (option) => typeof option === 'number'
+      ),
       control: {
         type: 'select',
-        labels: Object.values(WeekDay).filter((option)=> typeof option !== 'number'),
+        labels: Object.values(WeekDay).filter(
+          (option) => typeof option !== 'number'
+        ),
       },
     },
   },
-  parameters:{
-    controls:{
-      exclude: ["activeDate"]
-    }
+  parameters: {
+    controls: {
+      exclude: ['activeDate'],
+    },
   },
-  render: ({selected, month, ...args})=>{
+  render: ({ selected, month, ...args }) => {
     const [_, updateArgs] = useArgs();
-    const selectedDate = selected ? [CalendarDate.fromLocalToUTC(new Date(selected))] : [];
-    const shownMonth = month ? CalendarDate.fromLocalToUTC(new Date(month)) : CalendarDate.fromLocalToUTC(new Date());
+    const selectedDate = selected
+      ? [CalendarDate.fromLocalToUTC(new Date(selected))]
+      : [];
+    const shownMonth = month
+      ? CalendarDate.fromLocalToUTC(new Date(month))
+      : CalendarDate.fromLocalToUTC(new Date());
 
     return {
       props: {
@@ -58,46 +74,50 @@ const meta: Meta<StoryControls> = {
         shownMonth,
         ...args,
         selectedChange: (dates: CalendarDate[]) => {
-          const datesInLocalTimezone = dates.map((d)=>CalendarDate.fromUTCToLocal(d).getTime());
+          const datesInLocalTimezone = dates.map((d) =>
+            CalendarDate.fromUTCToLocal(d).getTime()
+          );
           updateArgs({ ...args, selected: datesInLocalTimezone[0] });
           action('selectedChange')(dates);
         },
       },
       template: `<ui-calendar-month [selected]="selectedDate" [month]="shownMonth" ${argsToTemplate(args)}></ui-calendar-month>`,
-    }
-  }
+    };
+  },
 };
 
 export default meta;
 type Story = StoryObj<StoryControls>;
 
 export const DefaultSingleSelection: Story = {
-  name: "Single Selection (Default)"
-}
+  name: 'Single Selection (Default)',
+};
 
 export const RangeSelection: Story = {
   ...meta,
   argTypes: {
     rangeStart: {
-      control: 'date'
+      control: 'date',
     },
     rangeEnd: {
-      control: 'date'
-    }
+      control: 'date',
+    },
   },
-  parameters:{
-    controls:{
-      exclude: ["selected", "activeDate"]
-    }
+  parameters: {
+    controls: {
+      exclude: ['selected', 'activeDate'],
+    },
   },
-  render: ({rangeStart, rangeEnd, month, ...args})=>{
-    const shownMonth = month ? CalendarDate.fromLocalToUTC(new Date(month)) : CalendarDate.fromLocalToUTC(new Date());
+  render: ({ rangeStart, rangeEnd, month, ...args }) => {
+    const shownMonth = month
+      ? CalendarDate.fromLocalToUTC(new Date(month))
+      : CalendarDate.fromLocalToUTC(new Date());
     const [_, updateArgs] = useArgs();
     const rangeSelection: CalendarDate[] = [];
     if (rangeStart) {
       rangeSelection.push(CalendarDate.fromLocalToUTC(new Date(rangeStart)));
 
-      if(rangeEnd) {
+      if (rangeEnd) {
         rangeSelection.push(CalendarDate.fromLocalToUTC(new Date(rangeEnd)));
       }
     }
@@ -109,12 +129,18 @@ export const RangeSelection: Story = {
         ...args,
         selectedChange: (dates: CalendarDate[]) => {
           const newRange = onSelect(dates, rangeSelection);
-          const datesInLocalTimezone = newRange.map((d)=>CalendarDate.fromUTCToLocal(d).getTime());
-          updateArgs({...args, rangeStart: datesInLocalTimezone[0], rangeEnd: datesInLocalTimezone[1]});
+          const datesInLocalTimezone = newRange.map((d) =>
+            CalendarDate.fromUTCToLocal(d).getTime()
+          );
+          updateArgs({
+            ...args,
+            rangeStart: datesInLocalTimezone[0],
+            rangeEnd: datesInLocalTimezone[1],
+          });
           action('selectedChange')(dates);
         },
       },
       template: `<ui-calendar-month [selected]="rangeSelection" [month]="shownMonth" ${argsToTemplate(args)}></ui-calendar-month>`,
-    }
-  }
-}
+    };
+  },
+};

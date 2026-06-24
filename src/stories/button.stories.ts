@@ -9,9 +9,9 @@ const meta: Meta<UiButtonComponent> = {
   argTypes: {},
   render: (args) => {
     return {
-      template: '<button ui-button>Primary</button>'
-    }
-  }
+      template: '<button ui-button>Primary</button>',
+    };
+  },
 };
 
 export default meta;

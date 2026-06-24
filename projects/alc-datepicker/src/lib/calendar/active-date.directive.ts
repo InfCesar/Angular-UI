@@ -1,6 +1,13 @@
-import { Directive, ElementRef, HostListener, inject, input, model } from "@angular/core";
-import { CalendarDate } from "./calendar-date";
-import { CellStateField } from "../types/day.type";
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  inject,
+  input,
+  model,
+} from '@angular/core';
+import { CalendarDate } from './calendar-date';
+import { CellStateField } from '../types/day.type';
 
 type CursorKeyAction = (currentActiveOption: CalendarDate) => CalendarDate;
 type CursorKey = 'ArrowLeft' | 'ArrowRight' | 'ArrowUp' | 'ArrowDown';
@@ -10,14 +17,15 @@ type CursorKeysActions = {
 
 @Directive({
   standalone: true,
-  selector: '[uiActiveDate]'
-}) export class ActiveDateDirective {
+  selector: '[uiActiveDate]',
+})
+export class ActiveDateDirective {
   keyboardActions = input<CursorKeysActions>({
     ArrowLeft: (date: CalendarDate) => date.addUTCDays(-1),
     ArrowRight: (date: CalendarDate) => date.addUTCDays(+1),
     ArrowUp: (date: CalendarDate) => date.addUTCDays(-7),
     ArrowDown: (date: CalendarDate) => date.addUTCDays(+7),
-  })
+  });
   activeDate = model<CalendarDate>();
   private elementRef = inject(ElementRef);
 
@@ -37,8 +45,10 @@ type CursorKeysActions = {
   }
 
   focusActiveOption() {
-    setTimeout(()=>{
-      const activeOption = <HTMLElement | null>this.elementRef.nativeElement.querySelector(`.${CellStateField.active}`);
+    setTimeout(() => {
+      const activeOption = <HTMLElement | null>(
+        this.elementRef.nativeElement.querySelector(`.${CellStateField.active}`)
+      );
       activeOption?.focus();
     });
   }

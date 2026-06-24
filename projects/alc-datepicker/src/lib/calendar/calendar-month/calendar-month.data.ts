@@ -1,25 +1,46 @@
-import { MonthsNames, WeekNames } from "../../types/names.type";
+import { MonthsNames, WeekNames } from '../../types/names.type';
 
-export const monthNames: MonthsNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-export const weekNames: WeekNames = [{
+export const monthNames: MonthsNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+export const weekNames: WeekNames = [
+  {
     short: 'S',
-    long: 'Sunday'
-},{
+    long: 'Sunday',
+  },
+  {
     short: 'M',
-    long: 'Monday'
-},{
+    long: 'Monday',
+  },
+  {
     short: 'T',
-    long: 'Tuesday'
-},{
+    long: 'Tuesday',
+  },
+  {
     short: 'W',
-    long: 'Wednesday'
-},{
+    long: 'Wednesday',
+  },
+  {
     short: 'T',
-    long: 'Thursday'
-},{
+    long: 'Thursday',
+  },
+  {
     short: 'F',
-    long: 'Friday'
-},{
+    long: 'Friday',
+  },
+  {
     short: 'S',
-    long: 'Saturday'
-}];
+    long: 'Saturday',
+  },
+];

@@ -1,25 +1,35 @@
-import { Directive, ElementRef, HostListener, inject, Renderer2 } from "@angular/core";
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  inject,
+  Renderer2,
+} from '@angular/core';
 
-const rippleClass = "ui-ripple";
+const rippleClass = 'ui-ripple';
 
 @Directive({
   selector: '[uiRipple]',
-  standalone: true
-}) export class UiRippleDirective {
+  standalone: true,
+})
+export class UiRippleDirective {
   private _rippleEl?: HTMLElement;
   private renderer = inject(Renderer2);
   private elementRef = inject(ElementRef);
 
-  @HostListener('click', ["$event"]) onClick(event: MouseEvent) {
+  @HostListener('click', ['$event']) onClick(event: MouseEvent) {
     this.removeRipple();
     this._rippleEl = this.insertRipple(event);
   }
 
   private insertRipple(event: MouseEvent): HTMLElement {
     const parentElement: HTMLElement = this.elementRef.nativeElement;
-    const diameter = Math.max(parentElement.clientWidth, parentElement.clientHeight);
+    const diameter = Math.max(
+      parentElement.clientWidth,
+      parentElement.clientHeight
+    );
     const radius = diameter / 2;
-    const ripple = this.renderer.createElement("span");
+    const ripple = this.renderer.createElement('span');
 
     ripple.classList.add(rippleClass);
 

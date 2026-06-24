@@ -6,7 +6,6 @@ import { UiCalendarComponent } from '../../projects/alc-datepicker/src/lib/calen
   selector: 'app-root',
   imports: [UiCalendarComponent, UiButtonComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent {
-}
+export class AppComponent {}

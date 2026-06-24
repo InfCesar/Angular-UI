@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input, booleanAttribute } from "@angular/core";
-import { UiRippleDirective } from "./ripple.directive";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  HostListener,
+  Input,
+  booleanAttribute,
+} from '@angular/core';
+import { UiRippleDirective } from './ripple.directive';
 
 @Component({
   selector: 'button[ui-button], a[ui-button]',
@@ -21,7 +28,7 @@ export class UiButtonComponent {
     return (this.disabled && !this.disabledInteractive) || null;
   }
 
-  @HostListener('click', ["$event"]) protected onClick(event: Event) {
+  @HostListener('click', ['$event']) protected onClick(event: Event) {
     if (this.disabled) {
       event.stopImmediatePropagation();
       event.preventDefault();

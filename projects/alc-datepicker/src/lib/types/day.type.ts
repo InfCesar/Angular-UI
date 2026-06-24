@@ -1,10 +1,10 @@
-import { CalendarDate } from "../calendar/calendar-date";
+import { CalendarDate } from '../calendar/calendar-date';
 
 export type Day = {
   id: string;
   date: CalendarDate;
   dayNumber: number;
-}
+};
 
 export enum CellStateField {
   active = 'ui-day-state-active',
