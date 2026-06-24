@@ -25,8 +25,8 @@ type CursorKeysActions = {
   @HostListener('keydown.arrowUp', ['$event'])
   @HostListener('keydown.arrowLeft', ['$event'])
   @HostListener('keydown.arrowRight', ['$event'])
-  protected onKeyDown(keycode: KeyboardEvent) {
-    const arrowCode = <keyof CursorKeysActions>keycode.key;
+  protected onKeyDown(event: Event) {
+    const arrowCode = <keyof CursorKeysActions>(event as KeyboardEvent).key;
     const activeOption = this.activeDate();
 
     if (activeOption) {

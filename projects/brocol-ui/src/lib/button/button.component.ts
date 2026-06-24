@@ -21,7 +21,7 @@ export class UiButtonComponent {
     return (this.disabled && !this.disabledInteractive) || null;
   }
 
-  @HostListener('click', ["$event"]) protected onClick(event: MouseEvent) {
+  @HostListener('click', ["$event"]) protected onClick(event: Event) {
     if (this.disabled) {
       event.stopImmediatePropagation();
       event.preventDefault();
