@@ -13,7 +13,7 @@
     "prepare": "husky && husky install",
     "storybook": "ng run angular-ui:storybook",
     "storybook:build": "ng run angular-ui:build-storybook",
-    "test-storybook": "test-storybook --url http://localhost:6006 --maxWorkers=2"
+    "storybook:test": "start-server-and-test storybook http://localhost:6006 'test-storybook --url http://localhost:6006 --maxWorkers=2'"
   },
   "private": true,
   "dependencies": {
@@ -63,6 +63,7 @@
     "lint-staged": "^15.2.7",
     "ng-packagr": "^21.2.5",
     "prettier": "3.3.3",
+    "start-server-and-test": "^3.0.11",
     "storybook": "^10.4.6",
     "typescript": "~5.9.3"
   },
