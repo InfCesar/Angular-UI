@@ -1,1 +1,1 @@
-# Angular-UI
+# Angular Lightweight Customizable Datepicker
