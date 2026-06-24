@@ -7,19 +7,35 @@ export class CalendarDate {
   }
 
   static fromUTCToLocal(date: CalendarDate): Date {
-    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    return new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate()
+    );
   }
 
   static fromLocalToUTC(date: Date): CalendarDate {
-    return new CalendarDate(date.getFullYear(), date.getMonth(), date.getDate());
+    return new CalendarDate(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
   }
 
   addUTCDays(days: number): CalendarDate {
-    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate() + days);
+    return new CalendarDate(
+      this.getUTCFullYear(),
+      this.getUTCMonth(),
+      this.getUTCDate() + days
+    );
   }
 
   addUTCMonths(months: number): CalendarDate {
-    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth() + months, this.getUTCDate());
+    return new CalendarDate(
+      this.getUTCFullYear(),
+      this.getUTCMonth() + months,
+      this.getUTCDate()
+    );
   }
 
   // Getters
@@ -48,7 +64,7 @@ export class CalendarDate {
   }
 
   getLastDayOfMonth(): CalendarDate {
-    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth()+1, 0);
+    return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth() + 1, 0);
   }
 
   // Comparers
@@ -63,7 +79,7 @@ export class CalendarDate {
   isAfter(date: CalendarDate) {
     return this._date.getTime() > date.getTime();
   }
-  
+
   isSameOrAfter(date: CalendarDate) {
     return this._date.getTime() >= date.getTime();
   }
@@ -73,7 +89,11 @@ export class CalendarDate {
   }
 
   isInMonthsRange(dates: CalendarDate[]) {
-    return dates.find((date)=>this.isSameOrAfter(date.getFirstDayOfMonth()) && this.isSameOrBefore(date.getLastDayOfMonth()));
+    return dates.find(
+      (date) =>
+        this.isSameOrAfter(date.getFirstDayOfMonth()) &&
+        this.isSameOrBefore(date.getLastDayOfMonth())
+    );
   }
 
   // Formatters

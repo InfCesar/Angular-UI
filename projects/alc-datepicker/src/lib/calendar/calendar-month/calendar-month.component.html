@@ -1,53 +1,53 @@
 <table role="grid" class="month" cellspacing="0" cellpadding="0">
-	<caption>
-		{{
-			monthName
-		}}
-		{{
-			year
-		}}
-	</caption>
-	<thead>
-		<tr>
-			@for (weekDay of firstDayOfWeek | monthHeader; track weekDay) {
-				<th scope="col">
-					<span class="ui-visually-hidden">{{
-						weekDaysNames[weekDay].long
-					}}</span>
-					<span aria-hidden="true">
-						{{ weekDaysNames[weekDay].short }}
-					</span>
-				</th>
-			}
-		</tr>
-	</thead>
-	<tbody class="dates">
-		@for (
-			week of month | monthBody: firstDayOfWeek;
-			track trackWeeksBy(i, week);
-			let i = $index
-		) {
-			<tr class="month-row">
-				@if (i === 0 && 7 - week.length; as daysFromPreviousMonth) {
-					<td [attr.colspan]="daysFromPreviousMonth"></td>
-				}
-				@for (day of week; track trackDaysBy($index, day)) {
-					@let dayState = day | dayState: selected : activeDate;
-					<td
-						class="day"
-						(click)="selectDay(day)"
-						(keydown.space)="selectDay(day)"
-						(keydown.enter)="selectDay(day)"
-						[attr.aria-selected]="dayState[DayStateField.selected]"
-						[attr.tabindex]="dayState[DayStateField.active] ? '0' : '-1'"
-						[ngClass]="dayState"
-					>
-						<span class="day-content">
-							{{ day.dayNumber }}
-						</span>
-					</td>
-				}
-			</tr>
-		}
-	</tbody>
+  <caption>
+    {{
+      monthName
+    }}
+    {{
+      year
+    }}
+  </caption>
+  <thead>
+    <tr>
+      @for (weekDay of firstDayOfWeek | monthHeader; track weekDay) {
+        <th scope="col">
+          <span class="alc-visually-hidden">{{
+            weekDaysNames[weekDay].long
+          }}</span>
+          <span aria-hidden="true">
+            {{ weekDaysNames[weekDay].short }}
+          </span>
+        </th>
+      }
+    </tr>
+  </thead>
+  <tbody class="dates">
+    @for (
+      week of month | monthBody: firstDayOfWeek;
+      track trackWeeksBy(i, week);
+      let i = $index
+    ) {
+      <tr class="month-row">
+        @if (i === 0 && 7 - week.length; as daysFromPreviousMonth) {
+          <td [attr.colspan]="daysFromPreviousMonth"></td>
+        }
+        @for (day of week; track trackDaysBy($index, day)) {
+          @let dayState = day | dayState: selected : activeDate;
+          <td
+            class="day"
+            (click)="selectDay(day)"
+            (keydown.space)="selectDay(day)"
+            (keydown.enter)="selectDay(day)"
+            [attr.aria-selected]="dayState[DayStateField.selected]"
+            [attr.tabindex]="dayState[DayStateField.active] ? '0' : '-1'"
+            [ngClass]="dayState"
+          >
+            <span class="day-content">
+              {{ day.dayNumber }}
+            </span>
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
 </table>
