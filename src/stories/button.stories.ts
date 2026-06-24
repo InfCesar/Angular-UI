@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/angular';
-import { UiButtonComponent } from 'brocol-ui';
+import { UiButtonComponent } from 'alc-datepicker';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<UiButtonComponent> = {
-  title: 'Brocol-UI/Button',
+  title: 'Alc-Datepicker/Button',
   component: UiButtonComponent,
   tags: ['autodocs'],
   argTypes: {},

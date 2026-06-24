@@ -1,5 +1,5 @@
 {
-  "name": "angular-ui",
+  "name": "alc-datepicker",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -11,8 +11,8 @@
     "lint:fix": "ng lint --fix",
     "format": "prettier . --write",
     "prepare": "husky && husky install",
-    "storybook": "ng run angular-ui:storybook",
-    "storybook:build": "ng run angular-ui:build-storybook",
+    "storybook": "ng run alc-datepicker-app:storybook",
+    "storybook:build": "ng run alc-datepicker-app:build-storybook",
     "storybook:test": "start-server-and-test storybook http://localhost:6006 'test-storybook --url http://localhost:6006 --maxWorkers=2'"
   },
   "private": true,

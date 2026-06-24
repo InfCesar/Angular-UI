@@ -1,5 +1,5 @@
 import { argsToTemplate, type Meta, type StoryObj } from '@storybook/angular';
-import { CalendarDate, UiCalendarMonthComponent } from 'brocol-ui';
+import { CalendarDate, UiCalendarMonthComponent } from 'alc-datepicker';
 import { useArgs } from 'storybook/preview-api';
 import { action } from 'storybook/actions';
 import { WeekDay } from '@angular/common';
@@ -24,7 +24,7 @@ const onSelect = ([newSelection]: CalendarDate[], selectedDays: CalendarDate[] =
 }
 
 const meta: Meta<StoryControls> = {
-  title: 'Brocol-UI/Calendar',
+  title: 'Alc-Datepicker/Calendar',
   component: UiCalendarMonthComponent,
   tags: ['autodocs'],
   argTypes: {
