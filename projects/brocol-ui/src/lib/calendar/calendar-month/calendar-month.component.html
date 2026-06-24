@@ -21,17 +21,22 @@
         [attr.colspan]="daysFromPreviousMonth"
       >
       </td>
-      <td
-        *ngFor="let day of week; trackBy: trackDaysBy"
-      >
-        <button
-          ui-button
+      <ng-container *ngFor="let day of week; trackBy: trackDaysBy">
+        @let dayState = day | dayState: selected : activeDate;
+        <td
+          class="day"
           (click)="selectDay(day)"
-          [ngClass]="day | dayState: selected"
+          (keydown.space)="selectDay(day)"
+          (keydown.enter)="selectDay(day)"
+          [attr.aria-selected]="dayState[DayStateField.selected]"
+          [attr.tabindex]="dayState[DayStateField.active] ? '0' : '-1'"
+          [ngClass]="dayState"
         >
-          {{day.dayNumber}}
-        </button>
-      </td>
+          <span class="day-content">
+            {{day.dayNumber}}
+          </span>
+        </td>
+      </ng-container>
     </tr>
   </tbody>
 </table>

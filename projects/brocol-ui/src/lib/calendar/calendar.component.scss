@@ -1,0 +1,24 @@
+ui-calendar-month {
+  --color: green;
+}
+
+.calendar,
+.months,
+.months-col {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar-container {
+  margin-top: 16px;
+}
+
+.months-col {
+  flex-direction: column;
+}

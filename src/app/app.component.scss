@@ -14,23 +14,4 @@
     --ui-button-background: var(--color-green);
     --ui-button-color: var(--color-black);
   }
-
-  .calendar, .months, .months-col {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .controls {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .calendar-container {
-    margin-top: 16px;
-  }
-
-  .months-col {
-    flex-direction: column;
-  }
 }

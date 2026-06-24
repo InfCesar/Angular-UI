@@ -1,9 +1,9 @@
+import { Month } from "../../../types/month.type";
+import { Week } from "../../../types/week.type";
 import { CalendarDate } from "../../calendar-date";
 import { february2024Sunday, january2024Sunday, june2024Sunday, march2024Sunday, may2024Sunday, october2024Sunday, september2024Monday, september2024Sunday, september2024Tuesday } from "./month-body.mocks";
-import { Week } from "../../week.type";
 import { UiMonthBodyPipe } from "./month-body.pipe";
 import { WeekDay } from "@angular/common";
-import { Month } from "../../month.type";
 
 const testBuiltMonth = (builtMonth: Week[], month: CalendarDate, expectedMonthDays: number[][])=>{
   builtMonth.forEach((week, weekIndex)=>{

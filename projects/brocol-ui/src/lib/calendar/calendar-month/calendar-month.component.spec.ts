@@ -8,9 +8,9 @@ import { createMockPipe } from "../../../../../../src/mocks/mock.pipe";
 import { UiMonthBodyPipe } from "./month-body/month-body.pipe";
 import { UiMonthHeaderPipe } from "./month-header/month-header.pipe";
 import { WeekDay } from "@angular/common";
-import { Month } from "../month.type";
 import { monthNames, weekNames } from "./calendar-month.data";
 import { UiDayStatePipe } from "./day-state/day-state.pipe";
+import { Month } from "../../types/month.type";
 
 const weekDaysMondayMock = [1, 2, 3, 4, 5, 6, 0];
 
@@ -42,7 +42,11 @@ describe('UiCalendarMonthComponent', () => {
 
     TestBed.overrideComponent(UiCalendarMonthComponent, {
       remove: {
-        imports: [UiMonthBodyPipe, UiMonthHeaderPipe, UiDayStatePipe]
+        imports: [
+          UiMonthBodyPipe,
+          UiMonthHeaderPipe,
+          UiDayStatePipe
+        ]
       },
       add: {
         imports: [
@@ -179,19 +183,23 @@ describe('UiCalendarMonthComponent', () => {
     });
   });
 
-  describe('Days state', () => {
-    const getRenderedDays = ()=>debugElement.queryAll(By.css('td button'));
 
-    it('should pass each day and the selected dates to UiDayStatePipe', ()=>{
+  // TODO: terminar tests para day cell status
+  describe('Days state', () => {
+    const getRenderedDays = ()=>debugElement.queryAll(By.css('td'));
+
+    it('should pass each day, the selected dates and the active date to UiDayStatePipe', ()=>{
       const selected = [dayToCalendarDate(20)];
+      const activeDate = new CalendarDate(yearMock, monthMock, 1);
       dayStateTransformSpy.calls.reset();
 
+      fixture.componentRef.setInput('activeDate', activeDate);
       fixture.componentRef.setInput('selected', selected);
       fixture.detectChanges();
 
       monthBodyMock.forEach((week)=>{
         week.forEach((day)=>{
-          expect(dayStateTransformSpy).toHaveBeenCalledWith(day, selected);
+          expect(dayStateTransformSpy).toHaveBeenCalledWith(day, selected, activeDate);
         })
       });
     });
@@ -202,7 +210,7 @@ describe('UiCalendarMonthComponent', () => {
       });
     });
 
-    it('should emit selectedChange to allow for two-way binding', ()=>{
+    it('should emit selectedChange event to allow for two-way data binding', ()=>{
       const selectedChangeSpy = spyOn(component.selectedChange, 'emit');
       getRenderedDays()[0].triggerEventHandler('click');
       expect(selectedChangeSpy).toHaveBeenCalledOnceWith([dayToCalendarDate(1)]);

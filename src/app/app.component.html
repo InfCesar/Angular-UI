@@ -2,50 +2,7 @@
 <div class="container">
   <h1>UI Components</h1>
 
-  <h2>Calendar</h2>
-
-  <div class="control">
-    <label>
-      Primer día de la semana:
-      <select [formControl]="firstDayOfWeek">
-        <option *ngFor="let option of options; let i = index" [ngValue]="i">
-          {{option}}
-        </option>
-      </select>
-    </label>
-  </div>
-  <div class="control">
-    <label>
-      Modo:
-      <select [formControl]="mode">
-        <option [ngValue]="1">
-          Individual
-        </option>
-        <option [ngValue]="2">
-          Rango
-        </option>
-      </select>
-    </label>
-  </div>
-
-  <div class="calendar-container">
-    <div class="controls">
-      <button type="button" (click)="prevActiveMonth()">prev</button>
-      <button type="button" (click)="nextActiveMonth()">next</button>
-    </div>
-    <div class="calendar">
-      <div class="months">
-        <div class="months-col" *ngFor="let month of months">
-          <ui-calendar-month
-            [month]="month"
-            [selected]="selectedDate"
-            (selectedChange)="onSelect($event)"
-            [firstDayOfWeek]="selectedFirstDayOfweek"
-          ></ui-calendar-month>
-        </div>
-      </div>
-    </div>
-  </div>
-  {{selectedDates | json}}
+  <button ui-button>Button test</button>
+  <ui-calendar></ui-calendar>
 
 </div>

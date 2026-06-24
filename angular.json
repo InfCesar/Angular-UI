@@ -118,7 +118,11 @@
               ".",
               "--config compodoc.storybook.json"
             ],
-            "port": 6006
+            "port": 6006,
+            "styles": [
+              "src/styles.scss",
+              "projects/brocol-ui/src/sass/styles.scss"
+            ]
           }
         },
         "build-storybook": {
@@ -134,7 +138,11 @@
               ".",
               "--config compodoc.storybook.json"
             ],
-            "outputDir": "dist/storybook/angular-ui"
+            "outputDir": "dist/storybook/angular-ui",
+            "styles": [
+              "src/styles.scss",
+              "projects/brocol-ui/src/sass/styles.scss"
+            ]
           }
         }
       }

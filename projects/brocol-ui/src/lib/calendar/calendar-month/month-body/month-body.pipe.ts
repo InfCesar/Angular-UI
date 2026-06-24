@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { CalendarDate } from "../../calendar-date";
-import { Week } from "../../week.type";
 import { WeekDay } from "@angular/common";
+import { Week } from "../../../types/week.type";
 
 @Pipe({
   name: 'monthBody',
