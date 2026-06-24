@@ -3,7 +3,7 @@
 	"compileOnSave": false,
 	"compilerOptions": {
 		"paths": {
-			"brocol-ui": ["./dist/brocol-ui"]
+			"alc-datepicker": ["./dist/alc-datepicker"]
 		},
 		"outDir": "./dist/out-tsc",
 		"strict": true,

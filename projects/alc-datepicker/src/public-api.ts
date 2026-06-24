@@ -1,5 +1,5 @@
 /*
- * Public API Surface of brocol-ui
+ * Public API Surface of alc-datepicker
  */
 
 // Buttons

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-ui": {
+    "alc-datepicker-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/angular-ui",
+            "outputPath": "dist/alc-datepicker-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -31,7 +31,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "projects/brocol-ui/src/sass/styles.scss"
+              "projects/alc-datepicker/src/sass/styles.scss"
             ],
             "scripts": []
           },
@@ -63,10 +63,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-ui:build:production"
+              "buildTarget": "alc-datepicker-app:build:production"
             },
             "development": {
-              "buildTarget": "angular-ui:build:development"
+              "buildTarget": "alc-datepicker-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -74,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
           "options": {
-            "buildTarget": "angular-ui:build"
+            "buildTarget": "alc-datepicker-app:build"
           }
         },
         "test": {
@@ -109,7 +109,7 @@
           "builder": "@storybook/angular:start-storybook",
           "options": {
             "configDir": ".storybook",
-            "browserTarget": "angular-ui:build",
+            "browserTarget": "alc-datepicker-app:build",
             "compodoc": true,
             "compodocArgs": [
               "-e",
@@ -122,7 +122,7 @@
             "port": 6006,
             "styles": [
               "src/styles.scss",
-              "projects/brocol-ui/src/sass/styles.scss"
+              "projects/alc-datepicker/src/sass/styles.scss"
             ]
           }
         },
@@ -130,7 +130,7 @@
           "builder": "@storybook/angular:build-storybook",
           "options": {
             "configDir": ".storybook",
-            "browserTarget": "angular-ui:build",
+            "browserTarget": "alc-datepicker-app:build",
             "compodoc": true,
             "compodocArgs": [
               "-e",
@@ -140,32 +140,32 @@
               "--config",
               "compodoc.storybook.json"
             ],
-            "outputDir": "dist/storybook/angular-ui",
+            "outputDir": "dist/storybook/alc-datepicker",
             "styles": [
               "src/styles.scss",
-              "projects/brocol-ui/src/sass/styles.scss"
+              "projects/alc-datepicker/src/sass/styles.scss"
             ]
           }
         }
       }
     },
-    "brocol-ui": {
+    "alc-datepicker": {
       "projectType": "library",
-      "root": "projects/brocol-ui",
-      "sourceRoot": "projects/brocol-ui/src",
+      "root": "projects/alc-datepicker",
+      "sourceRoot": "projects/alc-datepicker/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "options": {
-            "project": "projects/brocol-ui/ng-package.json"
+            "project": "projects/alc-datepicker/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/brocol-ui/tsconfig.lib.prod.json"
+              "tsConfig": "projects/alc-datepicker/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/brocol-ui/tsconfig.lib.json"
+              "tsConfig": "projects/alc-datepicker/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -173,7 +173,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "tsConfig": "projects/brocol-ui/tsconfig.spec.json",
+            "tsConfig": "projects/alc-datepicker/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
@@ -184,8 +184,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/brocol-ui/**/*.ts",
-              "projects/brocol-ui/**/*.html"
+              "projects/alc-datepicker/**/*.ts",
+              "projects/alc-datepicker/**/*.html"
             ]
           }
         }
