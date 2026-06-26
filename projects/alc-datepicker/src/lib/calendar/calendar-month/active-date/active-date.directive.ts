@@ -1,15 +1,12 @@
 import {
   afterNextRender,
   Directive,
+  effect,
   ElementRef,
-  EventEmitter,
   HostListener,
   inject,
   Injector,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
+  ModelSignal,
 } from '@angular/core';
 import { CalendarDate } from '../../calendar-date';
 import { CellStateField } from '../../../types/day.type';
@@ -18,12 +15,19 @@ import { ActiveDate } from '../../../types/active-date.type';
 type CursorKeyAction = (date: CalendarDate) => CalendarDate;
 
 @Directive()
-export class AlcActiveDateDirective implements OnChanges {
-  @Input() activeDate?: ActiveDate;
-  @Output() activeDateChange = new EventEmitter<ActiveDate>();
+export abstract class AlcActiveDateDirective {
+  abstract activeDate: ModelSignal<ActiveDate>;
 
   private elementRef = inject(ElementRef);
   private injector = inject(Injector);
+
+  constructor() {
+    effect(() => {
+      if (this.activeDate().autoFocus) {
+        this.focusActiveOption();
+      }
+    });
+  }
 
   private readonly keyboardActions: Record<string, CursorKeyAction> = {
     ArrowLeft: (date) => date.addUTCDays(-1),
@@ -38,17 +42,10 @@ export class AlcActiveDateDirective implements OnChanges {
   @HostListener('keydown.arrowDown', ['$event'])
   protected onKeyDown(event: Event) {
     event.preventDefault();
-    const current = this.activeDate?.date;
-    if (!current) return;
+    const current = this.activeDate().date;
     const action = this.keyboardActions[(event as KeyboardEvent).key];
     if (!action) return;
-    this.activeDateChange.emit({ date: action(current), autoFocus: true });
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['activeDate'] && this.activeDate?.autoFocus) {
-      this.focusActiveOption();
-    }
+    this.activeDate.set({ date: action(current), autoFocus: true });
   }
 
   private focusActiveOption() {

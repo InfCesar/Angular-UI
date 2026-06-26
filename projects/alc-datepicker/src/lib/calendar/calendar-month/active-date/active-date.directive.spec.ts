@@ -1,23 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CalendarDate } from '../../calendar-date';
 import { CellStateField } from '../../../types/day.type';
+import { ActiveDate } from '../../../types/active-date.type';
 import { AlcActiveDateDirective } from './active-date.directive';
+
+const baseDate = new CalendarDate(2024, 0, 15);
 
 @Component({
   template: `<button type="button" class="${CellStateField.active}">
     day
   </button>`,
 })
-class AlcActiveDateHostComponent extends AlcActiveDateDirective {}
+class AlcActiveDateHostComponent extends AlcActiveDateDirective {
+  activeDate = model<ActiveDate>({ date: baseDate });
+}
 
 describe('UiActiveDateDirective', () => {
   let fixture: ComponentFixture<AlcActiveDateHostComponent>;
   let component: AlcActiveDateHostComponent;
   let host: HTMLElement;
-
-  const baseDate = new CalendarDate(2024, 0, 15);
 
   const dispatchArrow = (key: string) =>
     host.dispatchEvent(
@@ -36,47 +39,26 @@ describe('UiActiveDateDirective', () => {
   });
 
   describe('Keyboard navigation', () => {
-    let activeDateChangeSpy: jasmine.Spy;
-
     beforeEach(() => {
       fixture.componentRef.setInput('activeDate', { date: baseDate });
       fixture.detectChanges();
-      activeDateChangeSpy = spyOn(component.activeDateChange, 'emit');
     });
 
-    it('should emit the previous day on ArrowLeft', () => {
-      dispatchArrow('ArrowLeft');
+    const navigationCases = [
+      { key: 'ArrowLeft', days: -1 },
+      { key: 'ArrowRight', days: 1 },
+      { key: 'ArrowUp', days: -7 },
+      { key: 'ArrowDown', days: 7 },
+    ];
 
-      expect(activeDateChangeSpy).toHaveBeenCalledOnceWith({
-        date: baseDate.addUTCDays(-1),
-        autoFocus: true,
-      });
-    });
+    navigationCases.forEach(({ key, days }) => {
+      it(`should move the active date by ${days} day(s) on ${key}`, () => {
+        dispatchArrow(key);
 
-    it('should emit the next day on ArrowRight', () => {
-      dispatchArrow('ArrowRight');
-
-      expect(activeDateChangeSpy).toHaveBeenCalledOnceWith({
-        date: baseDate.addUTCDays(1),
-        autoFocus: true,
-      });
-    });
-
-    it('should emit the day a week earlier on ArrowUp', () => {
-      dispatchArrow('ArrowUp');
-
-      expect(activeDateChangeSpy).toHaveBeenCalledOnceWith({
-        date: baseDate.addUTCDays(-7),
-        autoFocus: true,
-      });
-    });
-
-    it('should emit the day a week later on ArrowDown', () => {
-      dispatchArrow('ArrowDown');
-
-      expect(activeDateChangeSpy).toHaveBeenCalledOnceWith({
-        date: baseDate.addUTCDays(7),
-        autoFocus: true,
+        expect(component.activeDate()).toEqual({
+          date: baseDate.addUTCDays(days),
+          autoFocus: true,
+        });
       });
     });
 
@@ -90,16 +72,6 @@ describe('UiActiveDateDirective', () => {
       host.dispatchEvent(event);
 
       expect(preventDefaultSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('Keyboard navigation without an active date', () => {
-    it('should not emit when there is no active date', () => {
-      const activeDateChangeSpy = spyOn(component.activeDateChange, 'emit');
-
-      dispatchArrow('ArrowRight');
-
-      expect(activeDateChangeSpy).not.toHaveBeenCalled();
     });
   });
 
@@ -128,21 +100,6 @@ describe('UiActiveDateDirective', () => {
     it('should not focus the active option when autoFocus is not set', async () => {
       fixture.componentRef.setInput('activeDate', { date: baseDate });
       fixture.detectChanges();
-      await fixture.whenStable();
-
-      expect(focusSpy).not.toHaveBeenCalled();
-    });
-
-    it('should not focus when a change other than the active date occurs', async () => {
-      fixture.componentRef.setInput('activeDate', {
-        date: baseDate,
-        autoFocus: true,
-      });
-      fixture.detectChanges();
-      await fixture.whenStable();
-      focusSpy.calls.reset();
-
-      component.ngOnChanges({});
       await fixture.whenStable();
 
       expect(focusSpy).not.toHaveBeenCalled();

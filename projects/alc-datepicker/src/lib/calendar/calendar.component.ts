@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CalendarDate } from './calendar-date';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
@@ -12,7 +12,7 @@ import { ActiveDate } from '../types/active-date.type';
   imports: [JsonPipe, AlcCalendarMonthComponent, ReactiveFormsModule],
   styleUrls: ['./calendar.component.scss'],
 })
-export class AlcCalendarComponent implements OnInit {
+export class AlcCalendarComponent {
   selectedDate: CalendarDate[] = [];
   options = [
     'Domingo',
@@ -26,8 +26,8 @@ export class AlcCalendarComponent implements OnInit {
   firstDayOfWeek = new FormControl(1, Validators.required);
   mode = new FormControl(1, Validators.required);
 
-  activeDate?: ActiveDate;
   activeMonth = CalendarDate.fromLocalToUTC(new Date());
+  activeDate: ActiveDate = { date: this.activeMonth };
   numOfMonthsShown = 2;
 
   // TODO: implementar minimo y maximo para las fechas mostrables. En caso de que no sean mostrables, no permitir su activación mediante teclado
@@ -47,10 +47,6 @@ export class AlcCalendarComponent implements OnInit {
     return this.selectedDate.map((date) => date.toISOString());
   }
 
-  ngOnInit() {
-    this.activeDate = { date: this.selectedDate[0] ?? this.activeMonth };
-  }
-
   onActiveDateChange(event: ActiveDate) {
     this.activeDate = event;
     this.changeMonthsOnActiveChange();
@@ -62,16 +58,16 @@ export class AlcCalendarComponent implements OnInit {
   }
 
   changeMonthsOnActiveChange() {
-    const active = this.activeDate?.date;
+    const active = this.activeDate.date;
     const lastMonthShown = this.months[this.months.length - 1];
     const firstMonthShown = this.months[0];
 
-    if (active?.isBefore(firstMonthShown.getFirstDayOfMonth())) {
+    if (active.isBefore(firstMonthShown.getFirstDayOfMonth())) {
       this.activeMonth = this.activeMonth.addUTCMonths(-1).getFirstDayOfMonth();
       return;
     }
 
-    if (active?.isAfter(lastMonthShown.getLastDayOfMonth())) {
+    if (active.isAfter(lastMonthShown.getLastDayOfMonth())) {
       this.activeMonth = this.activeMonth.addUTCMonths(+1).getFirstDayOfMonth();
       return;
     }
@@ -106,7 +102,7 @@ export class AlcCalendarComponent implements OnInit {
   }
 
   private updateActiveDateOnMonthChange() {
-    if (!this.activeDate?.date.isInMonthsRange(this.months)) {
+    if (!this.activeDate.date.isInMonthsRange(this.months)) {
       this.activeDate = { date: this.months[0].getFirstDayOfMonth() };
     }
   }

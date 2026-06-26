@@ -82,7 +82,7 @@ describe('UiCalendarMonthComponent', () => {
 
     it('should render the name of the specified month with default translations', () => {
       const defaultMonthsTranslations = component.monthsNames;
-      defaultMonthsTranslations.forEach((monthName, index) => {
+      defaultMonthsTranslations().forEach((monthName, index) => {
         fixture.componentRef.setInput(
           'month',
           new CalendarDate(yearMock, index, 1)
@@ -112,7 +112,7 @@ describe('UiCalendarMonthComponent', () => {
   describe('Month header', () => {
     it("should call UiMonthHeaderPipe's transform method with the initial values from the inputs", () => {
       expect(monthHeaderTransformSpy).toHaveBeenCalledOnceWith(
-        component.firstDayOfWeek
+        component.firstDayOfWeek()
       );
     });
 
@@ -149,8 +149,8 @@ describe('UiCalendarMonthComponent', () => {
   describe('Month body', () => {
     it("should call UiMonthBodyPipe's transform method with the initial values from the inputs", () => {
       expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
-        component.month,
-        component.firstDayOfWeek
+        component.month(),
+        component.firstDayOfWeek()
       );
     });
 
@@ -161,7 +161,7 @@ describe('UiCalendarMonthComponent', () => {
       fixture.detectChanges();
 
       expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
-        component.month,
+        component.month(),
         WeekDay.Tuesday
       );
     });
@@ -244,12 +244,10 @@ describe('UiCalendarMonthComponent', () => {
       });
     });
 
-    it('should emit selectedChange event to allow for two-way data binding', () => {
-      const selectedChangeSpy = spyOn(component.selectedChange, 'emit');
+    it('should update the selected model when a day is clicked', () => {
       getRenderedDays()[0].triggerEventHandler('click');
-      expect(selectedChangeSpy).toHaveBeenCalledOnceWith([
-        dayToCalendarDate(1),
-      ]);
+
+      expect(component.selected()).toEqual([dayToCalendarDate(1)]);
     });
   });
 });
