@@ -1,9 +1,9 @@
-import { Component, effect, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CalendarDate } from './calendar-date';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { AlcCalendarMonthComponent } from './calendar-month/calendar-month.component';
-import { AlcActiveDateDirective } from './active-date.directive';
+import { ActiveDate } from '../types/active-date.type';
 
 @Component({
   selector: 'alc-calendar',
@@ -12,10 +12,7 @@ import { AlcActiveDateDirective } from './active-date.directive';
   imports: [JsonPipe, AlcCalendarMonthComponent, ReactiveFormsModule],
   styleUrls: ['./calendar.component.scss'],
 })
-export class AlcCalendarComponent
-  extends AlcActiveDateDirective
-  implements OnInit
-{
+export class AlcCalendarComponent {
   selectedDate: CalendarDate[] = [];
   options = [
     'Domingo',
@@ -29,21 +26,12 @@ export class AlcCalendarComponent
   firstDayOfWeek = new FormControl(1, Validators.required);
   mode = new FormControl(1, Validators.required);
 
-  // TODO: primero hacer tests de todos los demás componentes / directivas, y subirlo todo.
-  // Luego, atender a los comentarios para simplificar este componente y subirlo también, con sus tests correspondientes.
-
-  // TODO: mover junto a activedate? meter como Input<>, pero no activeDate. activeDate no debería ser un input, sino una property
   activeMonth = CalendarDate.fromLocalToUTC(new Date());
+  activeDate: ActiveDate = { date: this.activeMonth };
   numOfMonthsShown = 2;
 
   // TODO: implementar minimo y maximo para las fechas mostrables. En caso de que no sean mostrables, no permitir su activación mediante teclado
   // qué ocurre con las fechas desactivadas y la interacción por teclado? He enviado un correo sobre esto.
-
-  // TODO: Llevar a la directiva
-  private activeMonthChangeEffect = effect(() => {
-    this.changeMonthsOnActiveChange();
-  });
-
   get selectedFirstDayOfweek() {
     return <number>this.firstDayOfWeek.value;
   }
@@ -59,27 +47,27 @@ export class AlcCalendarComponent
     return this.selectedDate.map((date) => date.toISOString());
   }
 
-  ngOnInit() {
-    // Aquí deberíamos hacer que el mes activo = fecha seleccionada. mover a directiva
-    this.activeDate.set(this.selectedDate[0] || this.activeMonth);
+  onActiveDateChange(event: ActiveDate) {
+    this.activeDate = event;
+    this.changeMonthsOnActiveChange();
   }
 
   onSelect([newSelection]: CalendarDate[]) {
     this.selectedDate = this.determineSelectedDates(newSelection);
-    this.activeDate.set(newSelection); // TODO: activeDate podría ser una computed?
+    this.activeDate = { date: newSelection };
   }
 
   changeMonthsOnActiveChange() {
-    const active = this.activeDate();
+    const active = this.activeDate.date;
     const lastMonthShown = this.months[this.months.length - 1];
     const firstMonthShown = this.months[0];
 
-    if (active?.isBefore(firstMonthShown.getFirstDayOfMonth())) {
+    if (active.isBefore(firstMonthShown.getFirstDayOfMonth())) {
       this.activeMonth = this.activeMonth.addUTCMonths(-1).getFirstDayOfMonth();
       return;
     }
 
-    if (active?.isAfter(lastMonthShown.getLastDayOfMonth())) {
+    if (active.isAfter(lastMonthShown.getLastDayOfMonth())) {
       this.activeMonth = this.activeMonth.addUTCMonths(+1).getFirstDayOfMonth();
       return;
     }
@@ -104,22 +92,18 @@ export class AlcCalendarComponent
   }
 
   protected prevActiveMonth() {
-    // activeMonth será una signal en la directiva
     this.activeMonth = this.activeMonth.addUTCMonths(-1);
     this.updateActiveDateOnMonthChange();
   }
 
   protected nextActiveMonth() {
-    // activeMonth será una signal en la directiva
     this.activeMonth = this.activeMonth.addUTCMonths(1);
     this.updateActiveDateOnMonthChange();
   }
 
-  // Effect de la directiva
   private updateActiveDateOnMonthChange() {
-    // convertir this.months por activeMonths en directiva (activeMonth actual pasaría a ser un private _firstMonth)
-    if (!this.activeDate()?.isInMonthsRange(this.months)) {
-      this.activeDate.set(this.months[0].getFirstDayOfMonth());
+    if (!this.activeDate.date.isInMonthsRange(this.months)) {
+      this.activeDate = { date: this.months[0].getFirstDayOfMonth() };
     }
   }
 

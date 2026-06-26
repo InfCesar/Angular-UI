@@ -9,13 +9,12 @@
   </caption>
   <thead>
     <tr>
-      @for (weekDay of firstDayOfWeek | monthHeader; track weekDay) {
+      @for (weekDay of firstDayOfWeek() | monthHeader; track weekDay) {
         <th scope="col">
-          <span class="alc-visually-hidden">{{
-            weekDaysNames[weekDay].long
-          }}</span>
+          @let weekName = weekDaysNames()[weekDay];
+          <span class="alc-visually-hidden">{{ weekName.long }}</span>
           <span aria-hidden="true">
-            {{ weekDaysNames[weekDay].short }}
+            {{ weekName.short }}
           </span>
         </th>
       }
@@ -23,7 +22,7 @@
   </thead>
   <tbody class="dates">
     @for (
-      week of month | monthBody: firstDayOfWeek;
+      week of month() | monthBody: firstDayOfWeek();
       track trackWeeksBy(i, week);
       let i = $index
     ) {
@@ -32,7 +31,7 @@
           <td [attr.colspan]="daysFromPreviousMonth"></td>
         }
         @for (day of week; track trackDaysBy($index, day)) {
-          @let dayState = day | dayState: selected : activeDate;
+          @let dayState = day | dayState: selected() : activeDate().date;
           <td
             class="day"
             (click)="selectDay(day)"

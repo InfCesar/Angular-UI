@@ -31,10 +31,11 @@
       @for (month of months; track trackByMonth($index, month)) {
         <div class="months-col">
           <alc-calendar-month
-            [activeDate]="activeDate()"
+            [activeDate]="activeDate"
             [month]="month"
             [selected]="selectedDate"
             (selectedChange)="onSelect($event)"
+            (activeDateChange)="onActiveDateChange($event)"
             [firstDayOfWeek]="selectedFirstDayOfweek"
           ></alc-calendar-month>
         </div>
