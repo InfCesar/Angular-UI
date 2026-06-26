@@ -14,6 +14,7 @@ import { monthNames, weekNames } from './calendar-month.data';
 import { MonthsNames, WeekNames } from '../../types/names.type';
 import { CellStateField, Day } from '../../types/day.type';
 import { Week } from '../../types/week.type';
+import { AlcActiveDateDirective } from './active-date/active-date.directive';
 
 @Component({
   selector: 'alc-calendar-month',
@@ -22,14 +23,13 @@ import { Week } from '../../types/week.type';
   imports: [AlcMonthBodyPipe, AlcMonthHeaderPipe, AlcDayStatePipe, NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlcCalendarMonthComponent {
+export class AlcCalendarMonthComponent extends AlcActiveDateDirective {
   @Input() month: CalendarDate = CalendarDate.fromLocalToUTC(new Date());
   @Input() firstDayOfWeek: WeekDay = WeekDay.Sunday;
   @Input() monthsNames: MonthsNames = monthNames;
   @Input() weekDaysNames: WeekNames = weekNames;
   @Input() selected?: CalendarDate[] = [];
   @Output() selectedChange = new EventEmitter<CalendarDate[]>();
-  @Input() activeDate?: CalendarDate;
 
   protected DayStateField = CellStateField;
 

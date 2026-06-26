@@ -220,10 +220,10 @@ describe('UiCalendarMonthComponent', () => {
 
     it('should pass each day, the selected dates and the active date to UiDayStatePipe', () => {
       const selected = [dayToCalendarDate(20)];
-      const activeDate = new CalendarDate(yearMock, monthMock, 1);
+      const activeDateValue = new CalendarDate(yearMock, monthMock, 1);
       dayStateTransformSpy.calls.reset();
 
-      fixture.componentRef.setInput('activeDate', activeDate);
+      fixture.componentRef.setInput('activeDate', { date: activeDateValue });
       fixture.componentRef.setInput('selected', selected);
       fixture.detectChanges();
 
@@ -232,7 +232,7 @@ describe('UiCalendarMonthComponent', () => {
           expect(dayStateTransformSpy).toHaveBeenCalledWith(
             day,
             selected,
-            activeDate
+            activeDateValue
           );
         });
       });

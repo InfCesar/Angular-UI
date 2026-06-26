@@ -32,7 +32,7 @@
           <td [attr.colspan]="daysFromPreviousMonth"></td>
         }
         @for (day of week; track trackDaysBy($index, day)) {
-          @let dayState = day | dayState: selected : activeDate;
+          @let dayState = day | dayState: selected : activeDate?.date;
           <td
             class="day"
             (click)="selectDay(day)"
