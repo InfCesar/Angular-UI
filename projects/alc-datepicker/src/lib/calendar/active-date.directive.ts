@@ -1,8 +1,10 @@
 import {
+  afterNextRender,
   Directive,
   ElementRef,
   HostListener,
   inject,
+  Injector,
   input,
   model,
 } from '@angular/core';
@@ -28,6 +30,7 @@ export class AlcActiveDateDirective {
   });
   activeDate = model<CalendarDate>();
   private elementRef = inject(ElementRef);
+  private injector = inject(Injector);
 
   @HostListener('keydown.arrowDown', ['$event'])
   @HostListener('keydown.arrowUp', ['$event'])
@@ -45,11 +48,18 @@ export class AlcActiveDateDirective {
   }
 
   focusActiveOption() {
-    setTimeout(() => {
-      const activeOption = <HTMLElement | null>(
-        this.elementRef.nativeElement.querySelector(`.${CellStateField.active}`)
-      );
-      activeOption?.focus();
-    });
+    afterNextRender(
+      () => {
+        const activeOption = <HTMLElement | null>(
+          this.elementRef.nativeElement.querySelector(
+            `.${CellStateField.active}`
+          )
+        );
+        activeOption?.focus();
+      },
+      {
+        injector: this.injector,
+      }
+    );
   }
 }
