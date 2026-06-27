@@ -62,14 +62,11 @@ export class AlcCalendarComponent {
     const lastMonthShown = this.months[this.months.length - 1];
     const firstMonthShown = this.months[0];
 
-    if (active.isBefore(firstMonthShown.getFirstDayOfMonth())) {
-      this.activeMonth = this.activeMonth.addUTCMonths(-1).getFirstDayOfMonth();
-      return;
-    }
-
-    if (active.isAfter(lastMonthShown.getLastDayOfMonth())) {
-      this.activeMonth = this.activeMonth.addUTCMonths(+1).getFirstDayOfMonth();
-      return;
+    if (
+      active.isBefore(firstMonthShown.getFirstDayOfMonth()) ||
+      active.isAfter(lastMonthShown.getLastDayOfMonth())
+    ) {
+      this.activeMonth = active;
     }
   }
 

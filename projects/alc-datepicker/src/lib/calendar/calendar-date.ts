@@ -31,11 +31,23 @@ export class CalendarDate {
   }
 
   addUTCMonths(months: number): CalendarDate {
-    return new CalendarDate(
-      this.getUTCFullYear(),
-      this.getUTCMonth() + months,
-      this.getUTCDate()
+    const year = this.getUTCFullYear();
+    const month = this.getUTCMonth() + months;
+    const day = Math.min(
+      this.getUTCDate(),
+      CalendarDate.daysInMonth(year, month)
     );
+    return new CalendarDate(year, month, day);
+  }
+
+  addUTCYears(years: number): CalendarDate {
+    const year = this.getUTCFullYear() + years;
+    const month = this.getUTCMonth();
+    const day = Math.min(
+      this.getUTCDate(),
+      CalendarDate.daysInMonth(year, month)
+    );
+    return new CalendarDate(year, month, day);
   }
 
   // Getters
@@ -45,6 +57,10 @@ export class CalendarDate {
 
   getUTCFullYear() {
     return this._date.getUTCFullYear();
+  }
+
+  getUTCWeek() {
+    return this._date.getDay;
   }
 
   getUTCMonth() {
@@ -63,8 +79,21 @@ export class CalendarDate {
     return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth(), 1);
   }
 
+  getFirstDayOfWeek(initialWeekDay: number): CalendarDate {
+    const offset = (this.getUTCDay() - initialWeekDay + 7) % 7;
+    return this.addUTCDays(-offset);
+  }
+
   getLastDayOfMonth(): CalendarDate {
     return new CalendarDate(this.getUTCFullYear(), this.getUTCMonth() + 1, 0);
+  }
+
+  getLastDayOfWeek(initialWeekDay: number): CalendarDate {
+    const day = this.getUTCDay();
+    const lastDayOfWeek = (initialWeekDay + 6) % 7;
+    const offset = (lastDayOfWeek - day + 7) % 7;
+
+    return this.addUTCDays(offset);
   }
 
   // Comparers
@@ -99,5 +128,9 @@ export class CalendarDate {
   // Formatters
   toISOString() {
     return this._date.toISOString();
+  }
+
+  private static daysInMonth(year: number, month: number): number {
+    return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
   }
 }
