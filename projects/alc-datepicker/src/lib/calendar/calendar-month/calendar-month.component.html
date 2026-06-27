@@ -35,8 +35,8 @@
           <td
             class="day"
             (click)="selectDay(day)"
-            (keydown.space)="selectDay(day)"
-            (keydown.enter)="selectDay(day)"
+            (keydown.space)="selectDay(day, $event)"
+            (keydown.enter)="selectDay(day, $event)"
             [attr.aria-selected]="dayState[DayStateField.selected]"
             [attr.tabindex]="dayState[DayStateField.active] ? '0' : '-1'"
             [ngClass]="dayState"

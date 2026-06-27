@@ -1,4 +1,4 @@
-import { NgClass, WeekDay } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -24,7 +24,6 @@ import { AlcActiveDateDirective } from './active-date/active-date.directive';
 })
 export class AlcCalendarMonthComponent extends AlcActiveDateDirective {
   month = input(CalendarDate.fromLocalToUTC(new Date()));
-  firstDayOfWeek = input(WeekDay.Sunday);
   monthsNames = input(monthNames);
   weekDaysNames = input(weekNames);
 
@@ -41,7 +40,8 @@ export class AlcCalendarMonthComponent extends AlcActiveDateDirective {
     return week[0].id;
   }
 
-  protected selectDay({ date }: Day) {
+  protected selectDay({ date }: Day, event?: Event) {
+    event?.preventDefault();
     this.selected.set([date]);
   }
 

@@ -1,4 +1,5 @@
 import { Component, model } from '@angular/core';
+import { WeekDay } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CalendarDate } from '../../calendar-date';
@@ -22,9 +23,14 @@ describe('UiActiveDateDirective', () => {
   let component: AlcActiveDateHostComponent;
   let host: HTMLElement;
 
-  const dispatchArrow = (key: string) =>
+  const dispatchKey = (key: string, shiftKey = false) =>
     host.dispatchEvent(
-      new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true })
+      new KeyboardEvent('keydown', {
+        key,
+        shiftKey,
+        bubbles: true,
+        cancelable: true,
+      })
     );
 
   beforeEach(async () => {
@@ -44,25 +50,103 @@ describe('UiActiveDateDirective', () => {
       fixture.detectChanges();
     });
 
-    const navigationCases = [
-      { key: 'ArrowLeft', days: -1 },
-      { key: 'ArrowRight', days: 1 },
-      { key: 'ArrowUp', days: -7 },
-      { key: 'ArrowDown', days: 7 },
+    const navigationCases: {
+      name: string;
+      key: string;
+      shiftKey?: boolean;
+      expected: CalendarDate;
+    }[] = [
+      {
+        name: 'previous day on ArrowLeft',
+        key: 'ArrowLeft',
+        expected: new CalendarDate(2024, 0, 14),
+      },
+      {
+        name: 'next day on ArrowRight',
+        key: 'ArrowRight',
+        expected: new CalendarDate(2024, 0, 16),
+      },
+      {
+        name: 'same day of the previous week on ArrowUp',
+        key: 'ArrowUp',
+        expected: new CalendarDate(2024, 0, 8),
+      },
+      {
+        name: 'same day of the next week on ArrowDown',
+        key: 'ArrowDown',
+        expected: new CalendarDate(2024, 0, 22),
+      },
+      {
+        name: 'first day of the week on Home',
+        key: 'Home',
+        expected: new CalendarDate(2024, 0, 14),
+      },
+      {
+        name: 'last day of the week on End',
+        key: 'End',
+        expected: new CalendarDate(2024, 0, 20),
+      },
+      {
+        name: 'previous month on PageUp',
+        key: 'PageUp',
+        expected: new CalendarDate(2023, 11, 15),
+      },
+      {
+        name: 'next month on PageDown',
+        key: 'PageDown',
+        expected: new CalendarDate(2024, 1, 15),
+      },
+      {
+        name: 'previous year on Shift+PageUp',
+        key: 'PageUp',
+        shiftKey: true,
+        expected: new CalendarDate(2023, 0, 15),
+      },
+      {
+        name: 'next year on Shift+PageDown',
+        key: 'PageDown',
+        shiftKey: true,
+        expected: new CalendarDate(2025, 0, 15),
+      },
     ];
 
-    navigationCases.forEach(({ key, days }) => {
-      it(`should move the active date by ${days} day(s) on ${key}`, () => {
-        dispatchArrow(key);
+    navigationCases.forEach(({ name, key, shiftKey, expected }) => {
+      it(`should move the active date to the ${name}`, () => {
+        dispatchKey(key, shiftKey);
 
         expect(component.activeDate()).toEqual({
-          date: baseDate.addUTCDays(days),
+          date: expected,
           autoFocus: true,
         });
       });
     });
 
-    it('should prevent the default scrolling behaviour of arrow keys', () => {
+    describe('Home and End respect the configured first day of week', () => {
+      beforeEach(() => {
+        fixture.componentRef.setInput('firstDayOfWeek', WeekDay.Monday);
+        fixture.detectChanges();
+      });
+
+      it('moves to the first day (Monday) on Home', () => {
+        dispatchKey('Home');
+
+        expect(component.activeDate()).toEqual({
+          date: new CalendarDate(2024, 0, 15),
+          autoFocus: true,
+        });
+      });
+
+      it('moves to the last day (Sunday) on End', () => {
+        dispatchKey('End');
+
+        expect(component.activeDate()).toEqual({
+          date: new CalendarDate(2024, 0, 21),
+          autoFocus: true,
+        });
+      });
+    });
+
+    it('should prevent the default scrolling behaviour of navigation keys', () => {
       const event = new KeyboardEvent('keydown', {
         key: 'ArrowRight',
         cancelable: true,
@@ -72,6 +156,19 @@ describe('UiActiveDateDirective', () => {
       host.dispatchEvent(event);
 
       expect(preventDefaultSpy).toHaveBeenCalled();
+    });
+
+    it('should ignore default prevention on keys that have no navigation action', () => {
+      const event = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        cancelable: true,
+      });
+      const preventDefaultSpy = spyOn(event, 'preventDefault');
+
+      host.dispatchEvent(event);
+
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+      expect(component.activeDate()).toEqual({ date: baseDate });
     });
   });
 

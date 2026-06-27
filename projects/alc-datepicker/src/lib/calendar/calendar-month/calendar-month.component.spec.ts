@@ -26,7 +26,10 @@ const monthBodyMock = september2024Sunday.map((week) =>
   }))
 );
 
-describe('UiCalendarMonthComponent', () => {
+const mockWeek = (length: number) =>
+  [...Array(length).keys()].map((id) => ({ id }));
+
+describe('AlcCalendarMonthComponent', () => {
   let component: AlcCalendarMonthComponent;
   let fixture: ComponentFixture<AlcCalendarMonthComponent>;
   let debugElement: DebugElement;
@@ -190,9 +193,7 @@ describe('UiCalendarMonthComponent', () => {
         numOfDaysInFirstWeek < 7;
         numOfDaysInFirstWeek++
       ) {
-        monthBodyTransformSpy.and.returnValue([
-          [...Array(numOfDaysInFirstWeek).keys()],
-        ]);
+        monthBodyTransformSpy.and.returnValue([mockWeek(numOfDaysInFirstWeek)]);
         fixture.componentRef.setInput('firstDayOfWeek', numOfDaysInFirstWeek);
         fixture.detectChanges();
 
@@ -205,7 +206,7 @@ describe('UiCalendarMonthComponent', () => {
     });
 
     it('should not include an offset cell if no days are from the previous month', () => {
-      monthBodyTransformSpy.and.returnValue([[...Array(7).keys()]]);
+      monthBodyTransformSpy.and.returnValue([mockWeek(7)]);
       fixture.componentRef.setInput('firstDayOfWeek', 0);
       fixture.detectChanges();
 
@@ -214,7 +215,6 @@ describe('UiCalendarMonthComponent', () => {
     });
   });
 
-  // TODO: terminar tests para day cell status
   describe('Days state', () => {
     const getRenderedDays = () => debugElement.queryAll(By.css('td'));
 
@@ -248,6 +248,17 @@ describe('UiCalendarMonthComponent', () => {
       getRenderedDays()[0].triggerEventHandler('click');
 
       expect(component.selected()).toEqual([dayToCalendarDate(1)]);
+    });
+
+    ['keydown.space', 'keydown.enter'].forEach((eventName) => {
+      it(`should select the day and prevent default on ${eventName}`, () => {
+        const event = jasmine.createSpyObj<Event>('event', ['preventDefault']);
+
+        getRenderedDays()[0].triggerEventHandler(eventName, event);
+
+        expect(event.preventDefault).toHaveBeenCalled();
+        expect(component.selected()).toEqual([dayToCalendarDate(1)]);
+      });
     });
   });
 });
