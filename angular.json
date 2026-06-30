@@ -54,6 +54,27 @@
           },
           "defaultConfiguration": "production"
         },
+        "build-elements": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": "dist/alc-datepicker-elements",
+            "index": "src/element-demo/index.html",
+            "browser": "projects/alc-datepicker/src/elements.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.elements.json",
+            "inlineStyleLanguage": "scss",
+            "outputHashing": "none",
+            "optimization": true,
+            "styles": ["projects/alc-datepicker/src/sass/styles.scss"],
+            "scripts": []
+          }
+        },
+        "serve-elements": {
+          "builder": "@angular/build:dev-server",
+          "options": {
+            "buildTarget": "alc-datepicker-app:build-elements"
+          }
+        },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
