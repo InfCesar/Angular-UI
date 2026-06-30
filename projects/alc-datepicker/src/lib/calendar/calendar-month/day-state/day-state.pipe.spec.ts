@@ -2,7 +2,7 @@ import { CellStateField } from '../../../types/day.type';
 import { CalendarDate } from '../../calendar-date';
 import { AlcDayStatePipe } from './day-state.pipe';
 
-describe('UiDayStatePipe', () => {
+describe('AlcDayStatePipe', () => {
   const dayStatePipe = new AlcDayStatePipe();
   const createDayFromCalendarDate = (date: CalendarDate) => ({
     date,
