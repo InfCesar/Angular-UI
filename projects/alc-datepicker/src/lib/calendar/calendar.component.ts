@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CalendarDate } from './calendar-date';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { AlcCalendarMonthComponent } from './calendar-month/calendar-month.component';
 import { ActiveDate } from '../types/active-date.type';
+import { AlcDateI18n } from '../locale/date-formatter';
 
 @Component({
   selector: 'alc-calendar',
@@ -13,6 +14,9 @@ import { ActiveDate } from '../types/active-date.type';
   styleUrls: ['./calendar.component.scss'],
 })
 export class AlcCalendarComponent {
+  protected alcDateI18n = inject(AlcDateI18n);
+  protected locales = ['en-US', 'es-ES', 'fr-FR', 'de-DE', 'ja-JP'];
+
   selectedDate: CalendarDate[] = [];
   options = [
     'Domingo',
@@ -26,8 +30,8 @@ export class AlcCalendarComponent {
   firstDayOfWeek = new FormControl(1, Validators.required);
   mode = new FormControl(1, Validators.required);
 
-  activeMonth = CalendarDate.fromLocalToUTC(new Date());
-  activeDate: ActiveDate = { date: this.activeMonth };
+  activeMonth = signal(CalendarDate.fromLocalToUTC(new Date()));
+  activeDate: ActiveDate = { date: this.activeMonth() };
   numOfMonthsShown = 2;
 
   // TODO: implementar minimo y maximo para las fechas mostrables. En caso de que no sean mostrables, no permitir su activación mediante teclado
@@ -36,12 +40,11 @@ export class AlcCalendarComponent {
     return <number>this.firstDayOfWeek.value;
   }
 
-  get months() {
-    const firstMonth = this.activeMonth;
-    return Array.from({ length: this.numOfMonthsShown }, (_, index) =>
-      firstMonth.getFirstDayOfMonth().addUTCMonths(index)
-    );
-  }
+  months = computed(() =>
+    Array.from({ length: this.numOfMonthsShown }, (_, index) =>
+      this.activeMonth().getFirstDayOfMonth().addUTCMonths(index)
+    )
+  );
 
   get selectedDates() {
     return this.selectedDate.map((date) => date.toISOString());
@@ -59,19 +62,19 @@ export class AlcCalendarComponent {
 
   changeMonthsOnActiveChange() {
     const active = this.activeDate.date;
-    const lastMonthShown = this.months[this.months.length - 1];
-    const firstMonthShown = this.months[0];
+    const lastMonthShown = this.months()[this.months().length - 1];
+    const firstMonthShown = this.months()[0];
 
     if (
       active.isBefore(firstMonthShown.getFirstDayOfMonth()) ||
       active.isAfter(lastMonthShown.getLastDayOfMonth())
     ) {
-      this.activeMonth = active;
+      this.activeMonth.set(active);
     }
   }
 
   determineSelectedDates(newSelection: CalendarDate) {
-    if (this.mode.value === 2 && this.selectedDate.length < 2) {
+    if (this.mode.value === 2 && this.selectedDate.length === 1) {
       if (this.selectedDate[0].isSame(newSelection)) {
         return [newSelection, newSelection];
       }
@@ -89,18 +92,18 @@ export class AlcCalendarComponent {
   }
 
   protected prevActiveMonth() {
-    this.activeMonth = this.activeMonth.addUTCMonths(-1);
+    this.activeMonth.update((activeMonth) => activeMonth.addUTCMonths(-1));
     this.updateActiveDateOnMonthChange();
   }
 
   protected nextActiveMonth() {
-    this.activeMonth = this.activeMonth.addUTCMonths(1);
+    this.activeMonth.update((activeMonth) => activeMonth.addUTCMonths(1));
     this.updateActiveDateOnMonthChange();
   }
 
   private updateActiveDateOnMonthChange() {
-    if (!this.activeDate.date.isInMonthsRange(this.months)) {
-      this.activeDate = { date: this.months[0].getFirstDayOfMonth() };
+    if (!this.activeDate.date.isInMonthsRange(this.months())) {
+      this.activeDate = { date: this.months()[0].getFirstDayOfMonth() };
     }
   }
 

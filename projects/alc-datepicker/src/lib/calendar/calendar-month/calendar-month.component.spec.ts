@@ -1,16 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { computed, DebugElement, Signal } from '@angular/core';
 import { september2024Sunday } from './month-body/month-body.mocks';
 import { By } from '@angular/platform-browser';
 import { CalendarDate } from '../calendar-date';
 import { AlcCalendarMonthComponent } from './calendar-month.component';
 import { createMockPipe } from '../../../../../../src/mocks/mock.pipe';
-import { AlcMonthBodyPipe } from './month-body/month-body.pipe';
+import { createMockService } from '../../../../../../src/mocks/mock.service';
 import { AlcMonthHeaderPipe } from './month-header/month-header.pipe';
 import { WeekDay } from '@angular/common';
-import { monthNames, weekNames } from './calendar-month.data';
 import { AlcDayStatePipe } from './day-state/day-state.pipe';
 import { Month } from '../../types/month.type';
+import { AlcDateI18n } from '../../locale/date-formatter';
+import { WeekName } from '../../types/names.type';
 
 const weekDaysMondayMock = [1, 2, 3, 4, 5, 6, 0];
 
@@ -22,18 +23,20 @@ const monthBodyMock = september2024Sunday.map((week) =>
   week.map((day) => ({
     dayNumber: day,
     date: dayToCalendarDate(day),
-    id: dayToCalendarDate(day).getTime(),
+    id: dayToCalendarDate(day).getTime().toString(),
   }))
 );
 
-const mockWeek = (length: number) =>
-  [...Array(length).keys()].map((id) => ({ id }));
+const weekDayNamesMock: WeekName[] = Array.from({ length: 7 }, (_, index) => ({
+  long: `weekday-long-${index}`,
+  short: `weekday-short-${index}`,
+}));
 
 describe('AlcCalendarMonthComponent', () => {
   let component: AlcCalendarMonthComponent;
   let fixture: ComponentFixture<AlcCalendarMonthComponent>;
   let debugElement: DebugElement;
-  let monthBodyTransformSpy: jasmine.Spy;
+  let formatterMock: jasmine.SpyObj<AlcDateI18n>;
   let monthHeaderTransformSpy: jasmine.Spy;
   let dayStateTransformSpy: jasmine.Spy;
 
@@ -41,22 +44,30 @@ describe('AlcCalendarMonthComponent', () => {
     dayStateTransformSpy = jasmine
       .createSpy()
       .and.callFake(({ date }) => `day-${date?.getUTCDate()}`);
-    monthBodyTransformSpy = jasmine.createSpy().and.returnValue(monthBodyMock);
     monthHeaderTransformSpy = jasmine
       .createSpy()
       .and.returnValue(weekDaysMondayMock);
 
+    formatterMock = createMockService(AlcDateI18n, 'weekDayNames');
+    formatterMock.weekDayNames.and.returnValue(weekDayNamesMock);
+    formatterMock.dateName.and.callFake((date: Signal<CalendarDate>) =>
+      computed(() => `month-${date().getUTCMonth()}`)
+    );
+    formatterMock.dayLabel.and.callFake(
+      (date: CalendarDate) => `label-${date.getTime()}`
+    );
+
     await TestBed.configureTestingModule({
       imports: [AlcCalendarMonthComponent],
+      providers: [{ provide: AlcDateI18n, useValue: formatterMock }],
     }).compileComponents();
 
     TestBed.overrideComponent(AlcCalendarMonthComponent, {
       remove: {
-        imports: [AlcMonthBodyPipe, AlcMonthHeaderPipe, AlcDayStatePipe],
+        imports: [AlcMonthHeaderPipe, AlcDayStatePipe],
       },
       add: {
         imports: [
-          createMockPipe('monthBody', monthBodyTransformSpy),
           createMockPipe('monthHeader', monthHeaderTransformSpy),
           createMockPipe('dayState', dayStateTransformSpy),
         ],
@@ -71,7 +82,6 @@ describe('AlcCalendarMonthComponent', () => {
       'month',
       new CalendarDate(yearMock, monthMock, 1)
     );
-    fixture.componentRef.setInput('weekDaysNames', weekNames);
     fixture.detectChanges();
   });
 
@@ -83,27 +93,14 @@ describe('AlcCalendarMonthComponent', () => {
     const getCaptionText = () =>
       debugElement.query(By.css('caption')).nativeElement.innerText;
 
-    it('should render the name of the specified month with default translations', () => {
-      const defaultMonthsTranslations = component.monthsNames;
-      defaultMonthsTranslations().forEach((monthName, index) => {
+    it('should render the month name returned by the formatter for the specified month', () => {
+      [...Array(12).keys()].forEach((index) => {
         fixture.componentRef.setInput(
           'month',
           new CalendarDate(yearMock, index, 1)
         );
         fixture.detectChanges();
-        expect(getCaptionText()).toContain(monthName);
-      });
-    });
-
-    it('should render the name of the specified month with custom translations', () => {
-      fixture.componentRef.setInput('monthsNames', monthNames);
-      monthNames.forEach((monthName, index) => {
-        fixture.componentRef.setInput(
-          'month',
-          new CalendarDate(yearMock, index, 1)
-        );
-        fixture.detectChanges();
-        expect(getCaptionText()).toContain(monthName);
+        expect(getCaptionText()).toContain(`month-${index}`);
       });
     });
 
@@ -133,7 +130,7 @@ describe('AlcCalendarMonthComponent', () => {
         .queryAll(By.css('tr th .alc-visually-hidden'))
         .map((el) => el.nativeElement.innerText.trim());
       const expectedLongdDescriptions = weekDaysMondayMock.map(
-        (index) => weekNames[index].long
+        (index) => weekDayNamesMock[index].long
       );
       expect(tableHeadersLong).toEqual(expectedLongdDescriptions);
     });
@@ -143,38 +140,19 @@ describe('AlcCalendarMonthComponent', () => {
         .queryAll(By.css('tr th [aria-hidden=true]:not(.alc-visually-hidden)'))
         .map((el) => el.nativeElement.innerText.trim());
       const expectedShortDescriptions = weekDaysMondayMock.map(
-        (index) => weekNames[index].short
+        (index) => weekDayNamesMock[index].short
       );
       expect(tableHeadersShort).toEqual(expectedShortDescriptions);
     });
   });
 
   describe('Month body', () => {
-    it("should call UiMonthBodyPipe's transform method with the initial values from the inputs", () => {
-      expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
-        component.month(),
-        component.firstDayOfWeek()
-      );
-    });
-
-    it("should call UiMonthBodyPipe's transform method with new values from the inputs", () => {
-      monthBodyTransformSpy.calls.reset();
-
-      fixture.componentRef.setInput('firstDayOfWeek', WeekDay.Tuesday);
-      fixture.detectChanges();
-
-      expect(monthBodyTransformSpy).toHaveBeenCalledOnceWith(
-        component.month(),
-        WeekDay.Tuesday
-      );
-    });
-
-    it('should render a row for each week returned by the pipe', () => {
+    it('should render a row for each week in the month', () => {
       const rows = debugElement.queryAll(By.css('tr.month-row'));
       expect(rows.length).toBe(monthBodyMock.length);
     });
 
-    it('should render the returned days for each week', () => {
+    it('should render the days for each week', () => {
       const rows = debugElement.queryAll(By.css('tr.month-row'));
       rows.forEach((row, index) => {
         const cellsInRow = row
@@ -188,30 +166,32 @@ describe('AlcCalendarMonthComponent', () => {
     });
 
     it('should include an offset cell corresponding to the days from the previous month', () => {
-      for (
-        let numOfDaysInFirstWeek = 1;
-        numOfDaysInFirstWeek < 7;
-        numOfDaysInFirstWeek++
-      ) {
-        monthBodyTransformSpy.and.returnValue([mockWeek(numOfDaysInFirstWeek)]);
-        fixture.componentRef.setInput('firstDayOfWeek', numOfDaysInFirstWeek);
+      const offsetByMonth: [Month, number][] = [
+        [Month.January, 1],
+        [Month.October, 2],
+        [Month.May, 3],
+        [Month.February, 4],
+        [Month.March, 5],
+        [Month.June, 6],
+      ];
+
+      offsetByMonth.forEach(([month, expectedOffset]) => {
+        fixture.componentRef.setInput(
+          'month',
+          new CalendarDate(2024, month, 1)
+        );
         fixture.detectChanges();
 
-        const offsetCell = debugElement.query(By.css('tr td'));
-        const expectedOffset = 7 - numOfDaysInFirstWeek;
+        const offsetCell = debugElement.query(By.css('tr.month-row td'));
         expect(offsetCell.attributes['colspan']).toBe(
           expectedOffset.toString()
         );
-      }
+      });
     });
 
     it('should not include an offset cell if no days are from the previous month', () => {
-      monthBodyTransformSpy.and.returnValue([mockWeek(7)]);
-      fixture.componentRef.setInput('firstDayOfWeek', 0);
-      fixture.detectChanges();
-
-      const offsetCell = debugElement.query(By.css('tr td'));
-      expect(offsetCell.attributes['colspan']).toBeFalsy();
+      const firstCell = debugElement.query(By.css('tr.month-row td'));
+      expect(firstCell.attributes['colspan']).toBeFalsy();
     });
   });
 

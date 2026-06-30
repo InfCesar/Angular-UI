@@ -1,7 +1,7 @@
 <table role="grid" class="month" cellspacing="0" cellpadding="0">
   <caption>
     {{
-      monthName
+      monthName()
     }}
     {{
       year
@@ -21,11 +21,7 @@
     </tr>
   </thead>
   <tbody class="dates">
-    @for (
-      week of month() | monthBody: firstDayOfWeek();
-      track trackWeeksBy(i, week);
-      let i = $index
-    ) {
+    @for (week of weeks(); track trackWeeksBy(i, week); let i = $index) {
       <tr class="month-row">
         @if (i === 0 && 7 - week.length; as daysFromPreviousMonth) {
           <td [attr.colspan]="daysFromPreviousMonth"></td>
@@ -38,6 +34,7 @@
             (keydown.space)="selectDay(day, $event)"
             (keydown.enter)="selectDay(day, $event)"
             [attr.aria-selected]="dayState[DayStateField.selected]"
+            [attr.aria-label]="dayLabels()[day.id]"
             [attr.tabindex]="dayState[DayStateField.active] ? '0' : '-1'"
             [ngClass]="dayState"
           >

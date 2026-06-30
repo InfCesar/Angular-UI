@@ -14,6 +14,18 @@
 </div>
 <div class="control">
   <label>
+    Locale:
+    <select #localeSelect (change)="alcDateI18n.setLocale(localeSelect.value)">
+      @for (option of locales; track option) {
+        <option [value]="option" [selected]="option === alcDateI18n.locale()">
+          {{ option }}
+        </option>
+      }
+    </select>
+  </label>
+</div>
+<div class="control">
+  <label>
     Modo:
     <select [formControl]="mode">
       <option [ngValue]="1">Individual</option>
@@ -28,7 +40,7 @@
   </div>
   <div class="calendar">
     <div class="months">
-      @for (month of months; track trackByMonth($index, month)) {
+      @for (month of months(); track trackByMonth($index, month)) {
         <div class="months-col">
           <alc-calendar-month
             [activeDate]="activeDate"

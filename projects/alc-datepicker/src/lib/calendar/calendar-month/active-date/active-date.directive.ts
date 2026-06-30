@@ -6,7 +6,7 @@ import {
   HostListener,
   inject,
   Injector,
-  input,
+  InputSignal,
   ModelSignal,
 } from '@angular/core';
 import { CalendarDate } from '../../calendar-date';
@@ -19,7 +19,7 @@ type CursorKeyAction = (date: CalendarDate, shiftKey: boolean) => CalendarDate;
 @Directive()
 export abstract class AlcActiveDateDirective {
   abstract activeDate: ModelSignal<ActiveDate>;
-  firstDayOfWeek = input(WeekDay.Sunday);
+  abstract firstDayOfWeek: InputSignal<WeekDay>;
 
   private elementRef = inject(ElementRef);
   private injector = inject(Injector);
