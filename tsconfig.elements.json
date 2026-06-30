@@ -1,0 +1,10 @@
+/* TypeScript config for the Angular Elements (web components) build. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/elements",
+    "types": []
+  },
+  "files": ["projects/alc-datepicker/src/elements.ts"],
+  "include": ["projects/alc-datepicker/src/**/*.d.ts"]
+}

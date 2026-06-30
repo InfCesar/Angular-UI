@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>alc-datepicker · web components demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      The Angular build injects <script type="module" src="polyfills.js">,
+      <script type="module" src="main.js"> and the stylesheet here
+      automatically. No framework is required on this page — it is plain HTML.
+    -->
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 2rem;
+        max-width: 900px;
+      }
+      section {
+        margin-block: 2rem;
+      }
+      code {
+        background: #f3f3f3;
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Consuming alc-datepicker as web components</h1>
+
+    <section>
+      <label>
+        Locale:
+        <select id="locale-select">
+          <option value="en-US">en-US</option>
+          <option value="es-ES">es-ES</option>
+          <option value="fr-FR">fr-FR</option>
+          <option value="de-DE">de-DE</option>
+          <option value="ja-JP">ja-JP</option>
+        </select>
+      </label>
+    </section>
+
+    <section>
+      <h2>&lt;alc-elements-calendar&gt; — drop-in, no configuration</h2>
+      <p>Just place the tag anywhere; it is fully self-contained.</p>
+      <alc-elements-calendar></alc-elements-calendar>
+    </section>
+
+    <section>
+      <h2>&lt;alc-elements-month&gt; — single month</h2>
+      <p>
+        Renders the current month by default. Object inputs such as
+        <code>month</code> are set as JS properties (see the script below).
+      </p>
+      <alc-elements-month id="demo-month"></alc-elements-month>
+    </section>
+
+    <script>
+      // Example of driving the web components from plain JS: wait until the
+      // elements are registered, then set property inputs and listen to the
+      // emitted events.
+      Promise.all([
+        customElements.whenDefined('alc-elements-calendar'),
+        customElements.whenDefined('alc-elements-month'),
+      ]).then(() => {
+        const month = document.getElementById('demo-month');
+
+        // `alcDatepicker` is the API exposed by the elements bundle.
+        month.month = new alcDatepicker.CalendarDate(2026, 0, 1); // January 2026
+        month.firstDayOfWeek = 1; // start weeks on Monday
+
+        // Outputs (model/output) surface as DOM CustomEvents.
+        month.addEventListener('selectedChange', (e) => {
+          console.log('selected dates changed:', e.detail);
+        });
+      });
+
+      // Locale is changed entirely from outside the Angular components, through
+      // the bundle's `alcDatepicker.setLocale` API.
+      document
+        .getElementById('locale-select')
+        .addEventListener('change', (e) => {
+          alcDatepicker.setLocale(e.target.value);
+        });
+    </script>
+  </body>
+</html>
