@@ -1,5 +1,5 @@
 import { argsToTemplate, type Meta, type StoryObj } from '@storybook/angular';
-import { CalendarDate, UiCalendarMonthComponent } from 'alc-datepicker';
+import { CalendarDate, AlcCalendarMonthComponent } from 'alc-datepicker';
 import { useArgs } from 'storybook/preview-api';
 import { action } from 'storybook/actions';
 import { WeekDay } from '@angular/common';
@@ -33,7 +33,7 @@ const onSelect = (
 
 const meta: Meta<StoryControls> = {
   title: 'Alc-Datepicker/Calendar',
-  component: UiCalendarMonthComponent,
+  component: AlcCalendarMonthComponent,
   tags: ['autodocs'],
   argTypes: {
     month: {

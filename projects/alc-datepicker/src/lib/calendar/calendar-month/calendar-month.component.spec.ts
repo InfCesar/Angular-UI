@@ -110,13 +110,13 @@ describe('AlcCalendarMonthComponent', () => {
   });
 
   describe('Month header', () => {
-    it("should call UiMonthHeaderPipe's transform method with the initial values from the inputs", () => {
+    it("should call AlcMonthHeaderPipe's transform method with the initial values from the inputs", () => {
       expect(monthHeaderTransformSpy).toHaveBeenCalledOnceWith(
         component.firstDayOfWeek()
       );
     });
 
-    it("should call UiMonthHeaderPipe's transform method when the firstDayOfWeek changes", () => {
+    it("should call AlcMonthHeaderPipe's transform method when the firstDayOfWeek changes", () => {
       monthHeaderTransformSpy.calls.reset();
 
       fixture.componentRef.setInput('firstDayOfWeek', WeekDay.Tuesday);
@@ -198,7 +198,7 @@ describe('AlcCalendarMonthComponent', () => {
   describe('Days state', () => {
     const getRenderedDays = () => debugElement.queryAll(By.css('td'));
 
-    it('should pass each day, the selected dates and the active date to UiDayStatePipe', () => {
+    it('should pass each day, the selected dates and the active date to AlcDayStatePipe', () => {
       const selected = [dayToCalendarDate(20)];
       const activeDateValue = new CalendarDate(yearMock, monthMock, 1);
       dayStateTransformSpy.calls.reset();
@@ -218,7 +218,7 @@ describe('AlcCalendarMonthComponent', () => {
       });
     });
 
-    it('should bind the class returned by UiDayStatePipe for each day', () => {
+    it('should bind the class returned by AlcDayStatePipe for each day', () => {
       getRenderedDays().forEach((day, index) => {
         expect(day.classes[`day-${index + 1}`]).toBeTrue();
       });

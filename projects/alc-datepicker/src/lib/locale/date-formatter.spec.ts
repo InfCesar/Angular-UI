@@ -8,7 +8,7 @@ const sunday = new CalendarDate(2023, 0, 1);
 const saturday = new CalendarDate(2023, 0, 7);
 const localeMock = 'it-IT';
 
-describe('AlcDateFormatter', () => {
+describe('AlcDateI18n', () => {
   describe('formatting', () => {
     let formatter: AlcDateI18n;
 

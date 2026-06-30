@@ -20,7 +20,7 @@ class AlcActiveDateHostComponent extends AlcActiveDateDirective {
   firstDayOfWeek = input(WeekDay.Sunday);
 }
 
-describe('UiActiveDateDirective', () => {
+describe('AlcActiveDateDirective', () => {
   let fixture: ComponentFixture<AlcActiveDateHostComponent>;
   let component: AlcActiveDateHostComponent;
   let host: HTMLElement;

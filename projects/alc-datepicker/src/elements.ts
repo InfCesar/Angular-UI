@@ -3,8 +3,8 @@ import { createCustomElement } from '@angular/elements';
 import { Injector, NgZone, Type } from '@angular/core';
 
 import {
-  UiCalendarComponent,
-  UiCalendarMonthComponent,
+  AlcCalendarComponent,
+  AlcCalendarMonthComponent,
   CalendarDate,
 } from './public-api';
 import { AlcDateI18n } from './lib/locale/date-formatter';
@@ -15,8 +15,8 @@ import { AlcDateI18n } from './lib/locale/date-formatter';
  * components' own Angular selectors (`alc-calendar`, `alc-calendar-month`)
  */
 const elements: Array<{ tag: string; component: Type<unknown> }> = [
-  { tag: 'alc-elements-calendar', component: UiCalendarComponent },
-  { tag: 'alc-elements-month', component: UiCalendarMonthComponent },
+  { tag: 'alc-elements-calendar', component: AlcCalendarComponent },
+  { tag: 'alc-elements-month', component: AlcCalendarMonthComponent },
 ];
 
 /** Public API the host page can use to drive the elements from plain JS. */

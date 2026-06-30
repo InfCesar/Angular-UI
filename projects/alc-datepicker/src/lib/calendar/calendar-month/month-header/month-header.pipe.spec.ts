@@ -1,7 +1,7 @@
 import { WeekDay } from '@angular/common';
 import { AlcMonthHeaderPipe } from './month-header.pipe';
 
-describe('UiMonthHeaderPipe', () => {
+describe('AlcMonthHeaderPipe', () => {
   const monthHeaderPipe = new AlcMonthHeaderPipe();
 
   it('should return the original array for firstDayOfWeek = Sunday', () => {
