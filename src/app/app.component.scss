@@ -1,18 +1,32 @@
+@use '../../projects/alc-datepicker/src/sass/tokens' as alc;
+
 .container {
   padding: 8px;
 
-  [alc-button],
   .calendar {
     margin: 8px;
   }
+}
 
-  .buttons {
-    display: flex;
-    flex-wrap: wrap;
-  }
+.variation {
+  background: #2b2e3a;
+  border-radius: 12px;
+  color: #f4f5f9;
+  padding: 1rem;
 
-  .success-buttons [alc-button] {
-    --alc-button-background: var(--color-green);
-    --alc-button-color: var(--color-black);
-  }
+  --alc-sys-primary: #ffc53d;
+  --alc-sys-on-primary: #2b2e3a;
+  --alc-sys-on-surface: #f4f5f9;
+
+  @include alc.override(
+    alc.$calendar-month,
+    (
+      caption-transform: uppercase,
+      weekday-weight: 700,
+      day-border: 0,
+      day-radius: 50%,
+      day-size: 2rem,
+      day-outline: 2px solid var(--alc-sys-primary),
+    )
+  );
 }

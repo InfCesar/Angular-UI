@@ -1,0 +1,68 @@
+@use 'sass:map';
+
+$calendar: (
+  calendar-spacing: 1rem,
+);
+
+$calendar-month: (
+  caption-color: inherit,
+  caption-font-size: 1rem,
+  caption-margin-bottom: 1rem,
+  caption-transform: none,
+  caption-weight: 700,
+  day-aspect-ratio: 1,
+  day-background: transparent,
+  day-border: 1px solid var(--alc-sys-outline),
+  day-color: inherit,
+  day-font-size: 1rem,
+  day-gap: 0.125rem,
+  day-gap-horizontal: var(--alc-day-gap, 0.125rem),
+  day-hover-background:
+    color-mix(
+      in srgb,
+      var(--alc-day-selected-background, var(--alc-sys-primary)) 10%,
+      transparent
+    ),
+  day-hover-color: inherit,
+  day-outline: auto,
+  day-outline-offset: 2px,
+  day-radius: 2px,
+  day-range-background:
+    color-mix(
+      in srgb,
+      var(--alc-day-selected-background, var(--alc-sys-primary)) 65%,
+      transparent
+    ),
+  day-range-color: var(--alc-sys-on-primary),
+  day-selected-background: var(--alc-sys-primary),
+  day-selected-color: var(--alc-sys-on-primary),
+  day-size: 1.5rem,
+  month-color: var(--alc-sys-on-surface),
+  weekday-color: inherit,
+  weekday-font-size: var(--alc-day-font-size, 1rem),
+  weekday-weight: 600,
+);
+
+@function read($name, $tokens) {
+  @if not map.has-key($tokens, $name) {
+    @error 'Unknown alc token: #{$name}';
+  }
+
+  @return var(--_alc-#{$name});
+}
+
+@mixin declare($tokens) {
+  @each $name, $default in $tokens {
+    --_alc-#{$name}: var(--alc-#{$name}, #{$default});
+  }
+}
+
+@mixin override($tokens, $overrides) {
+  @each $name, $value in $overrides {
+    @if not map.has-key($tokens, $name) {
+      @error 'Unknown alc token: #{$name}';
+    }
+
+    --alc-#{$name}: #{$value};
+  }
+}

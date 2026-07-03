@@ -1,9 +1,22 @@
+@use '../../sass/tokens';
+
+@function token($name) {
+  @return tokens.read($name, tokens.$calendar);
+}
+
+:host {
+  @include tokens.declare(tokens.$calendar);
+
+  display: block;
+  width: fit-content;
+}
+
 .calendar,
 .months,
 .months-col {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: token(calendar-spacing);
 }
 
 .controls {
@@ -12,7 +25,7 @@
 }
 
 .calendar-container {
-  margin-top: 16px;
+  margin-top: token(calendar-spacing);
 }
 
 .months-col {

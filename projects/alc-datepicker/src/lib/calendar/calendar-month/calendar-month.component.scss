@@ -1,19 +1,22 @@
+@use '../../../sass/tokens';
+
+@function token($name) {
+  @return tokens.read($name, tokens.$calendar-month);
+}
+
 :host {
-  --color: var(--color-grey-blue);
-  --cell-height: 24px;
-  --cell-width: 24px;
-  --day-border-radius: 2px;
-  --day-selected-background: var(--color-dark-blue);
-  --day-selected-color: var(--color-white);
-  --day-interval-background: var(--color-blue);
-  --day-interval-color: var(--color-white);
-  --day-interval-opacity: 0.5;
+  @include tokens.declare(tokens.$calendar-month);
 
   align-items: center;
-  color: var(--color);
+  color: token(month-color);
   display: flex;
   flex-direction: column;
   width: fit-content;
+}
+
+*,
+*:after {
+  box-sizing: border-box;
 }
 
 table {
@@ -23,48 +26,87 @@ table {
   min-width: max-content;
 
   caption {
-    font-weight: bold;
-    margin-bottom: 16px;
+    color: token(caption-color);
+    font-size: token(caption-font-size);
+    font-weight: token(caption-weight);
+    margin-bottom: token(caption-margin-bottom);
+    text-transform: token(caption-transform);
   }
 
   th,
   td {
-    height: var(--cell-height);
-    width: var(--cell-width);
+    color: token(day-color);
+    padding: token(day-gap) token(day-gap-horizontal);
+    font-size: token(day-font-size);
+    user-select: none;
   }
 
-  td.day:not(:disabled) {
+  th {
+    color: token(weekday-color);
+    font-size: token(weekday-font-size);
+    font-weight: token(weekday-weight);
+  }
+}
+
+.alc-day {
+  isolation: isolate;
+
+  &:not(:disabled) {
     cursor: pointer;
   }
 
-  .day {
-    .day-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--day-border-radius);
-      width: 100%;
-      height: 100%;
-    }
+  &:focus-visible {
+    outline: token(day-outline);
+    outline-offset: token(day-outline-offset);
+  }
+}
 
-    &.alc-day-state-selected .day-content {
-      background: var(--day-selected-background);
-      color: var(--day-selected-color);
-    }
+.alc-day-content {
+  align-items: center;
+  aspect-ratio: token(day-aspect-ratio);
+  background: token(day-background);
+  border-radius: token(day-radius);
+  border: token(day-border);
+  height: 100%;
+  width: token(day-size);
+  display: flex;
+  justify-content: center;
+  position: relative;
 
-    &.alc-day-state-interval .day-content {
-      border-radius: 0;
-      background: var(--day-interval-background);
-      color: var(--day-interval-color);
-      opacity: var(--day-interval-opacity);
-    }
+  &:hover {
+    color: token(day-hover-color);
+    background: token(day-hover-background);
+  }
 
-    &.alc-day-state-interval-start .day-content {
-      border-radius: var(--day-border-radius) 0 0 var(--day-border-radius);
-    }
+  .alc-day-state-interval & {
+    color: token(day-range-color);
+    border: 0;
+  }
 
-    &.alc-day-state-interval-end .day-content {
-      border-radius: 0 var(--day-border-radius) var(--day-border-radius) 0;
-    }
+  .alc-day-state-selected & {
+    background: token(day-selected-background);
+    border: 0;
+    color: token(day-selected-color);
+  }
+
+  [class*='alc-day-state-interval'] &::after {
+    background: token(day-range-background);
+    content: '';
+    inset-block: 0;
+    inset-inline: calc(-1 * token(day-gap-horizontal));
+    position: absolute;
+    z-index: -1;
+  }
+
+  .alc-day-state-interval-start &::after {
+    inset-inline-start: 0;
+    border-start-start-radius: token(day-radius);
+    border-end-start-radius: token(day-radius);
+  }
+
+  .alc-day-state-interval-end &::after {
+    inset-inline-end: 0;
+    border-start-end-radius: token(day-radius);
+    border-end-end-radius: token(day-radius);
   }
 }

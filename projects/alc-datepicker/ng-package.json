@@ -1,6 +1,13 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/alc-datepicker",
+  "assets": [
+    {
+      "input": "src/sass",
+      "glob": "**/*.scss",
+      "output": "sass"
+    }
+  ],
   "lib": {
     "entryFile": "src/public-api.ts",
     "styleIncludePaths": ["../sass"]
