@@ -24,12 +24,12 @@
     @for (week of weeks(); track trackWeeksBy(i, week); let i = $index) {
       <tr class="month-row">
         @if (i === 0 && 7 - week.length; as daysFromPreviousMonth) {
-          <td [attr.colspan]="daysFromPreviousMonth"></td>
+          <td disabled [attr.colspan]="daysFromPreviousMonth"></td>
         }
         @for (day of week; track trackDaysBy($index, day)) {
           @let dayState = day | dayState: selected() : activeDate().date;
           <td
-            class="day"
+            class="alc-day"
             (click)="selectDay(day)"
             (keydown.space)="selectDay(day, $event)"
             (keydown.enter)="selectDay(day, $event)"
@@ -38,7 +38,7 @@
             [attr.tabindex]="dayState[DayStateField.active] ? '0' : '-1'"
             [ngClass]="dayState"
           >
-            <span class="day-content">
+            <span class="alc-day-content">
               {{ day.dayNumber }}
             </span>
           </td>

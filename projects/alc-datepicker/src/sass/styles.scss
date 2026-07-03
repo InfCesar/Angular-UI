@@ -1,2 +1,11 @@
+@forward './tokens';
 @use './resets';
 @use './utils';
+
+// Design system definition
+:root {
+  --alc-sys-primary: #071bdf;
+  --alc-sys-on-primary: #fff;
+  --alc-sys-on-surface: #2b2e3a;
+  --alc-sys-outline: black;
+}
